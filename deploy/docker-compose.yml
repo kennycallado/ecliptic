@@ -1,0 +1,11 @@
+services:
+  web:
+    image: nginx:alpine-otel
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx.default.conf:/etc/nginx/conf.d/default.conf:ro
+      # 🔽 prod:
+      - ../dist:/var/www/html
+
+    ports:
+      - 8000:80 # nginx

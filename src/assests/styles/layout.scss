@@ -1,0 +1,12 @@
+$primary: #613583;
+$font-size-base: 1.25rem;
+
+@import "bootstrap/scss/bootstrap";
+
+:not(:defined) {
+  visibility: hidden;
+}
+
+h1 {
+  color: var(--bs-primary);
+}
