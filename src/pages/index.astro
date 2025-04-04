@@ -7,4 +7,56 @@ import Layout from '../components/layouts/Layout.astro';
   page="Welcome to My Site"
   back={{enabled: false}}>
 
+  <button class="btn btn-primary">Test</button>
+  <script>
+    import { logger } from "$lib/services/logger.ts";
+    import { SpanStatusCode, trace } from "@opentelemetry/api";
+    import { SeverityNumber } from "@opentelemetry/api-logs";
+
+    function handleButtonClick() {
+      // Opcional: Crear un span manual si la acción no está cubierta por instrumentación automática
+      const tracer = trace.getTracer("my-component-tracer"); // Obtener el tracer global
+      tracer.startActiveSpan("buttonClick", (span) => {
+        try {
+          console.log("Button clicked!");
+
+          // *** Aquí es donde deberías loguear ***
+          // El contexto activo (gestionado por ZoneContextManager) tendrá el traceId y spanId
+          logger.emit({
+            severityNumber: SeverityNumber.INFO,
+            severityText: "info",
+            body: "User clicked the button!",
+            attributes: { "user.action": "click", "component": "MyButton" },
+          });
+
+          // Simular algún trabajo
+          // performSomeAction();
+
+          span.setStatus({ code: SpanStatusCode.OK });
+
+          // Simular un error para probar el manejo de errores
+          throw Error("Simulated error"); // Simular un error para probar el manejo de errores
+        } catch (e) {
+          const error = e as Error;
+          span.setStatus({ code: SpanStatusCode.ERROR, message: error.message });
+
+          logger.emit({
+            severityNumber: SeverityNumber.ERROR,
+            severityText: "error",
+            body: `Error during button click: ${error.message}`,
+            attributes: { "component": "MyButton" },
+          });
+          // Asegúrate de re-lanzar el error o manejarlo adecuadamente
+          throw error;
+        } finally {
+          // El span finaliza automáticamente al salir del callback de startActiveSpan
+          span.end();
+        }
+      });
+    }
+
+    const test = document.querySelector(".btn-primary");
+    test?.addEventListener("click", handleButtonClick);
+  </script>
 </Layout>
+

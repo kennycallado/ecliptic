@@ -55,6 +55,9 @@ const {
     <script src="bootstrap/js/index.esm.js"></script>
     <script is:inline src="/js/theme.js"></script> <!-- NOTE: start with slash -->
 
-    <script>import "$lib/services/load.ts"</script>
+    <script>
+      import "$lib/services/tracer.ts"
+      import "$lib/services/logger.ts"
+    </script>
   </body>
 </html>

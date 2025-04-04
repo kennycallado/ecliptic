@@ -2,12 +2,16 @@
   "version": "4",
   "specifiers": {
     "npm:@astrojs/sitemap@^3.3.0": "3.3.0",
+    "npm:@opentelemetry/api-logs@0.200": "0.200.0",
     "npm:@opentelemetry/api@^1.9.0": "1.9.0",
     "npm:@opentelemetry/context-zone@2": "2.0.0_@opentelemetry+api@1.9.0_zone.js@0.15.0",
+    "npm:@opentelemetry/exporter-logs-otlp-http@0.200": "0.200.0_@opentelemetry+api@1.9.0",
     "npm:@opentelemetry/exporter-trace-otlp-http@0.200": "0.200.0_@opentelemetry+api@1.9.0",
     "npm:@opentelemetry/instrumentation-document-load@0.45": "0.45.0_@opentelemetry+api@1.9.0",
+    "npm:@opentelemetry/instrumentation-user-interaction@0.45": "0.45.0_@opentelemetry+api@1.9.0_zone.js@0.15.0",
     "npm:@opentelemetry/instrumentation@0.200": "0.200.0_@opentelemetry+api@1.9.0",
     "npm:@opentelemetry/resources@2": "2.0.0_@opentelemetry+api@1.9.0",
+    "npm:@opentelemetry/sdk-logs@0.200": "0.200.0_@opentelemetry+api@1.9.0",
     "npm:@opentelemetry/sdk-trace-base@2": "2.0.0_@opentelemetry+api@1.9.0",
     "npm:@opentelemetry/sdk-trace-web@2": "2.0.0_@opentelemetry+api@1.9.0",
     "npm:@opentelemetry/semantic-conventions@^1.30.0": "1.30.0",
@@ -304,6 +308,17 @@
         "@opentelemetry/semantic-conventions"
       ]
     },
+    "@opentelemetry/exporter-logs-otlp-http@0.200.0_@opentelemetry+api@1.9.0": {
+      "integrity": "sha512-KfWw49htbGGp9s8N4KI8EQ9XuqKJ0VG+yVYVYFiCYSjEV32qpQ5qZ9UZBzOZ6xRb+E16SXOSCT3RkqBVSABZ+g==",
+      "dependencies": [
+        "@opentelemetry/api",
+        "@opentelemetry/api-logs",
+        "@opentelemetry/core",
+        "@opentelemetry/otlp-exporter-base",
+        "@opentelemetry/otlp-transformer",
+        "@opentelemetry/sdk-logs"
+      ]
+    },
     "@opentelemetry/exporter-trace-otlp-http@0.200.0_@opentelemetry+api@1.9.0": {
       "integrity": "sha512-Goi//m/7ZHeUedxTGVmEzH19NgqJY+Bzr6zXo1Rni1+hwqaksEyJ44gdlEMREu6dzX1DlAaH/qSykSVzdrdafA==",
       "dependencies": [
@@ -323,6 +338,16 @@
         "@opentelemetry/instrumentation",
         "@opentelemetry/sdk-trace-web",
         "@opentelemetry/semantic-conventions"
+      ]
+    },
+    "@opentelemetry/instrumentation-user-interaction@0.45.0_@opentelemetry+api@1.9.0_zone.js@0.15.0": {
+      "integrity": "sha512-b5ezG+q1MJfG136uQeA9m5hmytRVanXWPw8lqDv/cwuHDnukF14YkU3GFaTGlahU9XnCfKwFPqpSBiUDt2aPcg==",
+      "dependencies": [
+        "@opentelemetry/api",
+        "@opentelemetry/core",
+        "@opentelemetry/instrumentation",
+        "@opentelemetry/sdk-trace-web",
+        "zone.js"
       ]
     },
     "@opentelemetry/instrumentation@0.200.0_@opentelemetry+api@1.9.0": {
@@ -2557,11 +2582,16 @@
     "packageJson": {
       "dependencies": [
         "npm:@astrojs/sitemap@^3.3.0",
+        "npm:@opentelemetry/api-logs@0.200",
+        "npm:@opentelemetry/api@^1.9.0",
         "npm:@opentelemetry/context-zone@2",
+        "npm:@opentelemetry/exporter-logs-otlp-http@0.200",
         "npm:@opentelemetry/exporter-trace-otlp-http@0.200",
         "npm:@opentelemetry/instrumentation-document-load@0.45",
+        "npm:@opentelemetry/instrumentation-user-interaction@0.45",
         "npm:@opentelemetry/instrumentation@0.200",
         "npm:@opentelemetry/resources@2",
+        "npm:@opentelemetry/sdk-logs@0.200",
         "npm:@opentelemetry/sdk-trace-base@2",
         "npm:@opentelemetry/sdk-trace-web@2",
         "npm:@opentelemetry/semantic-conventions@^1.30.0",
