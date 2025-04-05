@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.3.0",
+    "@vite-pwa/assets-generator": "^1.0.0",
+    "@vite-pwa/astro": "^1.0.0",
     "astro": "^5.5.6",
     "astro-purgecss": "^5.2.2",
     "bootstrap": "^5.3.3",
@@ -17,4 +19,3 @@
     "sass": "^1.86.1"
   }
 }
-
