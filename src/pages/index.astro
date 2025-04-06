@@ -1,6 +1,7 @@
 ---
 import Layout from '$components/layouts/Layout.astro';
 import TestApi from '$components/TestApi.astro';
+import TestLogger from '$components/TestLogger.astro'
 ---
 
 <Layout
@@ -9,4 +10,6 @@ import TestApi from '$components/TestApi.astro';
   back={{enabled: false}}>
 
   <TestApi />
+  <TestLogger />
 </Layout>
+

@@ -1,0 +1,62 @@
+<button id="test-otel" class="btn btn-primary">Test otel</button>
+
+<script>
+import { logger } from "$lib/services/logger.ts";
+import { SpanStatusCode, trace } from "@opentelemetry/api";
+import { SeverityNumber } from "@opentelemetry/api-logs";
+
+import { LOGS } from '$lib/consts.ts'
+
+const test = document.getElementById('test-otel');
+test?.addEventListener("click", handleButtonClick);
+
+function handleButtonClick() {
+  // random true or false
+  const triggerError = Math.random() < 0.5;
+
+  // Opcional: Crear un span manual si la acción no está cubierta por instrumentación automática
+  const tracer = trace.getTracer("my-component-tracer"); // Obtener el tracer global
+  tracer.startActiveSpan("buttonClick", (span) => {
+    try {
+      console.log("Button clicked!");
+
+      // *** Aquí es donde deberías loguear ***
+      // El contexto activo (gestionado por ZoneContextManager) tendrá el traceId y spanId
+      if (LOGS) {
+        logger.emit({
+          severityNumber: SeverityNumber.INFO,
+          severityText: "info",
+          body: "User clicked the button!",
+          attributes: { "user.action": "click", "component": "MyButton" },
+        });
+      }
+
+      // Simular un error para probar el manejo de errores
+      if (triggerError) {
+        throw new Error("Simulated error");
+      }
+
+      if (LOGS) span.setStatus({ code: SpanStatusCode.OK });
+    } catch (e) {
+      const error = e as Error;
+
+      if (LOGS) {
+        span.setStatus({ code: SpanStatusCode.ERROR, message: error.message });
+
+        logger.emit({
+          severityNumber: SeverityNumber.ERROR,
+          severityText: "error",
+          body: `Error during button click: ${error.message}`,
+          attributes: { "component": "MyButton" },
+        });
+      }
+
+      // Asegúrate de re-lanzar el error o manejarlo adecuadamente
+      throw error;
+    } finally {
+      // El span finaliza automáticamente al salir del callback de startActiveSpan
+      if (LOGS) span.end();
+    }
+  });
+}
+</script>
