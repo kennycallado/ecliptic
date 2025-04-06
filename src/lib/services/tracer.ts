@@ -9,14 +9,14 @@ import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base";
 import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
 
-import { SITE, TRACES } from "$lib/consts.ts";
+import { BASE, SITE, TRACES } from "$lib/consts.ts";
 
 const resource = resourceFromAttributes({
   [ATTR_SERVICE_NAME]: "ecliptic_client",
 });
 
 const exporter = new OTLPTraceExporter({
-  url: `${SITE}/otel/v1/traces`,
+  url: `${SITE + BASE}otel/v1/traces/`,
 });
 
 const provider = new WebTracerProvider({
