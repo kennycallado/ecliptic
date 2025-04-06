@@ -7,15 +7,17 @@ import deno from "@deno/astro-adapter";
 import purgecss from "astro-purgecss";
 import sitemap from "@astrojs/sitemap";
 
-import { BASE, SITE } from "./src/lib/consts.ts";
+const base = process.env.BASE_URL || "/";
+const site = process.env.SITE_URL ||
+  `http://localhost:${import.meta.env.PROD ? 8000 : 3000}`;
 
 // https://astro.build/config
 export default defineConfig({
   server: { port: 3000 },
   devToolbar: { enabled: false },
 
-  base: BASE,
-  site: SITE,
+  base,
+  site,
 
   trailingSlash: "always",
 
@@ -35,14 +37,14 @@ export default defineConfig({
       registerType: "autoUpdate",
 
       manifest: {
-        id: BASE,
+        id: base,
         name: "Ecliptic PWA",
         short_name: "Eclip",
         theme_color: "#613583",
 
         icons: [
           {
-            src: BASE + "favicon.svg",
+            src: base + "favicon.svg",
             sizes: "150x150",
             type: "image/svg+xml",
           },
@@ -54,7 +56,7 @@ export default defineConfig({
       },
 
       workbox: {
-        navigateFallback: BASE,
+        navigateFallback: base,
         globPatterns: ["**/*.{css,js,html,svg,png,ico,txt}"],
       },
 
