@@ -1,5 +1,6 @@
 ---
-import Layout from '../components/layouts/Layout.astro';
+import Layout from '$components/layouts/Layout.astro';
+import TestApi from '$components/TestApi.astro';
 ---
 
 <Layout
@@ -7,4 +8,5 @@ import Layout from '../components/layouts/Layout.astro';
   page="Welcome to My Site"
   back={{enabled: false}}>
 
+  <TestApi />
 </Layout>

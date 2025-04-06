@@ -15,4 +15,5 @@ set LD_LIBRARY_PATH $(nix path-info nixpkgs#stdenv.cc.cc.lib)/lib:$LD_LIBRARY_PA
 ## NOTE:
 
 > [!IMPORTANT]
-> Because of baseUrl docker-compose does not work while developing locally.
+> to change BASE_URL a `.env` is needed
+> workflows also needs set BASE_URL and SITE

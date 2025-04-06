@@ -1,0 +1,19 @@
+<button id="test-api" class="btn btn-primary">Test api</button>
+<pre id="result"></pre>
+
+<script>
+let count = 0
+
+const btn = document.getElementById('test-api');
+const result = document.getElementById('result');
+
+btn.addEventListener('click', async () => {
+  const response = await fetch('api/test/');
+  const data = await response.json();
+
+  count = count + 1;
+  data.count = count;
+
+  result.innerText = result.innerText + '\n' + JSON.stringify(data, null, 2);
+});
+</script>

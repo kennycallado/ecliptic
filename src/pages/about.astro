@@ -1,5 +1,6 @@
 ---
-import Layout from '../components/layouts/Layout.astro';
+import Layout from '$components/layouts/Layout.astro';
+import TestDefer from '$components/TestDefer.astro';
 ---
 
 <Layout
@@ -7,4 +8,7 @@ import Layout from '../components/layouts/Layout.astro';
   page="How we are?"
   back={{enabled: false}}>
 
+  <TestDefer server:defer>
+    <h2 class="text-center" slot="fallback">Hola mundo</h2>
+  </TestDefer>
 </Layout>

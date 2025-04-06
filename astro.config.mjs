@@ -1,9 +1,11 @@
 // @ts-check
 import { defineConfig } from "astro/config";
+import "dotenv/config";
 
-import sitemap from "@astrojs/sitemap";
-import purgecss from "astro-purgecss";
 import AstroPWA from "@vite-pwa/astro";
+import deno from "@deno/astro-adapter";
+import purgecss from "astro-purgecss";
+import sitemap from "@astrojs/sitemap";
 
 import { BASE, SITE } from "./src/lib/consts.ts";
 
@@ -12,8 +14,8 @@ export default defineConfig({
   server: { port: 3000 },
   devToolbar: { enabled: false },
 
-  site: SITE,
   base: BASE,
+  site: SITE,
 
   trailingSlash: "always",
 
@@ -21,7 +23,8 @@ export default defineConfig({
     sitemap(),
     purgecss({
       safelist: {
-        standard: [/^jodit/, /article-video/],
+        // /text-info/ because of defer
+        standard: [/^jodit/, /text-info/],
         greedy: [/*astro*/],
       },
     }),
@@ -32,14 +35,14 @@ export default defineConfig({
       registerType: "autoUpdate",
 
       manifest: {
-        id: "/",
+        id: BASE,
         name: "Ecliptic PWA",
         short_name: "Eclip",
         theme_color: "#613583",
 
         icons: [
           {
-            src: "/favicon.svg",
+            src: BASE + "favicon.svg",
             sizes: "150x150",
             type: "image/svg+xml",
           },
@@ -51,7 +54,7 @@ export default defineConfig({
       },
 
       workbox: {
-        navigateFallback: "/",
+        navigateFallback: BASE,
         globPatterns: ["**/*.{css,js,html,svg,png,ico,txt}"],
       },
 
@@ -66,7 +69,10 @@ export default defineConfig({
     }),
   ],
 
-  adapter: undefined,
+  adapter: deno({
+    start: import.meta.env.PROD ? false : true,
+    port: 3000,
+  }),
 
   vite: {
     esbuild: {
@@ -75,7 +81,7 @@ export default defineConfig({
 
     server: {
       proxy: {
-        "/otel": {
+        [BASE + "otel"]: {
           target: "http://localhost:8000",
           changeOrigin: true,
           secure: false,

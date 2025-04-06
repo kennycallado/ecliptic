@@ -1,2 +1,3 @@
-export const BASE: string = "/";
-export const SITE: string = "http://localhost:8000";
+export const BASE = process.env.BASE_URL || "/";
+export const SITE = process.env.SITE ||
+  `http://localhost:${import.meta.env.PROD ? 8000 : 3000}`;
