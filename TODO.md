@@ -1,6 +1,11 @@
 # TODO:
 
-- [ ] build:prev produces <base href>
+- [x] OTEL: there is something wrong
+- [ ] look:
+  - [uno](https://realfavicongenerator.net/)
+  - [dos](https://www.webpagetest.org/)
+  - maybe some [tools](https://github.com/pwa-builder/pwa-starter)
+- [x] build:prev produces <base href>
 - [ ] workflows: needs BASE_URL during build
 - [ ] nginx cache:
 
@@ -15,7 +20,7 @@
   }
   ```
 
-- [ ] OpenTelemetry instrumentation
+- [x] OpenTelemetry instrumentation
   - [uno](https://opentelemetry.io/docs/languages/js/exporters/#otlp-dependencies)
   - [dos](https://opentelemetry.io/docs/languages/js/exporters/)
   - [tres](https://opentelemetry.io/docs/languages/js/getting-started/browser/)

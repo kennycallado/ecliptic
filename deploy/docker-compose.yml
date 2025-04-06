@@ -21,8 +21,8 @@ services:
 
     ports:
       - 8000:80 # nginx
-      - 3000:3000 # server
       - 7000:7000 # grafana
+      - 3000:3000 # server
 
   server:
     image: docker.io/denoland/deno:alpine
