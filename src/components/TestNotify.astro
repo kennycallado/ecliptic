@@ -1,0 +1,42 @@
+<div class="mt-3">
+  <button
+    id="test-notify-sub"
+    class="btn btn-primary">Test notify sub</button>
+  <button
+    id="test-notify-send"
+    class="btn btn-primary">Test notify send</button>
+</div>
+
+<script>
+import { reqPermission } from '$lib/services/webpush/client.ts'
+
+const subscribeButton = document.getElementById('test-notify-sub');
+const sendButton = document.getElementById('test-notify-send');
+
+function check() {
+  const permission = Notification.permission;
+
+  if (permission === 'granted') {
+    subscribeButton.classList.add('disabled');
+    subscribeButton.setAttribute('disabled', true);
+  } else {
+    sendButton.classList.add('disabled');
+    sendButton.setAttribute('disabled', true);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', check);
+
+subscribeButton.addEventListener('click', reqPermission);
+sendButton.addEventListener('click', () => {
+  fetch('/api/push/?send=1')
+    .then((res) => {
+      if (res.status !== 200) {
+        console.error('Error sending notification');
+        return;
+      }
+
+      check();
+    })
+})
+</script>

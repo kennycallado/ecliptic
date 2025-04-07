@@ -58,6 +58,7 @@ export default defineConfig({
       workbox: {
         navigateFallback: base,
         globPatterns: ["**/*.{css,js,html,svg,png,ico,txt}"],
+        importScripts: ["/js/workers/push.js"],
       },
 
       devOptions: {
