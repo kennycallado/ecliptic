@@ -1,9 +1,12 @@
 ---
-const foo = await new Promise((resolve) => {
+await new Promise((resolve) => {
   setTimeout(() => {
+    console.log(Astro.request.headers.get("referer"))
     resolve('Hello world');
   }, 1000);
 });
+
+const { text } = Astro.props;
 ---
 
-<h2 class="text-center text-info">{foo}</h2>
+<h2 class="text-center text-info">{text}</h2>
