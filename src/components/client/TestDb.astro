@@ -1,0 +1,22 @@
+---
+---
+
+<div class="mt-3">
+  <button id="test-db" class="btn btn-primary">Test Db</button>
+</div>
+
+<script>
+import { auth } from "$lib/services/auth.ts"
+
+const testDbButton = document.getElementById("test-db")
+testDbButton.addEventListener("click", async () => {
+  const db = auth.getDB()
+
+  await auth.isReady
+
+  const res = await db.query("RETURN 'hello'");
+  console.log(res)
+})
+
+</script>
+
