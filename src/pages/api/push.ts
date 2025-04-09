@@ -1,8 +1,8 @@
 import webpush from "web-push";
 import fs from "node:fs";
 
-import { sedNotification } from "$lib/services/webpush/server.ts";
-import subscriptions from "$lib/services/db.json" assert { type: "json" };
+import { sedNotification } from "$lib/server/services/push.ts";
+import subscriptions from "db.json" assert { type: "json" };
 
 import type { AstroSharedContext as Ctx } from "astro";
 
