@@ -1,0 +1,48 @@
+<div class="mt-3">
+  <button id="test-db-client" class="btn btn-primary">Test Db: client</button>
+  <span id="res-client">🟨</span>
+
+  <button id="test-db-server" class="btn btn-primary">Test Db: server</button>
+  <span id="res-server">🟨</span>
+</div>
+
+<script>
+import { auth } from "$lib/client/services/auth.ts"
+
+const resClient = document.getElementById("res-client")
+const resServer = document.getElementById("res-server")
+
+const dbButtonClient = document.getElementById("test-db-client")
+dbButtonClient.addEventListener("click", async () => {
+  const db = auth.getDB()
+
+  try {
+    await auth.isReady
+    const res = await db.query("RETURN 'hello'");
+
+    console.log(res)
+  } catch (e) {
+    console.error(e)
+    resClient.innerText = "❌"
+    return;
+  }
+
+  resClient.innerText = "✅"
+})
+
+const dbButtonServer = document.getElementById("test-db-server")
+dbButtonServer.addEventListener("click", async () => {
+  try {
+    const res = await fetch('api/test/?database=1')
+    const data = await res.json()
+
+    console.log(data)
+  } catch (e) {
+    console.error(e)
+    resServer.innerText = "❌"
+    return;
+  }
+
+  resServer.innerText = "✅"
+})
+</script>

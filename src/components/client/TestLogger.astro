@@ -1,16 +1,21 @@
 <button id="test-otel" class="btn btn-primary">Test otel</button>
 
 <script>
-import { logger } from "$lib/services/logger.ts";
+import { logger } from "$lib/client/services/logger.ts";
 import { SpanStatusCode, trace } from "@opentelemetry/api";
 import { SeverityNumber } from "@opentelemetry/api-logs";
 
-import { LOGS } from '$lib/consts.ts'
+import { LOGS } from '$lib/client/consts.ts'
 
 const test = document.getElementById('test-otel');
 test?.addEventListener("click", handleButtonClick);
 
 function handleButtonClick() {
+  if (!LOGS) {
+    console.error("otel logger is disabled");
+    return;
+  }
+
   // random true or false
   const triggerError = Math.random() < 0.5;
 

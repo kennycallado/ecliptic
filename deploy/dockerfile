@@ -4,6 +4,7 @@ FROM nginx:alpine-otel
 COPY deploy/nginx.conf /etc/nginx/nginx.conf
 COPY deploy/nginx.default.conf /etc/nginx/conf.d/default.conf
 COPY deploy/nginx.variables.conf /etc/nginx/templates/10-variables.conf.template
+COPY deploy/nginx.locations.conf /etc/nginx/templates/20-locations.conf.template
 
 # web app
 COPY /dist /var/www/html

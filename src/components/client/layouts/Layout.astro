@@ -1,14 +1,13 @@
 ---
 import { pwaAssetsHead } from 'virtual:pwa-assets/head';
 import { pwaInfo } from 'virtual:pwa-info';
-import { BASE, SITE } from "$lib/consts.ts";
+import { BASE, SITE } from "$lib/client/consts.ts";
 
 import '$assests/styles/layout.scss'
 
 import Navbar from "./components/Navbar.astro"
 import Footer from "./components/Footer.astro"
 
-const baseUrl = Astro.url.href
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const {
@@ -35,7 +34,7 @@ const {
 
     <title>{title}</title>
 
-    <script src="$lib/pwa.ts"></script>
+    <script src="$lib/client/pwa.ts"></script>
     { pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
   </head>
 
@@ -63,8 +62,8 @@ const {
     <script is:inline src={BASE + "js/theme.js"}></script>
 
     <script>
-      import "$lib/services/tracer.ts"
-      import "$lib/services/logger.ts"
+      import "$lib/client/services/tracer.ts"
+      import "$lib/client/services/logger.ts"
       import "$lib/services/webpush/client.ts"
     </script>
   </body>

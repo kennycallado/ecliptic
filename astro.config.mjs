@@ -8,8 +8,7 @@ import purgecss from "astro-purgecss";
 import sitemap from "@astrojs/sitemap";
 
 const base = process.env.BASE_URL || "/";
-const site = process.env.SITE_URL ||
-  `http://localhost:${import.meta.env.PROD ? 8000 : 3000}`;
+const site = process.env.SITE_URL || "http://localhost";
 
 // https://astro.build/config
 export default defineConfig({
@@ -73,7 +72,7 @@ export default defineConfig({
   ],
 
   adapter: deno({
-    start: import.meta.env.PROD ? false : true,
+    start: process.env.PREV === "true" ? true : false,
     port: 3000,
   }),
 
@@ -84,8 +83,8 @@ export default defineConfig({
 
     server: {
       proxy: {
-        [base + "otel"]: {
-          target: "http://localhost:8000",
+        "/otel": {
+          target: "http://localhost:8000" + base,
           changeOrigin: true,
           secure: false,
         },

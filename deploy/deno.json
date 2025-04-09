@@ -10,6 +10,7 @@
     "es-module-lexer": "npm:es-module-lexer@^1.6.0",
     "html-escaper": "npm:html-escaper@^3.0.3",
     "kleur": "npm:kleur@^4.1.5",
-    "unstorage": "npm:unstorage@^1.15.0"
+    "unstorage": "npm:unstorage@^1.15.0",
+    "surrealdb": "npm:surrealdb@^1.3.1"
   }
 }

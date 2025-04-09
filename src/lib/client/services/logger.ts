@@ -7,14 +7,12 @@ import {
 } from "@opentelemetry/sdk-logs";
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
 
-import { BASE, SITE } from "$lib/consts.ts";
-
 const resource = resourceFromAttributes({
   [ATTR_SERVICE_NAME]: "ecliptic_client",
 });
 
 const collectorOptions = {
-  url: `${SITE + BASE}otel/v1/logs/`,
+  url: location.href + `otel/v1/traces/`,
   headers: {},
   concurrencyLimit: 1,
 };
