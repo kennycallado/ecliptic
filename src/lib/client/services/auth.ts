@@ -155,4 +155,4 @@ class Auth {
   }
 }
 
-// export const auth = new Auth(DB);
+export const auth = new Auth(DB);
