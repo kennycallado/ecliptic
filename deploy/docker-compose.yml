@@ -4,11 +4,13 @@ services:
 
     environment:
       BASE_URL: ${BASE_URL}
-      API_PORT: 3000
+      API_PORT: 6000
       API_HOST: 127.0.0.1
-      ISLAND_PORT: 3000
+      ISLAND_PORT: 6000
       ISLAND_HOST: 127.0.0.1
-      OTEL_HOST: 127.0.0.1
+      DB_HOST: 127.0.0.1
+      DB_PORT: 8000
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
       OTEL_HTTP_PORT: 4318
       OTEL_GRPC_PORT: 4317
 
@@ -16,17 +18,44 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx.default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./nginx.variables.conf:/etc/nginx/templates/10-variables.conf.template:ro
+      - ./nginx.locations.conf:/etc/nginx/templates/20-locations.conf.template:ro
       # 🔽 prod:
       - ../dist/client:/var/www/html/${BASE_URL}:ro
 
     ports:
       - 8000:80 # nginx
       - 7000:7000 # grafana
-      - 3000:3000 # server
+      - 6000:6000 # server
+
+  surrealdb:
+    image: surrealdb/surrealdb:v2.2.1
+    command:
+      - start
+      - memory
+      - -A
+      - --no-banner
+      - --user=root
+      - --pass=root
+
+    environment:
+      SURREAL_LOG: none # none, full, error, warn, info, debug, trace
+      SURREAL_TELEMETRY_PROVIDER: none # otlp
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}:4317
+
+    network_mode: service:web
 
   server:
     image: docker.io/denoland/deno:alpine
-    command: deno serve -A --parallel --port 3000 dist/deno.ts
+    command: deno serve -A --parallel --port 6000 dist/deno.ts
+
+    environment:
+      BASE_URL: ${BASE_URL}
+      SITE_URL: ${SITE_URL}
+      PUBLIC_DB_ENDPOINT: http://127.0.0.1${BASE_URL}/db # NOTE: best way
+      SECRET_DB_USERNAME: ${SECRET_DB_USERNAME}
+      SECRET_DB_PASSWORD: ${SECRET_DB_PASSWORD}
+      PUBLIC_VAPID: ${PUBLIC_VAPID}
+      SECRET_VAPID: ${SECRET_VAPID}
 
     working_dir: /app
     volumes:
