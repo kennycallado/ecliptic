@@ -1,0 +1,96 @@
+<div class="mt-3">
+  <button
+    id="test-create-guest"
+    class="btn btn-primary">Create guest</button>
+  <span id="res-guest">🟨</span>
+
+  <button
+    id="test-create-user"
+    class="btn btn-primary">Create user</button>
+  <span id="res-user">🟨</span>
+
+  <buttintoon
+    id="test-guest-user"
+    class="btn btn-primary">Guest to User</buttintoon>
+  <span id="res-into">🟨</span>
+</div>
+
+<script>
+import { auth } from "$lib/client/services/auth.ts";
+import { StringRecordId } from "surrealdb";
+
+const guestBtn = document.getElementById("test-create-guest")!;
+const userBtn = document.getElementById("test-create-user")!;
+const intoBtn = document.getElementById("test-guest-user")!;
+
+const resGuest = document.getElementById("res-guest")!;
+const resUser = document.getElementById("res-user")!;
+const resInto = document.getElementById("res-into")!;
+
+guestBtn.addEventListener("click", async () => {
+  const db = auth.getDB();
+
+  try {
+    await auth.isReady;
+
+    const [guest] = await db.create("guest");
+    localStorage.setItem("guest", JSON.stringify(guest));
+
+  } catch (e) {
+    console.error(e);
+    resGuest.innerText = "❌";
+    return;
+  }
+
+  resGuest.innerText = "✅";
+});
+
+userBtn.addEventListener("click", async () => {
+  const db = auth.getDB();
+
+  try {
+    await auth.isReady;
+
+    const [user] = await db.create("user", {
+      username: "a",
+      password: "a",
+    });
+
+    if (user === undefined) {
+      throw new Error("user is undefined");
+    }
+
+    localStorage.setItem("user", JSON.stringify(user));
+  } catch (e) {
+    console.error(e);
+    resUser.innerText = "❌";
+    return;
+  }
+
+  resUser.innerText = "✅";
+});
+
+intoBtn.addEventListener("click", async () => {
+  const db = auth.getDB();
+
+  const guest = JSON.parse(localStorage.getItem("guest") || "");
+  const user = JSON.parse(localStorage.getItem("user") || "");
+
+  try {
+    await db.relate(
+      new StringRecordId(guest.id),
+      "into",
+      new StringRecordId(user.id),
+    );
+
+    localStorage.removeItem("guest");
+  } catch (e) {
+    console.error(e);
+    resInto.innerText = "❌";
+    return;
+  }
+
+  resInto.innerText = "✅";
+});
+</script>
+
