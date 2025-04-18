@@ -9,10 +9,15 @@ self.addEventListener("push", async (event) => {
     const clients = await self.clients.matchAll();
     clients.forEach((client) => client.postMessage(data));
 
-    await event.waitUntil(
-      self
-        .registration
-        .showNotification(title, { ...rest }),
-    );
+    // TODO: seems unnecessary
+    // await event.waitUntil(
+    //   self
+    //     .registration
+    //     .showNotification(title, { ...rest }),
+    // );
+
+    self
+      .registration
+      .showNotification(title, { ...rest });
   }
 });
