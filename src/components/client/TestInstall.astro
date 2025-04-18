@@ -1,0 +1,35 @@
+<div class="mt-3">
+  <button
+    id="test-install"
+    class="btn btn-primary disabled">Test install</button>
+</div>
+
+<script>
+let installPrompt = null;
+const installButton = document.getElementById("test-install");
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  // event.preventDefault();
+  // installPrompt = event;
+  // seems not needed
+
+  installButton.classList.remove("disabled");
+});
+
+installButton.addEventListener("click", async () => {
+  if (!installPrompt) return;
+
+  const result = await installPrompt.prompt();
+  console.log(`Install prompt was: ${result.outcome}`);
+  disableInAppInstallPrompt();
+});
+
+window.addEventListener("appinstalled", () => {
+  disableInAppInstallPrompt();
+});
+
+function disableInAppInstallPrompt() {
+  installPrompt = null;
+  installButton.classList.add("disabled");
+}
+</script>
