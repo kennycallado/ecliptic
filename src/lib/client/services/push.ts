@@ -1,8 +1,12 @@
+import { StringRecordId } from "surrealdb";
+import { auth } from "$lib/client/services/auth.ts";
+
 const pubVapid = import.meta.env.PUBLIC_VAPID;
 
-// document.addEventListener("DOMContentLoaded", reqPermission);
-
 export async function reqPermission() {
+  const db = auth.getDB();
+  const user = JSON.parse(localStorage.getItem("user") || "");
+
   //  Request permission for notifications
   const permission = await Notification.requestPermission();
   if (permission !== "granted") {
@@ -11,30 +15,40 @@ export async function reqPermission() {
   }
 
   const registration = await navigator.serviceWorker.ready;
+
+  let subscription;
+
   try {
-    const subscription = await registration.pushManager.subscribe({
+    subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
-      // Replace with your own VAPID public key
       applicationServerKey: pubVapid,
     });
-
-    // Send the subscription to your server
-    const response = await fetch("/api/push/?subscribe=1", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(subscription),
-    });
-
-    console.log("Subscription response:", response.status);
-
-    console.log("User is subscribed:", subscription);
   } catch (err) {
     console.log("Failed to subscribe the user: ", err);
   }
 
-  // Listen for messages from the service worker
+  if (!subscription) return;
+
+  try {
+    const res = await db.merge(new StringRecordId(user.id), {
+      notification: {
+        endpoint: subscription.endpoint,
+        keys: {
+          p256dh: subscription.getKey("p256dh"),
+          auth: subscription.getKey("auth"),
+        },
+      },
+    });
+
+    console.log("User notification subscription updated:", res);
+  } catch (e) {
+    console.error("Failed to update user notification subscription", e);
+    return;
+  }
+}
+
+// Listen for messages from the service worker
+if (navigator.serviceWorker) {
   navigator.serviceWorker.addEventListener("message", (event) => {
     console.log("Received a message from service worker:", event.data);
   });

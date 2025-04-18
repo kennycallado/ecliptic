@@ -5,11 +5,16 @@ export async function GET({ request, params }: AstroSharedContext) {
   const url = new URL(request.url);
 
   if (url.searchParams.get("database")) {
-    await db.ready;
+    try {
+      await db.isReady;
+    } catch (e) {
+      console.error("Error connecting to database:", e);
+      return new Response(null, { status: 500 });
+    }
 
     let res;
     try {
-      res = await db.query("RETURN 'foo'");
+      res = await db.db.query("RETURN 'foo'");
     } catch (error) {
       return new Response(JSON.stringify({ error: "Database error" }), {
         status: 500,

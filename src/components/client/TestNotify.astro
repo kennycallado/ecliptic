@@ -8,35 +8,38 @@
 </div>
 
 <script>
-import { reqPermission } from '$lib/client/services/push.ts'
+import { reqPermission } from "$lib/client/services/push.ts";
+import { auth } from "$lib/client/services/auth.ts";
 
-const subscribeButton = document.getElementById('test-notify-sub');
-const sendButton = document.getElementById('test-notify-send');
+const subscribeButton = document.getElementById("test-notify-sub");
+const sendButton = document.getElementById("test-notify-send");
 
 function check() {
   const permission = Notification.permission;
 
-  if (permission === 'granted') {
-    subscribeButton.classList.add('disabled');
-    subscribeButton.setAttribute('disabled', true);
+  if (permission === "granted") {
+    subscribeButton.classList.add("disabled");
+    subscribeButton.setAttribute("disabled", true);
   } else {
-    sendButton.classList.add('disabled');
-    sendButton.setAttribute('disabled', true);
+    sendButton.classList.add("disabled");
+    sendButton.setAttribute("disabled", true);
   }
 }
 
-document.addEventListener('DOMContentLoaded', check);
+document.addEventListener("DOMContentLoaded", check);
 
-subscribeButton.addEventListener('click', reqPermission);
-sendButton.addEventListener('click', () => {
-  fetch('/api/push/?send=1')
+subscribeButton.addEventListener("click", reqPermission);
+sendButton.addEventListener("click", () => {
+  const user = auth.getUser();
+
+  fetch("api/push/?user=" + user.id)
     .then((res) => {
       if (res.status !== 200) {
-        console.error('Error sending notification');
+        console.error("Error sending notification");
         return;
       }
 
       check();
-    })
-})
+    });
+});
 </script>
