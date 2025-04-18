@@ -1,5 +1,7 @@
 # TODO:
 
+- [x] install: [link](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/How_to/Trigger_install_prompt)
+  - not sure if [apply](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/How_to/Trigger_install_prompt#responding_to_platform-specific_apps_being_installed)
 - [x] OTEL: there is something wrong
 - [ ] look:
   - [uno](https://realfavicongenerator.net/)
