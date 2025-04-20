@@ -1,6 +1,8 @@
 import { db } from "$lib/server/services/database.ts";
 import type { AstroSharedContext } from "astro";
 
+export const prerender = false;
+
 export async function GET({ request, params }: AstroSharedContext) {
   const url = new URL(request.url);
 
@@ -31,5 +33,3 @@ export async function GET({ request, params }: AstroSharedContext) {
     },
   });
 }
-
-export const prerender = false;

@@ -12,6 +12,8 @@ webpush.setVapidDetails(
   secretVapid,
 );
 
+export const prerender = false;
+
 export async function GET(_ctx: Ctx): Promise<Response> {
   const url = new URL(_ctx.request.url);
 
@@ -59,5 +61,3 @@ export async function GET(_ctx: Ctx): Promise<Response> {
 
   return new Response(null, { status: 200 });
 }
-
-export const prerender = false;
