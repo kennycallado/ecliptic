@@ -1,77 +1,31 @@
 import { Surreal } from "surrealdb";
+import { createAuthClient } from "better-auth/client";
+
 import { DB, type DBConfig } from "$lib/client/consts.ts";
 
 class Auth {
-  isReady: Promise<boolean>;
+  public isReady: Promise<boolean>;
+  public client = createAuthClient({
+    fetchOptions: {
+      onRequest: (ctx) => {
+        ctx.url = ctx.url + "/";
+      },
+    },
+  });
 
   private db = new Surreal();
-  private token?: string;
+
   private user?: object;
+  private client_token?: string;
+  private session_token?: string; // able to refresh
 
   constructor(private dbconfig: DBConfig) {
     const user = localStorage.getItem("user");
 
     this.user = user ? JSON.parse(user) : undefined;
-    this.token = localStorage.getItem("token") || undefined;
+    this.client_token = localStorage.getItem("client_token") || undefined;
 
     this.isReady = this.initialize();
-  }
-
-  public logout() {
-    this.clearAuth();
-  }
-
-  public async signin(
-    username?: string,
-    password?: string,
-    access?: string,
-  ): Promise<boolean> {
-    if (await this.isReady) {
-      if (!access || this.dbconfig.config.access) {
-        if (!this.dbconfig) {
-          Promise.reject("Access not provided");
-          return Promise.resolve(false);
-        }
-
-        if (!this.dbconfig.config.access) {
-          Promise.reject("Access not provided");
-          return Promise.resolve(false);
-        }
-
-        access = this.dbconfig.config.access;
-      }
-
-      // at this point surreal could throw an error
-      try {
-        const token = await this.db.signin({
-          access: this.dbconfig.config.access,
-          variables: { username, password },
-        });
-
-        this.setToken(token);
-        this.db.authenticate(token);
-      } catch (e) {
-        // console.error(e);
-
-        Promise.reject("Access denied: " + e);
-        return Promise.resolve(false);
-      }
-
-      const user = await this.db.info();
-
-      if (!user || !user.id) {
-        // If no user info returned or user is invalid, clear authentication
-        this.clearAuth();
-        Promise.reject("Access denied");
-        return Promise.resolve(false);
-      } else {
-        this.setUser(user);
-        return Promise.resolve(true);
-      }
-    }
-
-    Promise.reject("Service not ready");
-    return Promise.resolve(false);
   }
 
   private async initialize(): Promise<boolean> {
@@ -79,33 +33,16 @@ class Auth {
       await this.db.ready;
 
       try {
-        await this.db.connect(this.dbconfig.url, {
-          ...this.dbconfig.config,
-          // prepare: async (db: Surreal) => {
-          // 	if (this.token) {
-          // 		// could fail if the token is invalid, expired
-          // 		await db.authenticate(this.token);
-          // 	}
-          //
-          // 	this._isReady = true;
-          // },
-        });
-
-        // this.isReady = true;
-        // return true;
+        await this.db.connect(this.dbconfig.url, { ...this.dbconfig.config });
       } catch (error) {
         console.error("Failed to connect to database:", error);
-
-        Promise.reject(error);
-        // throw error;
-        // return false;
+        return false;
       }
 
-      if (this.token) {
+      if (this.client_token) {
         try {
-          await this.db.authenticate(this.token);
+          await this.db.authenticate(this.client_token);
         } catch (_) {
-          // console.error(_);
           this.clearAuth();
         }
       }
@@ -117,26 +54,75 @@ class Auth {
     }
   }
 
+  public signUp(
+    credentials: { email: string; password: string; name: string },
+  ) {
+    return this.client.signUp.email({
+      email: credentials.email,
+      password: credentials.password,
+      name: credentials.name,
+      image: undefined, // User image URL (optional)
+    });
+  }
+
+  public signIn(credentials: { email: string; password: string }) {
+    return this.client.signIn.email({
+      email: credentials.email,
+      password: credentials.password,
+      // callbackURL: BASE, // TODO: maybe SITE BASE
+
+      fetchOptions: {
+        onSuccess: ({ data }) => {
+          this.session_token = data.token;
+          this.setUser(data.user);
+
+          // then client_token
+          this.client.getSession({
+            fetchOptions: {
+              onSuccess: async ({ data }) => {
+                try {
+                  await this.db.authenticate(data.client_token);
+                  this.setToken(data.client_token);
+                } catch (_) {
+                  this.clearAuth();
+                }
+              },
+            },
+          });
+        },
+      },
+    });
+  }
+
+  public signOut() {
+    return this.client.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          this.clearAuth();
+          this.clearUser();
+
+          // location.href = BASE; // TODO: maybe SITE BASE
+        },
+      },
+    });
+  }
+
   public getDB() {
     return this.db;
   }
 
-  public getUser() {
-    return this.user;
-  }
-
-  public getToken() {
-    return this.token;
-  }
-
   private setToken(token: string) {
-    this.token = token;
-    localStorage.setItem("token", token);
+    this.client_token = token;
+    localStorage.setItem("client_token", token);
   }
 
   private clearToken() {
-    this.token = undefined;
-    localStorage.removeItem("token");
+    this.client_token = undefined;
+    localStorage.removeItem("client_token");
+  }
+
+  public getUser() {
+    return this.user;
   }
 
   private setUser(user: object) {

@@ -8,11 +8,9 @@ export const LOGS = import.meta.env.PUBLIC_LOGS === "true";
 export const SITE = import.meta.env.SITE_URL || import.meta.env.SITE + port;
 export const BASE = import.meta.env.BASE_URL + trailing;
 
-const url = import.meta.env.PUBLIC_DB_ENDPOINT;
-
 export type DBConfig = typeof DB;
 export const DB = {
-  url,
+  url: import.meta.env.PUBLIC_DB_ENDPOINT!,
   config: {
     access: "user",
     database: "ecliptic",

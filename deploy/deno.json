@@ -3,6 +3,7 @@
   "imports": {
     "@astrojs/internal-helpers": "npm:@astrojs/internal-helpers@^0.6.1",
     "@oslojs/encoding": "npm:@oslojs/encoding@^1.1.0",
+    "better-auth": "npm:better-auth@^1.2.7",
     "clsx": "npm:clsx@^2.1.1",
     "cookie": "npm:cookie@^1.0.2",
     "cssesc": "npm:cssesc@^3.0.0",

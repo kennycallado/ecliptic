@@ -1,9 +1,8 @@
-const url = process.env.PUBLIC_DB_ENDPOINT!;
+export const AUTH_SECRET = process.env.SECRET_BETTER_AUTH_SECRET!;
 
-// url: import.meta.env.PUBLIC_DB_ENDPOINT + `${BASE}db`,
 export type DBConfig = typeof DB;
 export const DB = {
-  url,
+  url: process.env.PUBLIC_DB_ENDPOINT!,
   config: {
     username: process.env.SECRET_DB_USERNAME!,
     password: process.env.SECRET_DB_PASSWORD!,
