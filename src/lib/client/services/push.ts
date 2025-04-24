@@ -5,7 +5,7 @@ const pubVapid = import.meta.env.PUBLIC_VAPID;
 
 export async function reqPermission() {
   const db = auth.getDB();
-  const user = JSON.parse(localStorage.getItem("user") || "");
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   //  Request permission for notifications
   const permission = await Notification.requestPermission();
