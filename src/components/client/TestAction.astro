@@ -1,0 +1,43 @@
+<div class="mt-3">
+  <button id="test-action" class="btn btn-primary">Test action</button>
+  <span id="res-action">🟨</span>
+
+  <!--
+  <button id="test-action-logged" class="btn btn-primary">Test action: logged</button>
+  <span id="res-action-logged">🟨</span>
+  -->
+</div>
+
+<script>
+import { actions } from 'astro:actions';
+
+const actionBtn = document.getElementById('test-action');
+const resAction = document.getElementById("res-action");
+
+// const actionLoggedBtn = document.getElementById('test-action-logged');
+// const resActionLogged = document.getElementById("res-action-logged");
+
+actionBtn?.addEventListener('click', async () => {
+  const { data, error } = await actions.getGreeting({ name: "Houston" });
+  if (error) {
+    console.error(error)
+    resAction.innerText = "❌"
+    return;
+  }
+
+  console.log(data);
+  resAction.innerText = "✅"
+});
+
+// actionLoggedBtn.addEventListener('click', async () => {
+//   const { data, error } = await actions.getGreetingLog();
+//   if (error) {
+//     console.error(error)
+//     resActionLogged.innerText = "❌"
+//     return;
+//   }
+//
+//   console.log(data);
+//   resActionLogged.innerText = "✅"
+// });
+</script>

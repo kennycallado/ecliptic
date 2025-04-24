@@ -7,6 +7,8 @@ await new Promise((resolve) => {
 });
 
 const { text } = Astro.props;
+
+export const prerender = false;
 ---
 
 <h2 class="text-center text-info">{text}</h2>

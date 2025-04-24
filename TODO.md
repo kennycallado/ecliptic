@@ -1,5 +1,9 @@
 # TODO:
 
+- [ ] feat/astro-actions: alternative to endpoints with validation
+  - [ ] new endpoint: _\_actions/_
+  - more [details](https://docs.astro.build/en/guides/actions/)
+    - take a look at the middleware section
 - [ ] android: take a [look](https://developer.chrome.com/docs/android/trusted-web-activity/quick-start/)
   - I have try it however I don't like how it works. I prefer to use capacitor.
 - [x] install: [link](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/How_to/Trigger_install_prompt)
