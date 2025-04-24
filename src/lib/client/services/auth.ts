@@ -1,13 +1,16 @@
 import { Surreal } from "surrealdb";
 import { createAuthClient } from "better-auth/client";
 
-import { DB, type DBConfig } from "$lib/client/consts.ts";
+import { BASE, DB, type DBConfig } from "$lib/client/consts.ts";
 
 class Auth {
   public isReady: Promise<boolean>;
   public client = createAuthClient({
+    basePath: BASE + "api/auth", // needed exactly
+
     fetchOptions: {
       onRequest: (ctx) => {
+        // TODO: check astro.config.trailingSlash
         ctx.url = ctx.url + "/";
       },
     },
@@ -44,6 +47,7 @@ class Auth {
           await this.db.authenticate(this.client_token);
         } catch (_) {
           this.clearAuth();
+          location.href = "";
         }
       }
 
@@ -80,15 +84,41 @@ class Auth {
           this.client.getSession({
             fetchOptions: {
               onSuccess: async ({ data }) => {
+                const client_token = data.session.client_token.token;
+
                 try {
-                  await this.db.authenticate(data.client_token);
-                  this.setToken(data.client_token);
-                } catch (_) {
+                  await this.db.authenticate(client_token);
+                  this.setToken(client_token);
+                } catch (e) {
+                  console.error("Failed to authenticate with client token:", e);
+
                   this.clearAuth();
+                  location.href = "";
                 }
               },
             },
           });
+        },
+      },
+    });
+  }
+
+  public refresh() {
+    return this.client.getSession({
+      fetchOptions: {
+        onSuccess: async ({ data }) => {
+          const client_token = data.session.client_token.token;
+
+          this.session_token = data.token;
+          this.setUser(data.user);
+
+          try {
+            await this.db.authenticate(client_token);
+            this.setToken(client_token);
+          } catch (_) {
+            this.clearAuth();
+            location.href = "";
+          }
         },
       },
     });
@@ -99,9 +129,8 @@ class Auth {
       fetchOptions: {
         onSuccess: () => {
           this.clearAuth();
-          this.clearUser();
 
-          // location.href = BASE; // TODO: maybe SITE BASE
+          location.href = "";
         },
       },
     });

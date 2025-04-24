@@ -1,11 +1,11 @@
 import { Surreal } from "surrealdb";
-import { DB } from "$lib/server/consts.ts";
+import { DB_SERVER } from "$lib/server/consts.ts";
 
 class Database {
   isReady: Promise<boolean>;
   db = new Surreal();
 
-  constructor(private dbconfig: typeof DB) {
+  constructor(private dbconfig: typeof DB_SERVER) {
     this.isReady = this.initialize();
   }
 
@@ -30,4 +30,4 @@ class Database {
   }
 }
 
-export const db = new Database(DB);
+export const db = new Database(DB_SERVER);

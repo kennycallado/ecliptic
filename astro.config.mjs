@@ -7,7 +7,7 @@ import deno from "@deno/astro-adapter";
 import purgecss from "astro-purgecss";
 import sitemap from "@astrojs/sitemap";
 
-const base = process.env.BASE_URL || "/";
+const base = process.env.BASE_URL ? process.env.BASE_URL + "/" : "/";
 const site = process.env.SITE_URL || "http://localhost";
 
 // https://astro.build/config
@@ -57,7 +57,7 @@ export default defineConfig({
       workbox: {
         navigateFallback: base,
         globPatterns: ["**/*.{css,js,html,svg,png,ico,txt}"],
-        importScripts: ["/js/workers/push.js"],
+        importScripts: ["js/workers/push.js"],
       },
 
       devOptions: {
