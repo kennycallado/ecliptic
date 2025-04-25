@@ -5,6 +5,7 @@
   - more [details](https://docs.astro.build/en/guides/actions/)
     - take a look at the middleware section
 - [ ] server: services: database deprecate it
+- [ ] auth: session [cache](https://www.better-auth.com/docs/concepts/session-management#session-caching)
 - [ ] auth: session_token: is it able to refresh client_token?
 - [ ] auth: session expiration and token expiration should match
 - [ ] cosnts: server: ?? needs to keep DB_CLIENT
