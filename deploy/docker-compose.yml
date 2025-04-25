@@ -46,9 +46,12 @@ services:
 
   server:
     image: docker.io/denoland/deno:distroless
-    command: serve -A --parallel --port 6000 dist/deno.ts
+    command: serve --unstable-otel -A --parallel --port 6000 dist/deno.ts
 
     environment:
+      OTEL_DENO: true
+      OTEL_SERVICE_NAME: ecliptic_server
+      # OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}:4318
       BASE_URL: ${BASE_URL}
       SITE_URL: ${SITE_URL}
       PUBLIC_DB_ENDPOINT: http://127.0.0.1${BASE_URL}/db # NOTE: best way
