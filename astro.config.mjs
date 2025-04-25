@@ -71,6 +71,9 @@ export default defineConfig({
     }),
   ],
 
+  // NOTE: because of astro actions
+  security: { checkOrigin: false },
+
   adapter: deno({
     start: process.env.PREV === "true" ? true : false,
     port: 3000,
