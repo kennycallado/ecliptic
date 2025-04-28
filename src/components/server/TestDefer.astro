@@ -11,4 +11,20 @@ const { text } = Astro.props;
 export const prerender = false;
 ---
 
-<h2 class="text-center text-info">{text}</h2>
+<h2
+  id="foo"
+  style="transition: opacity 0.9s ease-in-out; opacity: 0;"
+  class="text-center text-info">{text}</h2>
+
+<script>
+  const foo = document.getElementById('foo');
+
+  if (!document.startViewTransition) {
+    foo.classList.add('opacity-100');
+
+  } else {
+    document.startViewTransition(() => {
+      foo.classList.add('opacity-100');
+    });
+  }
+</script>

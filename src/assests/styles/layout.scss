@@ -3,6 +3,21 @@ $font-size-base: 1.25rem;
 
 @import "bootstrap/scss/bootstrap";
 
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0s;
+  }
+}
+
 :not(:defined) {
   visibility: hidden;
 }
