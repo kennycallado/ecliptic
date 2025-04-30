@@ -18,6 +18,8 @@ export default defineConfig({
   base,
   site,
 
+  // NOTE: not really tested
+  prefetch: { defaultStrategy: "viewport" },
   trailingSlash: "always",
 
   integrations: [
