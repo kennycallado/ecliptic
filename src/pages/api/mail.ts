@@ -10,7 +10,7 @@ export async function POST({ request }: Ctx): Promise<Response> {
 
     try {
       await transporter.sendMail({
-        from: '"Info 🤓" <info.impulsa@ipsitec.es>',
+        from: '"Info 🤓" <dev.impulsa@ipsitec.es>',
         to: "kennycallado@hotmail.com",
         subject,
         text: message,
