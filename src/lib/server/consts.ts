@@ -10,12 +10,3 @@ export const DB_SERVER = {
     namespace: "webslab",
   },
 };
-
-export const DB_CLIENT = {
-  url: DB_SERVER.url,
-  config: {
-    access: "user",
-    database: "ecliptic",
-    namespace: "webslab",
-  },
-};

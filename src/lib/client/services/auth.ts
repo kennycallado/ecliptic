@@ -6,7 +6,7 @@ import { BASE, DB, type DBConfig } from "$lib/client/consts.ts";
 class Auth {
   public isReady: Promise<boolean>;
   public client = createAuthClient({
-    basePath: BASE + "api/auth", // needed exactly
+    basePath: BASE + "api/auth", // NOTE: needed
 
     fetchOptions: {
       onRequest: (ctx) => {
@@ -19,14 +19,13 @@ class Auth {
   private db = new Surreal();
 
   private user?: object;
-  private client_token?: string;
-  private session_token?: string; // able to refresh
+  private token?: string;
 
   constructor(private dbconfig: DBConfig) {
     const user = localStorage.getItem("user");
 
     this.user = user ? JSON.parse(user) : undefined;
-    this.client_token = localStorage.getItem("client_token") || undefined;
+    this.token = localStorage.getItem("token") || undefined;
 
     this.isReady = this.initialize();
   }
@@ -42,9 +41,9 @@ class Auth {
         return false;
       }
 
-      if (this.client_token) {
+      if (this.token) {
         try {
-          await this.db.authenticate(this.client_token);
+          await this.db.authenticate(this.token);
         } catch (_) {
           this.clearAuth();
           location.href = "";
@@ -73,49 +72,30 @@ class Auth {
     return this.client.signIn.email({
       email: credentials.email,
       password: credentials.password,
-      // callbackURL: BASE, // TODO: maybe SITE BASE
-
-      fetchOptions: {
-        onSuccess: ({ data }) => {
-          this.session_token = data.token;
-          this.setUser(data.user);
-
-          // then client_token
-          this.client.getSession({
-            fetchOptions: {
-              onSuccess: async ({ data }) => {
-                const client_token = data.session.client_token.token;
-
-                try {
-                  await this.db.authenticate(client_token);
-                  this.setToken(client_token);
-                } catch (e) {
-                  console.error("Failed to authenticate with client token:", e);
-
-                  this.clearAuth();
-                  location.href = "";
-                }
-              },
-            },
-          });
-        },
-      },
+      fetchOptions: { onSuccess: () => this.refresh() },
     });
   }
 
   public refresh() {
-    return this.client.getSession({
+    this.client.getSession({
       fetchOptions: {
         onSuccess: async ({ data }) => {
-          const client_token = data.session.client_token.token;
-
-          this.session_token = data.token;
           this.setUser(data.user);
 
+          const token = await this.db.signin({
+            access: this.dbconfig.config.access,
+            variables: {
+              email: data.user.email,
+              sessionId: data.session.id,
+            },
+          });
+
           try {
-            await this.db.authenticate(client_token);
-            this.setToken(client_token);
-          } catch (_) {
+            await this.db.authenticate(token);
+            this.setToken(token);
+          } catch (e) {
+            console.error("Failed to authenticate with client token:", e);
+
             this.clearAuth();
             location.href = "";
           }
@@ -141,13 +121,13 @@ class Auth {
   }
 
   private setToken(token: string) {
-    this.client_token = token;
-    localStorage.setItem("client_token", token);
+    this.token = token;
+    localStorage.setItem("token", token);
   }
 
   private clearToken() {
-    this.client_token = undefined;
-    localStorage.removeItem("client_token");
+    this.token = undefined;
+    localStorage.removeItem("token");
   }
 
   public getUser() {

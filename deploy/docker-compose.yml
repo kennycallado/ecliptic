@@ -38,8 +38,9 @@ services:
       - --pass=root
 
     environment:
-      SURREAL_LOG: none # none, full, error, warn, info, debug, trace
-      SURREAL_TELEMETRY_PROVIDER: none # otlp
+      SURREAL_LOG: info # none, full, error, warn, info, debug, trace
+      SURREAL_CLIENT_IP: X-Real-IP # Nginx real IP
+      SURREAL_TELEMETRY_PROVIDER: otlp # otlp
       OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}:4317
 
     network_mode: service:web

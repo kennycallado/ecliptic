@@ -12,7 +12,7 @@ export type DBConfig = typeof DB;
 export const DB = {
   url: import.meta.env.PUBLIC_DB_ENDPOINT!,
   config: {
-    access: "user",
+    access: "users",
     database: "ecliptic",
     namespace: "webslab",
   },
