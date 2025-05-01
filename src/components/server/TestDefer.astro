@@ -20,11 +20,11 @@ export const prerender = false;
   const foo = document.getElementById('foo');
 
   if (!document.startViewTransition) {
-    foo.classList.add('opacity-100');
+    foo.style.opacity = 1;
 
   } else {
     document.startViewTransition(() => {
-      foo.classList.add('opacity-100');
+      foo.style.opacity = 1;
     });
   }
 </script>
