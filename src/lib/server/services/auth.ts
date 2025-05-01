@@ -7,7 +7,13 @@ import { AUTH_SECRET, DB_SERVER } from "$lib/server/consts.ts";
 
 // Initialize server-side DB connection once
 const serverDb = new Surreal();
-serverDb.connect(DB_SERVER.url, DB_SERVER.config).catch(console.error);
+serverDb
+  .connect(DB_SERVER.url, {
+    namespace: DB_SERVER.config.namespace,
+    database: DB_SERVER.config.database,
+    auth: DB_SERVER.config,
+  })
+  .catch(console.error);
 
 export const auth = betterAuth({
   database: surrealAdapter(serverDb),

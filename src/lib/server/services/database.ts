@@ -19,7 +19,9 @@ class Database {
 
     try {
       await this.db.connect(this.dbconfig.url, {
-        ...this.dbconfig.config,
+        namespace: this.dbconfig.config.namespace,
+        database: this.dbconfig.config.database,
+        auth: this.dbconfig.config,
       });
     } catch (e) {
       console.error("Failed to connect to database:", e);
