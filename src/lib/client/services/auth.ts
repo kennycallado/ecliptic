@@ -2,8 +2,9 @@ import { Surreal } from "surrealdb";
 import { createAuthClient } from "better-auth/client";
 
 import { BASE, DB, type DBConfig } from "$lib/client/consts.ts";
+import { catchErrorTyped } from "$lib/utils";
 
-class Auth {
+class AuthService {
   public isReady: Promise<boolean>;
   public client = createAuthClient({
     basePath: BASE + "api/auth", // NOTE: needed
@@ -27,34 +28,63 @@ class Auth {
     this.user = user ? JSON.parse(user) : undefined;
     this.token = localStorage.getItem("token") || undefined;
 
-    this.isReady = this.initialize();
+    this.isReady = this.init();
   }
 
-  private async initialize(): Promise<boolean> {
-    try {
-      await this.db.ready;
+  private async init(): Promise<boolean> {
+    // check db is ready
+    const { error: errorReady } = await catchErrorTyped(this.db.ready);
+    if (errorReady) return false;
 
-      try {
-        await this.db.connect(this.dbconfig.url, { ...this.dbconfig.config });
-      } catch (error) {
-        console.error("Failed to connect to database:", error);
-        return false;
-      }
+    // connect to db
+    const { error: errorConnect } =
+      await catchErrorTyped(this.db.connect(this.dbconfig.url, { ...this.dbconfig.config }));
+    if (errorConnect) return false;
 
-      if (this.token) {
-        try {
-          await this.db.authenticate(this.token);
-        } catch (_) {
-          this.clearAuth();
-          location.href = "";
-        }
-      }
-
-      return true;
-    } catch (e) {
-      console.error(e);
-      return false;
+    if (this.token) {
+      // authenticate with token
+      const { error: errorAuth } = await catchErrorTyped(this.db.authenticate(this.token));
+      if (errorAuth) this.clearToken();
     }
+
+    return true;
+  }
+
+  public async refresh() {
+    const { error: errorSession, data: dataSession } = await this.client.getSession();
+
+    if (errorSession) {
+      console.error("Failed to refresh session:", errorSession);
+      return { error: errorSession, data: null };
+    }
+
+    const { user, session } = dataSession;
+    this.setUser(user);
+
+    const signinOptions = {
+      access: this.dbconfig.config.access,
+      variables: { email: user.email, sessionId: session.id }
+    }
+
+    const { error, data: token } = await catchErrorTyped({
+      promise: this.db.signin(signinOptions),
+      options: {
+        retry: async () => {
+          await this.db.close();
+          await this.db.ready;
+          await this.init();
+
+          return this.db.signin(signinOptions);
+        },
+      }
+    });
+
+    if (error) return { error, data: null };
+    if (!token) return { error: new Error("No token retrived"), data: null };
+
+    this.setToken(token);
+
+    return { error: null, data: dataSession };
   }
 
   public signUp(
@@ -65,52 +95,30 @@ class Auth {
       password: credentials.password,
       name: credentials.name,
       image: undefined, // User image URL (optional)
+      // fetchOptions: { onSuccess: () => { this.refresh(); } },
     });
   }
 
-  public signIn(credentials: { email: string; password: string }) {
-    return this.client.signIn.email({
+  public async signIn(credentials: { email: string; password: string }) {
+    const { error } = await this.client.signIn.email({
       email: credentials.email,
       password: credentials.password,
-      fetchOptions: { onSuccess: () => this.refresh() },
+      // fetchOptions: { onSuccess: () => this.refresh() },
     });
+
+    if (error) {
+      console.error("Failed to sign in:", error);
+      return { error, data: null };
+    }
+
+    return this.refresh();
   }
 
-  public refresh() {
-    this.client.getSession({
-      fetchOptions: {
-        onSuccess: async ({ data }) => {
-          this.setUser(data.user);
-
-          const token = await this.db.signin({
-            access: this.dbconfig.config.access,
-            variables: {
-              email: data.user.email,
-              sessionId: data.session.id,
-            },
-          });
-
-          try {
-            await this.db.authenticate(token);
-            this.setToken(token);
-          } catch (e) {
-            console.error("Failed to authenticate with client token:", e);
-
-            this.clearAuth();
-            location.href = "";
-          }
-        },
-      },
-    });
-  }
-
-  public signOut() {
+  public signOut(): Promise<object | Error> {
     return this.client.signOut({
       fetchOptions: {
         onSuccess: () => {
           this.clearAuth();
-
-          location.href = "";
         },
       },
     });
@@ -147,7 +155,9 @@ class Auth {
   private clearAuth() {
     this.clearToken();
     this.clearUser();
+
+    // location.href = "";
   }
 }
 
-export const auth = new Auth(DB);
+export const auth = new AuthService(DB);
