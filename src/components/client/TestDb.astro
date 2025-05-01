@@ -4,15 +4,23 @@
 
   <button id="test-db-server" class="btn btn-primary">Test Db: server</button>
   <span id="res-server">🟨</span>
+
+  <button id="test-db-log" class="btn btn-primary">Test Db: logged</button>
+  <span id="res-log">🟨</span>
 </div>
 
 <script>
 import { auth } from "$lib/client/services/auth.ts"
+import { catchErrorTyped } from "$lib/utils";
+
+const dbButtonClient = document.getElementById("test-db-client")
+const dbButtonServer = document.getElementById("test-db-server")
+const dbButtonLog = document.getElementById("test-db-log")
 
 const resClient = document.getElementById("res-client")
 const resServer = document.getElementById("res-server")
+const resLog = document.getElementById("res-log")
 
-const dbButtonClient = document.getElementById("test-db-client")
 dbButtonClient.addEventListener("click", async () => {
   const db = auth.getDB()
 
@@ -30,7 +38,6 @@ dbButtonClient.addEventListener("click", async () => {
   resClient.innerText = "✅"
 })
 
-const dbButtonServer = document.getElementById("test-db-server")
 dbButtonServer.addEventListener("click", async () => {
   try {
     const res = await fetch('api/test/?database=1')
@@ -44,5 +51,30 @@ dbButtonServer.addEventListener("click", async () => {
   }
 
   resServer.innerText = "✅"
+})
+
+dbButtonLog.addEventListener("click", async () => {
+  const db = auth.getDB()
+  await db.isReady
+
+  const { error, data: user } = await catchErrorTyped({
+    promise: db.select("user"),
+    options: {
+      retry: async () => {
+        await auth.refresh()
+
+        return db.select("user");
+      }
+    }
+  })
+
+  if (error || user.length === 0) {
+    console.error("probably not logged in", error)
+    resLog.innerText = "❌"
+    return;
+  }
+
+  console.log("user", user[0])
+  resLog.innerText = "✅"
 })
 </script>
