@@ -28,7 +28,7 @@ const signoutRes = document.getElementById("res-signout")!;
 
 signupBtn.addEventListener("click", async () => {
   const { error } = await auth.signUp({
-    email: "foo@bar.es",
+    email: "foo@example.com",
     password: "password",
     name: "Foo Bar",
   });
@@ -44,7 +44,7 @@ signupBtn.addEventListener("click", async () => {
 
 signinBtn.addEventListener("click", async () => {
   const { error } = await auth.signIn({
-    email: "foo@bar.es",
+    email: "foo@example.com",
     password: "password",
   });
   if (error) {
