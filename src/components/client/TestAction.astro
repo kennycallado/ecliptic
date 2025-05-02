@@ -7,35 +7,35 @@
 </div>
 
 <script>
-import { actions } from 'astro:actions';
+import { actions } from "astro:actions";
 
-const actionBtn = document.getElementById('test-action');
-const resAction = document.getElementById("res-action");
+const actionBtn = document.getElementById("test-action") as HTMLButtonElement;
+const resAction = document.getElementById("res-action") as HTMLSpanElement;
 
-const actionLoggedBtn = document.getElementById('test-action-logged');
-const resActionLogged = document.getElementById("res-action-logged");
+const actionLoggedBtn = document.getElementById("test-action-logged") as HTMLButtonElement;
+const resActionLogged = document.getElementById("res-action-logged") as HTMLSpanElement;
 
-actionBtn?.addEventListener('click', async () => {
+actionBtn?.addEventListener("click", async () => {
   const { data, error } = await actions.getGreeting({ name: "Houston" });
   if (error) {
-    console.error(error)
-    resAction.innerText = "❌"
+    console.error(error);
+    resAction.innerText = "❌";
     return;
   }
 
   console.log(data);
-  resAction.innerText = "✅"
+  resAction.innerText = "✅";
 });
 
-actionLoggedBtn.addEventListener('click', async () => {
+actionLoggedBtn.addEventListener("click", async () => {
   const { data, error } = await actions.getGreetingLog();
   if (error) {
-    console.error(error)
-    resActionLogged.innerText = "❌"
+    console.error(error);
+    resActionLogged.innerText = "❌";
     return;
   }
 
   console.log(data);
-  resActionLogged.innerText = "✅"
+  resActionLogged.innerText = "✅";
 });
 </script>

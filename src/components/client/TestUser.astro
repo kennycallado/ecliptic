@@ -17,7 +17,6 @@
 
 <script>
 import { auth } from "$lib/client/services/auth.ts";
-import { StringRecordId } from "surrealdb";
 
 const signupBtn = document.getElementById("test-signup")!;
 const signinBtn = document.getElementById("test-signin")!;
@@ -28,7 +27,12 @@ const signinRes = document.getElementById("res-signin")!;
 const signoutRes = document.getElementById("res-signout")!;
 
 signupBtn.addEventListener("click", async () => {
-  const { error } = await auth.signUp({email: "foo@bar.es", password: "password", name: "Foo Bar"})
+  const { error } = await auth.signUp({
+    email: "foo@bar.es",
+    password: "password",
+    name: "Foo Bar",
+  });
+
   if (error) {
     console.error(error);
     signupRes.innerText = "❌";
@@ -36,10 +40,13 @@ signupBtn.addEventListener("click", async () => {
   }
 
   signupRes.innerText = "✅";
-})
+});
 
 signinBtn.addEventListener("click", async () => {
-  const { error } = await auth.signIn({email: "foo@bar.es", password: "password"});
+  const { error } = await auth.signIn({
+    email: "foo@bar.es",
+    password: "password",
+  });
   if (error) {
     console.error(error);
     signinRes.innerText = "❌";
@@ -52,6 +59,7 @@ signinBtn.addEventListener("click", async () => {
 
 signoutBtn.addEventListener("click", async () => {
   const { error } = await auth.signOut();
+
   if (error) {
     console.error(error);
     signoutRes.innerText = "❌";

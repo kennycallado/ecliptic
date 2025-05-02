@@ -37,13 +37,16 @@ class AuthService {
     if (errorReady) return false;
 
     // connect to db
-    const { error: errorConnect } =
-      await catchErrorTyped(this.db.connect(this.dbconfig.url, { ...this.dbconfig.config }));
+    const { error: errorConnect } = await catchErrorTyped(
+      this.db.connect(this.dbconfig.url, { ...this.dbconfig.config }),
+    );
     if (errorConnect) return false;
 
     if (this.token) {
       // authenticate with token
-      const { error: errorAuth } = await catchErrorTyped(this.db.authenticate(this.token));
+      const { error: errorAuth } = await catchErrorTyped(
+        this.db.authenticate(this.token),
+      );
       if (errorAuth) this.clearToken();
     }
 
@@ -51,7 +54,8 @@ class AuthService {
   }
 
   public async refresh() {
-    const { error: errorSession, data: dataSession } = await this.client.getSession();
+    const { error: errorSession, data: dataSession } = await this.client
+      .getSession();
 
     if (errorSession) {
       console.error("Failed to refresh session:", errorSession);
@@ -63,8 +67,8 @@ class AuthService {
 
     const signinOptions = {
       access: this.dbconfig.config.access,
-      variables: { email: user.email, sessionId: session.id }
-    }
+      variables: { email: user.email, sessionId: session.id },
+    };
 
     const { error, data: token } = await catchErrorTyped({
       promise: this.db.signin(signinOptions),
@@ -76,7 +80,7 @@ class AuthService {
 
           return this.db.signin(signinOptions);
         },
-      }
+      },
     });
 
     if (error) return { error, data: null };
@@ -114,7 +118,7 @@ class AuthService {
     return this.refresh();
   }
 
-  public signOut(): Promise<object | Error> {
+  public signOut() {
     return this.client.signOut({
       fetchOptions: {
         onSuccess: () => {

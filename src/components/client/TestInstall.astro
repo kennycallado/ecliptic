@@ -6,9 +6,11 @@
 
 <script>
 let installPrompt = null;
-const installButton = document.getElementById("test-install");
+const installButton = document.getElementById(
+  "test-install",
+) as HTMLButtonElement;
 
-window.addEventListener("beforeinstallprompt", (event) => {
+window.addEventListener("beforeinstallprompt", () => {
   // event.preventDefault();
   // installPrompt = event;
   // seems not needed

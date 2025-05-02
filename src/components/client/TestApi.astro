@@ -2,18 +2,18 @@
 <pre id="result"></pre>
 
 <script>
-let count = 0
+let count = 0;
 
-const btn = document.getElementById('test-api');
-const result = document.getElementById('result');
+const btn = document.getElementById("test-api") as HTMLButtonElement;
+const result = document.getElementById("result") as HTMLPreElement;
 
-btn.addEventListener('click', async () => {
-  const response = await fetch('api/test/');
+btn.addEventListener("click", async () => {
+  const response = await fetch("api/test/");
   const data = await response.json();
 
   count = count + 1;
   data.count = count;
 
-  result.innerText = result.innerText + '\n' + JSON.stringify(data, null, 2);
+  result.innerText = result.innerText + "\n" + JSON.stringify(data, null, 2);
 });
 </script>
