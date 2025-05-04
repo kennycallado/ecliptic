@@ -23,8 +23,12 @@ export const auth = betterAuth({
   advanced: { database: { generateId: false } },
 
   session: {
-    expiresIn: 120,
-    updateAge: 30,
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 60 * 24, // one day
+    },
+    expiresIn: 60 * 60 * 24 * 14, // two weeks // NOTE: should > surrealdb TOKEN
+    updateAge: 60 * 60 * 24 * 2, // two days
   },
 
   plugins: [],
