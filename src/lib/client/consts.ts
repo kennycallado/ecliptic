@@ -13,7 +13,7 @@ export const DB = {
   url: import.meta.env.PUBLIC_DB_ENDPOINT!,
   config: {
     access: "users",
-    database: "ecliptic",
-    namespace: "webslab",
+    database: import.meta.env.PUBLIC_PROJECT_NAME,
+    namespace: import.meta.env.PUBLIC_PROJECT_SPEC,
   },
 };

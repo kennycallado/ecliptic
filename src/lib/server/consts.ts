@@ -6,7 +6,7 @@ export const DB_SERVER = {
   config: {
     username: process.env.SECRET_DB_USERNAME!,
     password: process.env.SECRET_DB_PASSWORD!,
-    database: "ecliptic",
-    namespace: "webslab",
+    database: process.env.PUBLIC_PROJECT_NAME,
+    namespace: process.env.PUBLIC_PROJECT_SPEC,
   },
 };
