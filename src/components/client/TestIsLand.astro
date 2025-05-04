@@ -1,0 +1,35 @@
+---
+const { text } = Astro.props;
+---
+
+<script src="@11ty/is-land/is-land.js"></script>
+
+<is-land
+  class="d-inline-block mt-3 p-3 ps-0 bg-light bg-opacity-25 border rounded"
+  on:interaction="mouseenter">
+  <style>
+  is-land {
+  }
+
+  is-land[ready] {
+    background-color: var(--bs-gray-600) !important;
+  }
+  </style>
+
+  <button class="btn btn-primary" disabled>{text}</button>
+  <span id="res-island">🟨</span>
+
+  <template data-island="replace">
+    <button
+      id="test-island"
+      class="btn btn-primary">Test: island</button>
+    <span id="res-island">🟩</span>
+
+    <script>
+    const btn = document.getElementById("test-island");
+    const res = document.getElementById("res-island");
+
+    btn.addEventListener("click", () => { res.innerText = "✅"; });
+    </script>
+  </template>
+</is-land>
