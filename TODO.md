@@ -1,6 +1,13 @@
-# TODO:
+# TODO
 
-- [ ] surreal: devices user->has->device
+## LIST:
+
+- [ ] components: TestLogger: check `TRACES` & `LOGS` consts
+- [ ] workflows: build docker images
+- [ ] workflows: deployment ¿argocd?
+- [x] is-land: integration
+  - waiting for view-transition [issue](https://github.com/11ty/is-land/issues/37#issue-3037451524)
+- [ ] surreal: devices user->user_device->device
   - event from session... relate with user
   - [ ] notification object into device
 - [ ] package: deno: ?? rethink parallelism (seems difficult to manage cron jobs)
@@ -15,20 +22,21 @@
   - [?] and revoke on expiration or cronjobs via deno
 - [?] session: client store it
   - don't think is needed
+  - ?? but for feature flag
 - [ ] auth: all about email verification [link](https://www.better-auth.com/docs/concepts/email)
 - [x] auth: session [cache](https://www.better-auth.com/docs/concepts/session-management#session-caching)
 - [x] auth: session_token: is it able to refresh client_token?
-- [x] auth: session expiration and token expiration should match
+- [~] auth: session expiration and token expiration should match
 - [x] cosnts: server: ?? needs to keep DB_CLIENT
 - [x] auth: remove customSession
 - [x] style: testdefer opacity in chrome
 - [ ] style: migrate to tailwind
-  - [x] astro: [link](https://tailwindcss.com/docs/guides/astro)
-  - [ ] deno: [link](https://tailwindcss.com/docs/guides/deno)
+  - [ ] astro: [link](https://tailwindcss.com/docs/guides/astro)
 - [ ] android: take a [look](https://developer.chrome.com/docs/android/trusted-web-activity/quick-start/)
-  - I have try it however I don't like how it works. I prefer to use capacitor.
+  - I have try it however I don't like how it looks. I prefer to use capacitor.
 - [?] package: install: [link](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/How_to/Trigger_install_prompt)
   - not sure if [apply](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/How_to/Trigger_install_prompt#responding_to_platform-specific_apps_being_installed)
+- [ ] otel: ? active it from server (feature flag)
 - [x] OTEL: there is something wrong
 - [ ] look:
   - [uno](https://realfavicongenerator.net/)
@@ -56,3 +64,55 @@
   - [dos](https://opentelemetry.io/docs/languages/js/exporters/)
   - [tres](https://opentelemetry.io/docs/languages/js/getting-started/browser/)
   - [cuatro](https://www.npmjs.com/package/@opentelemetry/auto-instrumentations-web)
+
+## NOTES:
+
+### lit from importmap
+
+```html
+<!-- example with lit -->
+<script type="importmap">
+  {
+    "imports": {
+      "lit": "https://unpkg.com/lit@3.2.1/index.js"
+    },
+    "scopes": {
+      "https://unpkg.com/": {
+        "@lit/reactive-element": "https://unpkg.com/@lit/reactive-element@2.0.4/reactive-element.js",
+        "lit-element/lit-element.js": "https://unpkg.com/lit-element@4.1.1/lit-element.js",
+        "lit-html": "https://unpkg.com/lit-html@3.2.1/lit-html.js",
+        "lit-html/is-server.js": "https://unpkg.com/lit-html@3.2.1/is-server.js"
+      }
+    }
+  }
+</script>
+
+<script type="module">
+  import { html, css, LitElement } from "lit";
+
+  customElements.define(
+    "lit-component",
+    class extends LitElement {
+      static properties = {
+        name: { type: String },
+      };
+
+      static styles = css`
+        p {
+          color: blue;
+          font-size: 40px;
+        }
+      `;
+
+      // createRenderRoot() { return this; }
+
+      render() {
+        return html`
+          <p class="text-primary">Hello, ${this.name || "Stranger"}!</p>
+          <slot></slot>
+        `;
+      }
+    },
+  );
+</script>
+```
