@@ -1,0 +1,21 @@
+  <div class="mt-3">
+    <test-lit foo="hola" />
+
+    <is-land
+      class="d-inline-block mt-3 p-3 ps-0 bg-light bg-opacity-25 border rounded"
+      on:interaction="mouseenter">
+      <button id="test-task" class="btn btn-primary">Test</button>
+
+      <template data-island>
+        <test-lit-task />
+      </template>
+
+      <script is:inline>
+        const btnTask = document.getElementById("test-task");
+        btnTask.addEventListener("click", () => { console.log("doing task") });
+      </script>
+    </is-land>
+  </div>
+
+<script src="$components/client/test-lit.ts"></script>
+<script src="$components/client/test-lit-task.ts"></script>
