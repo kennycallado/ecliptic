@@ -18,14 +18,21 @@ import TestInstall from '$components/client/TestInstall.astro'
   page="Welcome to My Site"
   back={{enabled: false}}>
 
-  <TestApi />
-  <TestAction />
-  <TestLogger />
-  <TestDb />
-  <TestUser />
-  <TestMail />
-  <TestNotify />
-  <TestInstall />
-  <TestIsLand text="Test:" />
-  <TestLit />
+  <div class="row">
+    <div class="col-12 col-md-6 border-end">
+      <TestApi />
+      <TestAction />
+      <TestLogger />
+      <TestDb />
+      <TestUser />
+      <TestMail />
+      <TestNotify />
+      <TestInstall />
+    </div>
+
+    <div class="col-12 col-md-6">
+      <TestIsLand text="Test:" />
+      <TestLit />
+    </div>
+  </div>
 </Layout>
