@@ -11,6 +11,7 @@ import TestLogger from '$components/client/TestLogger.astro'
 import TestNotify from '$components/client/TestNotify.astro'
 import TestIsLand from '$components/client/TestIsLand.astro'
 import TestInstall from '$components/client/TestInstall.astro'
+import TestListPost from '$components/client/TestListPost.astro'
 ---
 
 <Layout
@@ -18,6 +19,7 @@ import TestInstall from '$components/client/TestInstall.astro'
   page="Welcome to My Site"
   back={{enabled: false}}>
 
+  <h2 class="text-center">Tests</h2>
   <div class="row">
     <div class="col-12 col-md-6 border-end">
       <TestApi />
@@ -34,5 +36,19 @@ import TestInstall from '$components/client/TestInstall.astro'
       <TestIsLand text="Test:" />
       <TestLit />
     </div>
+  </div>
+
+  <hr class="w-75 mx-auto" />
+
+  <div style="max-width: 800px; height: 50vh; margin: auto;">
+    <is-land on:interaction="mouseenter">
+      <h2 class="text-center">List Post: Test</h2>
+
+      <template data-island>
+        <div style="width: 100%; height: 100%; overflow: auto;">
+          <TestListPost />
+        </div>
+      </template>
+    </is-land>
   </div>
 </Layout>

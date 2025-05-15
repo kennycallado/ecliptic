@@ -1,0 +1,61 @@
+---
+import { catchErrorTyped } from "$lib/utils"
+import { render } from "$lib/server/ssrLit.ts"
+import { db } from '$lib/server/services/database.ts'
+
+import { template } from "./TestListPost.template.ts"
+
+const query = "SELECT * FROM post;"
+const {error, data} = await catchErrorTyped(db.db.query<unknown[][]>(query))
+if (error) {
+  console.error("Error fetching data:", error)
+  throw new Error("Database query failed")
+}
+
+const [posts] = data!
+const renderPosts = render(template(posts))
+---
+
+<wl-database
+  target="ul"
+  query={query}>
+
+    <!-- style="view-transition-name: my-list;" -->
+  <ul
+    class="list-group list-group-flush"
+    set:html={renderPosts}></ul>
+</wl-database>
+
+<script>
+  import { template } from "./TestListPost.template.ts"
+  import { type WlDatabase } from "$lib/client/webslab/database.ts";
+
+  const wlDatabase = document.querySelector("wl-database") as WlDatabase;
+  wlDatabase.template = template;
+
+  wlDatabase.addEventListener("wl-task:completed", () => {
+    console.log("Database is ready");
+  });
+</script>
+
+<style is:global>
+::view-transition-old(my-list) {
+  animation: explode-out 0.5s forwards;
+  z-index: 2;
+}
+::view-transition-new(my-list) {
+  animation: explode-in 0.5s forwards;
+  z-index: 1;
+}
+
+@keyframes explode-out {
+  0%   { opacity: 1;    filter: blur(0) brightness(1);    transform: scale(1) rotate(0deg);}
+  80%  { opacity: 0.7;  filter: blur(8px) brightness(2);  transform: scale(1.2) rotate(10deg);}
+  100% { opacity: 0;    filter: blur(16px) brightness(3); transform: scale(2) rotate(30deg);}
+}
+@keyframes explode-in {
+  0%   { opacity: 0;    filter: blur(16px) brightness(3); transform: scale(2) rotate(-30deg);}
+  20%  { opacity: 0.7;  filter: blur(8px) brightness(2);  transform: scale(1.2) rotate(-10deg);}
+  100% { opacity: 1;    filter: blur(0) brightness(1);    transform: scale(1) rotate(0deg);}
+}
+</style>
