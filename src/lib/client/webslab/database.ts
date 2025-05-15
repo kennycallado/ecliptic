@@ -65,7 +65,7 @@ export class WlDatabase<T = unknown> extends WebslabElement {
       const result = queryData[0];
 
       // wait 1s
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
 
       if ("startViewTransition" in document) {
         document.startViewTransition(() => {
