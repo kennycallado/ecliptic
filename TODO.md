@@ -2,6 +2,13 @@
 
 ## LIST:
 
+- [ ] wl-database: live parameter
+- [ ] database: template and ?? deploy
+- [ ] ssr-lit: try from actions and defer
+
+- [ ] libraries lenis (js), gasap (js)
+
+- [ ] deploy: use `envsubst`
 - [ ] components: TestLogger: check `TRACES` & `LOGS` consts
 - [ ] workflows: build docker images
 - [ ] workflows: deployment ¿argocd?
