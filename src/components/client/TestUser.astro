@@ -13,6 +13,11 @@
     id="test-signout"
     class="btn btn-primary">Signout</button>
   <span id="res-signout">🟨</span>
+
+  <button
+    id="test-role"
+    class="btn btn-primary">Role</button>
+  <span id="res-role">🟨</span>
 </div>
 
 <script>
@@ -21,10 +26,12 @@ import { auth } from "$lib/client/services/auth.ts";
 const signupBtn = document.getElementById("test-signup")!;
 const signinBtn = document.getElementById("test-signin")!;
 const signoutBtn = document.getElementById("test-signout")!;
+const roleBtn = document.getElementById("test-role")!;
 
 const signupRes = document.getElementById("res-signup")!;
 const signinRes = document.getElementById("res-signin")!;
 const signoutRes = document.getElementById("res-signout")!;
+const roleRes = document.getElementById("res-role")!;
 
 signupBtn.addEventListener("click", async () => {
   const { error } = await auth.signUp({
