@@ -3,9 +3,11 @@ import Layout from '$components/client/layouts/Layout.astro';
 import TestDefer from '$components/server/TestDefer.astro';
 
 const text = "Hello World!";
+const needs = { auth: false, roles: [] };
 ---
 
 <Layout
+  needs={needs}
   title="About"
   page="How we are?"
   back={{enabled: false}}>

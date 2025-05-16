@@ -11,6 +11,7 @@ import Footer from "./components/Footer.astro"
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const {
+  needs = { auth: true, roles: ["admin"] },
   description = "home",
   page = "noname",
   title = "home",
@@ -23,6 +24,7 @@ const {
     <base target="_top" href={SITE + BASE} />
 
     <meta charset="UTF-8"/>
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
@@ -39,26 +41,29 @@ const {
   </head>
 
   <body>
-    <header class="mb-4">
+    <header>
       <Navbar />
     </header>
 
-    <main
-      style="min-height: 74.8svh;"
-      class="container bg-body-tertiary rounded shadow-lg mb-5"
-      id="content">
+    <wl-security needs={JSON.stringify(needs)}>
+      <main
+        style="min-height: 74.8svh;"
+        class="container bg-body-tertiary rounded shadow-lg mt-4 mb-5"
+        id="content">
 
-      <header class="pt-3 text-center">
-        <h1>{page}</h1>
-        <hr class="mt-0 w-75 mx-auto text-primary" />
-      </header>
+        <header class="pt-3 text-center">
+          <h1>{page}</h1>
+          <hr class="mt-0 w-75 mx-auto text-primary" />
+        </header>
 
-      <slot />
-    </main>
+        <slot />
+      </main>
+    </wl-security>
 
     <Footer />
 
     <script src="bootstrap/js/index.esm.js"></script>
+    <script src="$lib/client/webslab/security.ts"></script>
     <script is:inline src={BASE + "js/theme.js"}></script>
 
     <script>
