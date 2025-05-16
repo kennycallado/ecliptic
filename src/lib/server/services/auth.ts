@@ -1,9 +1,11 @@
 import { Surreal } from "surrealdb";
 
+import { admin } from "better-auth/plugins";
 import { betterAuth } from "better-auth";
 import { surrealAdapter } from "surreal-better-auth";
 
 import { AUTH_SECRET, DB_SERVER } from "$lib/server/consts.ts";
+import { adminRole, theraRoles, userRole } from "$lib/roles.ts";
 
 // Initialize server-side DB connection once
 const serverDb = new Surreal();
@@ -31,5 +33,13 @@ export const auth = betterAuth({
     updateAge: 60 * 60 * 24 * 2, // two days
   },
 
-  plugins: [],
+  plugins: [
+    admin({
+      roles: {
+        user: userRole,
+        admin: adminRole,
+        thera: theraRoles,
+      },
+    }),
+  ],
 });

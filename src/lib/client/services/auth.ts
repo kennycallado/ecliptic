@@ -1,8 +1,11 @@
 import { Surreal } from "surrealdb";
 import { createAuthClient } from "better-auth/client";
+import { adminClient } from "better-auth/client/plugins";
 
 import { BASE, DB, type DBConfig } from "$lib/client/consts.ts";
-import { catchErrorTyped } from "$lib/utils";
+import { catchErrorTyped } from "$lib/utils.ts";
+
+import { adminRole, theraRoles, userRole } from "$lib/roles.ts";
 
 class AuthService {
   public isReady: Promise<boolean>;
@@ -15,6 +18,16 @@ class AuthService {
         ctx.url = ctx.url + "/";
       },
     },
+
+    plugins: [
+      adminClient({
+        roles: {
+          admin: adminRole,
+          user: userRole,
+          thera: theraRoles,
+        },
+      }),
+    ],
   });
 
   private db = new Surreal();
@@ -123,6 +136,7 @@ class AuthService {
       fetchOptions: {
         onSuccess: () => {
           this.clearAuth();
+          location.href = "";
         },
       },
     });
@@ -159,8 +173,6 @@ class AuthService {
   private clearAuth() {
     this.clearToken();
     this.clearUser();
-
-    // location.href = "";
   }
 }
 
