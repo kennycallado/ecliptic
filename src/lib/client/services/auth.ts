@@ -6,6 +6,7 @@ import { BASE, DB, type DBConfig } from "$lib/client/consts.ts";
 import { catchErrorTyped } from "$lib/utils.ts";
 
 import { adminRole, theraRoles, userRole } from "$lib/roles.ts";
+import type { User } from "$lib/types.ts";
 
 class AuthService {
   public isReady: Promise<boolean>;
@@ -32,7 +33,7 @@ class AuthService {
 
   private db = new Surreal();
 
-  private user?: object;
+  private user?: User;
   private token?: string;
 
   constructor(private dbconfig: DBConfig) {
@@ -76,7 +77,7 @@ class AuthService {
     }
 
     const { user, session } = dataSession;
-    this.setUser(user);
+    this.setUser(user as User);
 
     const signinOptions = {
       access: this.dbconfig.config.access,
@@ -160,7 +161,7 @@ class AuthService {
     return this.user;
   }
 
-  private setUser(user: object) {
+  private setUser(user: User) {
     this.user = user;
     localStorage.setItem("user", JSON.stringify(user));
   }
