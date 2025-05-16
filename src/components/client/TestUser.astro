@@ -68,5 +68,27 @@ signoutBtn.addEventListener("click", async () => {
 
   signoutRes.innerText = "✅";
 });
+
+roleBtn.addEventListener("click", async () => {
+  if (!auth.getUser()) {
+    console.error("User not found");
+    roleRes.innerText = "❌";
+    return;
+  }
+
+  const {error, data} = await auth.client.admin.setRole({
+    userId: auth.getUser().id,
+    role: "user", // NOTE: should match roles in the database
+  });
+
+  if (error) {
+    console.error(error);
+    console.warn("You are not admin")
+    roleRes.innerText = "❌";
+    return;
+  }
+
+  roleRes.innerText = "✅";
+});
 </script>
 
