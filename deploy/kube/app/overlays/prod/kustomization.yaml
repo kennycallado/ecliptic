@@ -3,7 +3,6 @@ kind: Kustomization
 
 resources:
   - ../../base
-  - ./configmap.yaml
   - ./sealed-better.yaml
   - ./sealed-db.yaml
   - ./sealed-mail.yaml
