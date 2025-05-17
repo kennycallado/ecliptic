@@ -45,11 +45,10 @@ spec:
 
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: metrics-svc.metrics.svc.cluster.local:4317
-              # valueFrom:
-              #   configMapKeyRef:
-              #     name: webslab-db-cm
-              #     key: otel_endpoint
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-db-cm
+                  key: otel_endpoint
 
             # TODO: configMap
             - name: SURREAL_LOG
