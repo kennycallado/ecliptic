@@ -10,4 +10,4 @@ data:
   surreal_client_ip: X-Real-IP
   surreal_caps_allow_all: "true"
   surreal_telemetry_provider: otlp
-  otel_endpoint: "metrics-svc.metrics.svc.cluster.local:4317"
+  otel_endpoint: http://metrics-svc.metrics.svc.cluster.local:4317
