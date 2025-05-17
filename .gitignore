@@ -27,3 +27,6 @@ pnpm-debug.log*
 # preview output
 bun.lock
 deno.lock
+
+# kube
+deploy/kube/**/*secret*

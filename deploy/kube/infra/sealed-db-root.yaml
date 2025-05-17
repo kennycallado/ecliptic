@@ -1,0 +1,21 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+
+metadata:
+  creationTimestamp: null
+  name: webslab-infra-secret-db-root
+  annotations:
+    sealedsecrets.bitnami.com/namespace-wide: "true"
+
+spec:
+  encryptedData:
+    surreal_user: AgCM9qE/Kp+bGfqTiEXKAWXv7jb192XUzDgU0qyw5xVbgiyvwF8nHvRtc8f45qMg2R4nCWxCa5O0Qck1mcIvza2X8AIogxz7fnpMSXUayq+Y2cMtNya/8q4P6wS/eovDYi9OhHUbeEJTDUQqo5AFyrZnkhknf3NRiiFqn15HV8GRPRpYbQ0TeE+oNSzm20WD+TMYKAon+WJtcc8gx4q3Dk819c8pev2f5TbCfSgjt4U9PXGgZTDu0SxsF1NXTQyR/iMa0CrGfD7verJBSRmdI6Eb6b1Jv/c0fqX39y3rZ8JEnaDpQE5O5UA1pPiuHps2z2M/WeSZD6xlfBiCMij/tZo1OMhuFmJngcVwtsBSFyuPaw/h5XRUkc3/Uaj2AkIPJRrcfIGrEqFgmofFTG3a1n+Dd/4yj8DuM+4JVbob7BBl1QzYC6qtczY1cKaxwV3xNRhZIZH4/5349QPUDq4xABIqRi4/Fl1UIjhM6bKYc6L7Jfod9mNBAM7/ikA2bDrYyqxMwddAPtS9YephD9irPZsSFVVplnZSyRkJG1qzk9kfEquIMCHQMwRcNkcxU7XVqFM+n4BUKXntHijIsIueCf1BALxUVrM25q+GVggmq3P95/qayCJ8onhruH9QO3IXhwNhFAc9CefYF0ivjngPgzUShzBv/Btext+Yb6qnNaFV3m5ouPOqL/2bs2+nR5rAJVXBB+62VGoM8MVbO3+iqw==
+    surreal_pass: AgDZwETkl281v4lGGkdHSC3NBe0rmRvslMtt+KhJ7tnocxCog7mwCKeGR4gugV0FZP+lDpfGk28+8cPKsGzNLqlg75v9VmdTrLDFSl4vtCGUTSInO5YOEBrDUUxl+D9nn3ZIidXJjAlx90qGMRk+AmJyRWjgWYSLXxbL4C7+cUqLcspNUVOtDgZWV4bPuPk1Wk3SuTAeRgRLpN/ejK4coDxxniydsxpBJ+PW5iE4zOiwnDB+2uxWfOGAur4828abs0b8Nfr9Jr5V4Osx5Hdjd3UEJPZFm36Jgt+6E3OGhp7T3WlLneyQXe7VjK1LjV+U279lqabieGX+IUv3p9QzptniugOc7I5cJ6ZtGZMaWjKI4fWIEaxEIb35A+PN6dOJrAyxiKpoEKrKbLl3niL1rDoVBxtFjoqYspBlAPDiHW+Wxt020F4Mgi5Eer0bvk07/1TSpehiY1lrN6Osu0VeTKUoEx1ulRESiJWQYPP9zZERML/1iWZG9n4lFO+23dAaPYpmXEK12wEz6jDDPoSwVpop4i5jlzqnVW0UzXHmFPbzi5anSy/rQCiN+ZuVtT8dYaNsfY1pD/QpfjSj32s2kTR6dx/8STeKkThOz7M0WoKuYIOGJkV2Mzx1V+97bU3MUd7HwuKqKkHiwYEWSpOQxfya6Ky9+orrZuTRVIEFkmmik7IBSbJHKv045agjZ8zHYngIH2IK1989TntSl7Ty1IuWFkBI7w==
+
+  template:
+    type: Opaque
+    metadata:
+      creationTimestamp: null
+      name: webslab-infra-secret-db-root
+      annotations:
+        sealedsecrets.bitnami.com/namespace-wide: "true"
