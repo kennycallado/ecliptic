@@ -5,7 +5,7 @@ metadata:
   name: webslab-cm
 
 data:
-  base_url:
+  base_url: ""
   site_url: https://ecliptic.ipsitec.es
 
   # project
