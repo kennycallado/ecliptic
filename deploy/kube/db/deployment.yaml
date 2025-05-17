@@ -48,7 +48,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: webslab-db-cm
-                  key: otel_endpoint
+                  key: otel_exporter_otlp_endpoint
 
             # TODO: configMap
             - name: SURREAL_LOG
