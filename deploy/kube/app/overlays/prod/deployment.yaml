@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: webslab-app-dp
+
+spec:
+  template:
+    spec:
+      containers:
+        - name: webslab-app
+
+          env:
+            - name: SECRET_BETTER_AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-better-prod
+                  key: secret_better_auth_secret
+
+            - name: SECRET_DB_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-db-prod
+                  key: secret_db_key
+
+            - name: SECRET_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-db-prod
+                  key: secret_db_password
+
+            - name: SECRET_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-db-prod
+                  key: secret_db_username
+
+            - name: SECRET_MAIL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-mail-prod
+                  key: secret_mail_port
+
+            - name: SECRET_MAIL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-mail-prod
+                  key: secret_mail_host
+
+            - name: SECRET_MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-mail-prod
+                  key: secret_mail_username
+
+            - name: SECRET_MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-mail-prod
+                  key: secret_mail_password
+
+            - name: SECRET_VAPID
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-vapid-prod
+                  key: secret_vapid

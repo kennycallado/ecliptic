@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+  - ./configmap.yaml
+  - ./sealed-better.yaml
+  - ./sealed-db.yaml
+  - ./sealed-mail.yaml
+  - ./sealed-vapid.yaml
+
+nameSuffix: -prod
+
+commonLabels:
+  app: webslab-app-prod
+  environment: prod
+
+images:
+  - name: PLACEHOLDER_IMAGE
+    newName: docker.io/webslab/base # TODO: update
+    newTag: latest
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+patches:
+  - path: ./deployment.yaml
+    target:
+      kind: Deployment
+      name: webslab-app-dp

@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: webslab-cm
+
+data:
+  base_url:
+  site_url: https://ecliptic.ipsitec.es
+
+  # project
+  public_project_spec: webslab
+  public_project_name: ecliptic
+
+  # database
+  public_db_endpoint: http://localhost:8000/db
+
+  # storage
+  deno_kv_storage: kv.sqlite3
+
+  # auth
+  better_auth_url: http://localhost:8000
+
+  # client observability
+  public_traces: "false"
+  public_logs: "false"
+
+  # notifications
+  public_vapid: BBjPmHoBP41dYZARI77MpsBBR_65Yl_1JKLUfsNGKG2D0y6_suc9xxxq7nKXvUUuc8qfMSyDHbHgLybTqMAAR8s
+
+  # mail
+
+  # telemetry
+  otel_exporter_otlp_endpoint: http://metrics-svc.metrics.svc.cluster.local
