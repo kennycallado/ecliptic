@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 
 metadata:
-  name: webslab-issuer
+  name: webslab-infra-issuer
 
 spec:
   acme:
