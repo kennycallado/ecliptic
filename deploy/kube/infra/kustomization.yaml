@@ -5,3 +5,4 @@ resources:
   - ./namespace.yaml
   - ./issuer.yaml
   - ./sealed-db-root.yaml
+  - ./service.yaml
