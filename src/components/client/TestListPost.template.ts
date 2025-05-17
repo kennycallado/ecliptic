@@ -6,6 +6,7 @@ export const template = (posts: any[]) =>
     ${posts.map((post) =>
       html`
         <li
+          data-id="${post.id}"
           class="list-group-item"
           style="view-transition-name: item-${post.id};">
           <img
