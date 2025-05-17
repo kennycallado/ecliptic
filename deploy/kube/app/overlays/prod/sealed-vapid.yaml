@@ -3,7 +3,7 @@ kind: SealedSecret
 
 metadata:
   creationTimestamp: null
-  name: webslab-secret-vapid-prod
+  name: webslab-secret-vapid
   annotations:
     sealedsecrets.bitnami.com/namespace-wide: "true"
 
