@@ -34,10 +34,10 @@ services:
       - memory
       - -A
       - --no-banner
-      - --user=root
-      - --pass=root
 
     environment:
+      SURREAL_USER: ${SURREAL_USER}
+      SURREAL_PASS: ${SURREAL_PASS}
       SURREAL_LOG: info # none, full, error, warn, info, debug, trace
       SURREAL_CLIENT_IP: X-Real-IP # Nginx real IP
       SURREAL_TELEMETRY_PROVIDER: otlp # otlp
@@ -45,9 +45,32 @@ services:
 
     network_mode: service:web
 
+  migration:
+    image: docker.io/denoland/deno:distroless
+    command: run --unstable-otel -A /app/migration.ts
+
+    environment:
+      OTEL_DENO: true
+      OTEL_SERVICE_NAME: ecliptic_migration
+      SURREAL_USER: ${SURREAL_USER}
+      SURREAL_PASS: ${SURREAL_PASS}
+      PUBLIC_DB_ENDPOINT: http://127.0.0.1${BASE_URL}/db # NOTE: best way
+      PUBLIC_PROJECT_SPEC: ${PUBLIC_PROJECT_SPEC}
+      PUBLIC_PROJECT_NAME: ${PUBLIC_PROJECT_NAME}
+      SECRET_DB_USERNAME: ${SECRET_DB_USERNAME}
+      SECRET_DB_PASSWORD: ${SECRET_DB_PASSWORD}
+
+    working_dir: /app
+    volumes:
+      - ../deploy/scripts/migration.ts:/app/migration.ts:ro
+      - ../deploy/database/:/app/deploy/database/:ro
+
+    network_mode: service:web
+    depends_on: surrealdb
+
   server:
     image: docker.io/denoland/deno:distroless
-    command: serve --unstable-otel -A --parallel --port 6000 dist/deno.ts
+    command: serve --unstable-otel --unstable-kv --unstable-cron -A --parallel --port 6000 dist/deno.ts
 
     environment:
       OTEL_DENO: true
@@ -73,6 +96,8 @@ services:
     volumes:
       - ../deploy/deno.json:/app/deno.json:ro
       - ../deploy/deno.ts:/app/dist/deno.ts:ro
+      - ../deploy/scripts/queue.ts:/app/dist/scripts/queue.ts:ro
+      - ../deploy/scripts/migration.ts:/app/dist/scripts/migration.ts:ro
       - ../dist/server:/app/dist/server:ro
 
     network_mode: service:web
