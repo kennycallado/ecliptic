@@ -14,7 +14,7 @@ class Database {
       await this.db.ready;
     } catch (e) {
       console.error("Database not ready:", e);
-      return Promise.resolve(false);
+      return false;
     }
 
     try {
@@ -25,7 +25,7 @@ class Database {
       });
     } catch (e) {
       console.error("Failed to connect to database:", e);
-      Promise.reject(false);
+      return false;
     }
 
     return true;

@@ -17,3 +17,16 @@ export const template = (posts: any[]) =>
         </li>`
     )}`;
 // deno-fmt-ignore-
+
+export const testData = [
+  {
+    author: "user:jAwBMzmQnMIl7U0pYsRf86kzRzVKuO40",
+    content: [ '<p>Welcome to the first post on this blog!</p>' ],
+    description: 'This is a description of the post',
+    draft: false,
+    hero: 'https://picsum.photos/960/540?t=W1SvzqFC',
+    id: "post:rwvt8gw746haqlxqizx8",
+    publish: '2024-12-07T07:26:37Z',
+    title: 'EKn5V XI48Wl8Ahx'
+  }
+]
