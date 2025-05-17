@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: webslab-db-svc
+
+spec:
+  ports:
+    # TODO: change
+    - name: http
+      port: 80
+      targetPort: 8000
+
+  selector:
+    app: webslab-db
