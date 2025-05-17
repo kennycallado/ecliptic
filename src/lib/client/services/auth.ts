@@ -147,6 +147,25 @@ class AuthService {
     return this.db;
   }
 
+  public async getWsDb(token?: string): Promise<Surreal> {
+    if (!this.db || !this.isReady) {
+      throw new Error("Database is not ready yet");
+    }
+
+    const url = new URL(this.dbconfig.url);
+    if (url.protocol.includes("ws")) return this.db;
+
+    const db = new Surreal();
+    const protocol = url.protocol.includes("https") ? "wss" : "ws";
+    const endpoint = url.host + url.pathname;
+
+    await db.connect(`${protocol}:${endpoint}`, { ...this.dbconfig.config });
+
+    if (token) await db.authenticate(token);
+
+    return db;
+  }
+
   private setToken(token: string) {
     this.token = token;
     localStorage.setItem("token", token);
