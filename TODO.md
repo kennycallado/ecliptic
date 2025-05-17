@@ -2,19 +2,24 @@
 
 ## LIST:
 
-- [ ] wl-database: live parameter
-- [ ] database: template and ?? deploy
+- [ ] content: move prerender calls to db
+- [ ] kube: with argocd
+- [ ] server: migrations on its own script
+
+- [?] wl-security
+- [x] wl-database: live parameter
+- [ ] surreal: template and ?? deploy
+  - [ ] deploy: use `envsubst`
 - [ ] ssr-lit: try from actions and defer
 
 - [ ] libraries lenis (js), gasap (js)
 
-- [ ] deploy: use `envsubst`
 - [ ] components: TestLogger: check `TRACES` & `LOGS` consts
 - [ ] workflows: build docker images
 - [ ] workflows: deployment ¿argocd?
 - [x] is-land: integration
   - waiting for view-transition [issue](https://github.com/11ty/is-land/issues/37#issue-3037451524)
-- [ ] surreal: devices user->user_device->device
+- [ ] surreal: devices user->user_devices->device
   - event from session... relate with user
   - [ ] notification object into device
 - [ ] package: deno: ?? rethink parallelism (seems difficult to manage cron jobs)
