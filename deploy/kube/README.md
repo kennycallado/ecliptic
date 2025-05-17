@@ -40,28 +40,6 @@ deploy/kube/
 
 ---
 
-## 🗺️ Deployment Diagram
-
-```mermaid
-flowchart TD
-    Project[ArgoCD Project (webslab)]
-    AppSet[ApplicationSet (standalone)]
-    Infra[Infra: Namespace, Issuer, SealedSecret]
-    DB[Database: SurrealDB, ConfigMap, Secret, Service]
-    App[App: Base + Prod Overlay, ConfigMap, Deployment, Service, Ingress, SealedSecrets]
-    Base[App Base]
-    Prod[App Overlay: Prod]
-
-    Project --> AppSet
-    AppSet --> Infra
-    Infra --> DB
-    DB --> App
-    App --> Base
-    App --> Prod
-```
-
----
-
 ## 📝 How to Deploy
 
 1. **Fork or clone** this repo.
