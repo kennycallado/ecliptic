@@ -44,20 +44,14 @@ deploy/kube/
 
 ```mermaid
 flowchart TD
-    %% ArgoCD Layer
     Project[ArgoCD Project (webslab)]
     AppSet[ApplicationSet (standalone)]
-
-    %% Sync Waves
     Infra[Infra: Namespace, Issuer, SealedSecret]
     DB[Database: SurrealDB, ConfigMap, Secret, Service]
     App[App: Base + Prod Overlay, ConfigMap, Deployment, Service, Ingress, SealedSecrets]
-
-    %% Kustomize
     Base[App Base]
     Prod[App Overlay: Prod]
 
-    %% Connections
     Project --> AppSet
     AppSet --> Infra
     Infra --> DB
