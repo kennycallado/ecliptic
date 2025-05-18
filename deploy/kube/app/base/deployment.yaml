@@ -22,7 +22,7 @@ spec:
         - name: copy-files
           image: PLACEHOLDER_IMAGE
 
-          command: ["cp", "-r", "/app/dist/server/.", "/shared-server-files/"]
+          command: ["cp", "-r", "/app/dist/.", "/shared-server-files/"]
           # command:
           #   - /bin/sh
           #   - -c
@@ -110,24 +110,24 @@ spec:
           #     mountPath: /app/dist/server
 
         - name: webslab-server
-          # image: docker.io/denoland/deno:distroless
-          image: docker.io/denoland/deno:alpine
+          image: docker.io/denoland/deno:distroless
+          # image: docker.io/denoland/deno:alpine
           imagePullPolicy: Always
 
-          command: ["sleep", "120"]
-          # command: ["deno"]
-          # args:
-          #   [
-          #     "serve",
-          #     "--unstable-otel",
-          #     "--unstable-kv",
-          #     "--unstable-cron",
-          #     "-A",
-          #     "--parallel",
-          #     "--port",
-          #     "6000",
-          #     "/app/dist/deno.ts",
-          #   ]
+          # command: ["sleep", "120"]
+          command: ["deno"]
+          args:
+            [
+              "serve",
+              "--unstable-otel",
+              "--unstable-kv",
+              "--unstable-cron",
+              "-A",
+              "--parallel",
+              "--port",
+              "6000",
+              "/app/dist/deno.ts",
+            ]
 
           env:
             - name: DENO_KV_STORAGE
@@ -192,7 +192,7 @@ spec:
 
           volumeMounts:
             - name: server-files
-              mountPath: /app/dist/server
+              mountPath: /app/dist
 
           # volumeMounts:
           #   # - name: nfs-pvc
