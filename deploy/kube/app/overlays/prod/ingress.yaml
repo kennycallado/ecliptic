@@ -1,3 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1 # or traefik.io/v1alpha1
+kind: Middleware
+
+metadata:
+  name: webslab-app-mid
+
+spec:
+  redirectRegex:
+    regex: "^(https?://)www\\.ipsitec\\.es(.*)" # Specific to www.ipsitec.es
+    replacement: "${1}ipsitec.es${2}"
+    permanent: true
+
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 
@@ -7,6 +20,7 @@ metadata:
     spec.ingressClassName: traefic
     cert-manager.io/issuer: webslab-infra-issuer
     traefic.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: "webslab-foo-webslab-app-mid@kubernetescrd"
 
 spec:
   tls:
