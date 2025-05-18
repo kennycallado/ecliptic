@@ -16,7 +16,7 @@ data:
   public_db_endpoint: https://ecliptic.ipsitec.es/db
 
   # auth
-  better_auth_url: http://localhost:8000
+  better_auth_url: http://127.0.0.1
 
   # client observability
   public_traces: "false"
@@ -34,11 +34,11 @@ data:
 
   # api
   api_port: "6000"
-  api_host: localhost
+  api_host: 127.0.0.1
   island_port: "6000"
-  island_host: localhost
+  island_host: 127.0.0.1
   db_host: webslab-db-svc
-  db_port: "8000"
+  db_port: "80"
 
   # server
   otel_deno: "true"
