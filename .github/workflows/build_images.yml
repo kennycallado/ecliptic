@@ -18,6 +18,7 @@ jobs:
       PUBLIC_TRACES: ${{ vars.PUBLIC_TRACES }}
       PUBLIC_LOGS: ${{ vars.PUBLIC_LOGS }}
       PUBLIC_VAPID: ${{ vars.PUBLIC_VAPID }}
+      PUBLIC_DB_ENDPOINT: ${{ vars.PUBLIC_DB_ENDPOINT }}
     permissions:
       actions: write
       contents: read
@@ -29,6 +30,7 @@ jobs:
           echo $BASE_URL
           echo $SITE_URL
           echo $BETTER_AUTH_URL
+          echo $PUBLIC_DB_ENDPOINT
           echo $PUBLIC_PROJECT_SPEC
           echo $PUBLIC_PROJECT_NAME
           echo $PUBLIC_TRACES
