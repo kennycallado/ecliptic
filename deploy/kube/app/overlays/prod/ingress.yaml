@@ -23,7 +23,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: "webslab-foo-webslab-app-mid@kubernetescrd"
 
 spec:
-  ingressClassName: traefik
+  # ingressClassName: traefik
   tls:
     - hosts:
         - ipsitec.es
