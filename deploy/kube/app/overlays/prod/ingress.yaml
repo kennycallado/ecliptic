@@ -11,14 +11,14 @@ metadata:
 spec:
   tls:
     - hosts:
-        - ecliptic.ipsitec.es
+        - ipsitec.es
       secretName: webslab-app-base-ing
 
   rules:
-    - host: ecliptic.ipsitec.es
+    - host: ipsitec.es
       http:
         paths:
-          - path: /
+          - path: /ecliptic
             pathType: Prefix
             backend:
               service:

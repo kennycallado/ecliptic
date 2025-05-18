@@ -5,15 +5,18 @@ metadata:
   name: webslab-cm
 
 data:
-  base_url: ""
-  site_url: https://ecliptic.ipsitec.es
+  # base_url: ""
+  base_url: "/ecliptic"
+  # site_url: https://ecliptic.ipsitec.es
+  site_url: https://ipsitec.es
 
   # project
   public_project_spec: webslab
   public_project_name: ecliptic
 
   # database
-  public_db_endpoint: https://ecliptic.ipsitec.es/db
+  # public_db_endpoint: https://ecliptic.ipsitec.es/db
+  public_db_endpoint: https://ipsitec.es/ecliptic/db
 
   # auth
   better_auth_url: http://127.0.0.1
