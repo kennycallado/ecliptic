@@ -26,8 +26,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - uses: oven-sh/setup-bun@v2
+
       - name: Install dependencies
-        uses: oven-sh/setup-bun@v2
         run: bun install
 
       - name: Build app
