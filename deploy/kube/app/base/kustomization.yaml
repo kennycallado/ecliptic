@@ -3,6 +3,6 @@ kind: Kustomization
 
 resources:
   - ./configmap.yaml
-  - ./job.yaml
+  # - ./job.yaml
   - ./services.yaml
   - ./deployment.yaml
