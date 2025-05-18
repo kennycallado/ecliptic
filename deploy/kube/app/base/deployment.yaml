@@ -30,6 +30,91 @@ spec:
                   name: webslab-cm
                   key: base_url
 
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: otel_exporter_otlp_endpoint
+
+            - name: OTEL_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: otel_http_port
+
+            - name: OTEL_GRPC_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: otel_grpc_port
+
+            - name: API_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: api_port
+
+            - name: API_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: api_host
+
+            - name: ISLAND_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: island_port
+
+            - name: ISLAND_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: island_host
+
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: db_host
+
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: db_port
+
+        - name: webslab-server
+          image: docker.io/denoland/deno:distroless
+          imagePullPolicy: Always
+
+          command: serve --unstable-otel --unstable-kv --unstable-cron -A --parallel --port 6000 dist/deno.ts
+
+          env:
+            - name: DENO_KV_STORAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: deno_kv_storage
+
+            - name: OTEL_DENO
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: otel_deno
+
+            - name: OTEL_SERVICE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: otel_service_name
+
+            - name: BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: base_url
+
             - name: SITE_URL
               valueFrom:
                 configMapKeyRef:
@@ -54,29 +139,17 @@ spec:
                   name: webslab-cm
                   key: public_db_endpoint
 
-            - name: DENO_KV_STORAGE
+            - name: SECRET_DB_USERNAME
               valueFrom:
-                configMapKeyRef:
-                  name: webslab-cm
-                  key: deno_kv_storage
+                secretKeyRef:
+                  name: webslab-secret-db
+                  key: secret_db_username
 
-            - name: BETTER_AUTH_URL
-              valuefrom:
-                configmapkeyref:
-                  name: webslab-cm
-                  key: better_auth_url
-
-            - name: PUBLIC_TRACES
-              valuefrom:
-                configmapkeyref:
-                  name: webslab-cm
-                  key: public_traces
-
-            - name: PUBLIC_LOGS
-              valuefrom:
-                configmapkeyref:
-                  name: webslab-cm
-                  key: public_logs
+            - name: SECRET_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-db
+                  key: secret_db_password
 
             - name: PUBLIC_VAPID
               valuefrom:
@@ -84,11 +157,47 @@ spec:
                   name: webslab-cm
                   key: public_vapid
 
-            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            - name: SECRET_VAPID
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
+                  name: webslab-secret-vapid
+                  key: secret_vapid
+
+            - name: SECRET_MAIL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-mail
+                  key: secret_mail_port
+
+            - name: SECRET_MAIL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-mail
+                  key: secret_mail_host
+
+            - name: SECRET_MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-mail
+                  key: secret_mail_username
+
+            - name: SECRET_MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-mail
+                  key: secret_mail_password
+
+            - name: SECRET_BETTER_AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-better
+                  key: secret_better_auth_secret
+
+            - name: BETTER_AUTH_URL
+              valuefrom:
+                configmapkeyref:
                   name: webslab-cm
-                  key: otel_exporter_otlp_endpoint
+                  key: better_auth_url
 
           # volumeMounts:
           #   # - name: nfs-pvc
