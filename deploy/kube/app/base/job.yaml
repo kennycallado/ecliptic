@@ -28,7 +28,7 @@ spec:
         - name: create-user
           image: docker.io/denoland/deno:distroless
 
-          # workingDir: /app/dist
+          workingDir: /app/dist
           command: ["deno"]
           args:
             ["run", "--unstable-otel", "-A", "/app/dist/scripts/migration.ts"]
@@ -78,6 +78,20 @@ spec:
                 secretKeyRef:
                   name: webslab-infra-secret-db-root # NOTE: no resource ref
                   key: surreal_user
+
+            - name: SECRET_DB_USERNAME
+              value: "testing"
+              # valueFrom:
+              #   secretKeyRef:
+              #     name: webslab-secret-db-prod
+              #     key: secret_db_username
+
+            - name: SECRET_DB_PASSWORD
+              value: "testing"
+              # valueFrom:
+              #   secretKeyRef:
+              #     name: webslab-secret-db-prod
+              #     key: secret_db_password
 
           volumeMounts:
             - name: server-files
