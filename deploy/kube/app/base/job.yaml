@@ -1,0 +1,88 @@
+apiVersion: batch/v1
+kind: Job
+
+metadata:
+  name: impulsa-apps-job
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/sync-options: Prune=false
+
+spec:
+  ttlSecondsAfterFinished: 60
+
+  template:
+    spec:
+      restartPolicy: OnFailure
+
+      initContainers:
+        - name: copy-files
+          image: docker.io/kennycallado/borrar:latest # TODO: update
+
+          command: ["cp", "-r", "/app/dist/.", "/shared-server-files/"]
+
+          volumeMounts:
+            - name: server-files
+              mountPath: /shared-server-files
+
+      containers:
+        - name: create-user
+          image: docker.io/denoland/deno:distroless
+
+          # workingDir: /app/dist
+          command: ["deno"]
+          args:
+            ["run", "--unstable-otel", "-A", "/app/dist/scripts/migration.ts"]
+
+          env:
+            - name: OTEL_DENO
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: otel_deno
+
+            - name: OTEL_SERVICE_NAME
+              value: ecliptic_migration
+              # valueFrom:
+              #   configMapKeyRef:
+              #     name: webslab-cm
+              #     key: otel_service_name
+
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: otel_deno_exporter_otlp_endpoint
+
+            - name: PUBLIC_PROJECT_SPEC
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: public_project_spec
+
+            - name: PUBLIC_PROJECT_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: public_project_name
+
+            - name: PUBLIC_DB_ENDPOINT
+              value: http://webslab-db-svc
+
+            - name: SURREAL_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-infra-secret-db-root # NOTE: no resource ref
+                  key: surreal_pass
+            - name: SURREAL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-infra-secret-db-root # NOTE: no resource ref
+                  key: surreal_user
+
+          volumeMounts:
+            - name: server-files
+              mountPath: /app/dist
+
+      volumes:
+        - name: server-files
+          emptyDir: {}

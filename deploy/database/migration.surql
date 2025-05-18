@@ -28,7 +28,7 @@ DEFINE FIELD OVERWRITE ipAddress ON session TYPE option<string>
   VALUE $value OR session::ip();
 
 -- NOTE: TABLE: post
-DEFINE TABLE post TYPE NORMAL SCHEMAFULL PERMISSIONS FULL;
+DEFINE TABLE OVERWRITE post TYPE NORMAL SCHEMAFULL PERMISSIONS FULL;
 DEFINE FIELD author ON post TYPE option<record<user>>
   DEFAULT $auth
   VALUE $before OR $value OR $auth

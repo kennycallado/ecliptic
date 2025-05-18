@@ -106,8 +106,8 @@ spec:
         - name: webslab-server
           image: docker.io/denoland/deno:distroless
           imagePullPolicy: Always
-          workingDir: /app/dist
 
+          workingDir: /app/dist
           command: ["deno"]
           args:
             [
