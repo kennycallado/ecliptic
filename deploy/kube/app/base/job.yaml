@@ -5,7 +5,9 @@ metadata:
   name: impulsa-apps-job
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
-    argocd.argoproj.io/sync-options: Prune=false
+    argocd.argoproj.io/sync-options: Prune=false,Replace=false
+    # argocd.argoproj.io/sync-options: Prune=false
+    # argocd.argoproj.io/sync-options: SelfHeal=false
 
 spec:
   ttlSecondsAfterFinished: 60
