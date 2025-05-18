@@ -151,59 +151,11 @@ spec:
                   name: webslab-cm
                   key: public_db_endpoint
 
-            - name: SECRET_DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: webslab-secret-db
-                  key: secret_db_username
-
-            - name: SECRET_DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: webslab-secret-db
-                  key: secret_db_password
-
             - name: PUBLIC_VAPID
               valuefrom:
                 configmapkeyref:
                   name: webslab-cm
                   key: public_vapid
-
-            - name: SECRET_VAPID
-              valueFrom:
-                secretKeyRef:
-                  name: webslab-secret-vapid
-                  key: secret_vapid
-
-            - name: SECRET_MAIL_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: webslab-secret-mail
-                  key: secret_mail_port
-
-            - name: SECRET_MAIL_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: webslab-secret-mail
-                  key: secret_mail_host
-
-            - name: SECRET_MAIL_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: webslab-secret-mail
-                  key: secret_mail_username
-
-            - name: SECRET_MAIL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: webslab-secret-mail
-                  key: secret_mail_password
-
-            - name: SECRET_BETTER_AUTH_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: webslab-secret-better
-                  key: secret_better_auth_secret
 
             - name: BETTER_AUTH_URL
               valuefrom:
