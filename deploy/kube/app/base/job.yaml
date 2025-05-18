@@ -80,18 +80,16 @@ spec:
                   key: surreal_user
 
             - name: SECRET_DB_USERNAME
-              value: "testing"
-              # valueFrom:
-              #   secretKeyRef:
-              #     name: webslab-secret-db-prod
-              #     key: secret_db_username
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-db-prod
+                  key: secret_db_username
 
             - name: SECRET_DB_PASSWORD
-              value: "testing"
-              # valueFrom:
-              #   secretKeyRef:
-              #     name: webslab-secret-db-prod
-              #     key: secret_db_password
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-db-prod
+                  key: secret_db_password
 
           volumeMounts:
             - name: server-files
