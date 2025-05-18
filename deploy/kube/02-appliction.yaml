@@ -36,7 +36,7 @@ spec:
 
       source:
         repoURL: https://github.com/kennycallado/ecliptic
-        targetRevision: feat/package-kube
+        targetRevision: main
         path: "{{path}}"
 
       destination:
