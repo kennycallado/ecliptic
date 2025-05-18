@@ -6,4 +6,3 @@ resources:
   # - ./job.yaml
   - ./services.yaml
   - ./deployment.yaml
-  # - ./ingress.yaml

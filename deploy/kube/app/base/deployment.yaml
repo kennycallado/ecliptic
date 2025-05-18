@@ -23,17 +23,6 @@ spec:
           image: PLACEHOLDER_IMAGE
 
           command: ["cp", "-r", "/app/dist/.", "/shared-server-files/"]
-          # command:
-          #   - /bin/sh
-          #   - -c
-          #   - |
-          #     echo "Listing files in /app/dist/server:"
-          #     ls -l /app/dist/server
-          #     echo "Copying files..."
-          #     cp -r /app/dist/server/. /shared-server-files/
-          #     echo "Listing files in /shared-server-files:"
-          #     ls -l /shared-server-files
-          #     sleep 60  # Give you time to kubectl exec and inspect if needed
 
           volumeMounts:
             - name: server-files
@@ -110,16 +99,15 @@ spec:
               #     key: db_port
 
           # volumeMounts:
-          #   - name: server-files
-          #     mountPath: /app/dist/server
+          #   # - name: nfs-pvc
+          #   - name: home-host
+          #     mountPath: "/var/www/html/base"
 
         - name: webslab-server
           image: docker.io/denoland/deno:distroless
-          # image: docker.io/denoland/deno:alpine
           imagePullPolicy: Always
           workingDir: /app/dist
 
-          # command: ["sleep", "120"]
           command: ["deno"]
           args:
             [
@@ -211,11 +199,6 @@ spec:
           volumeMounts:
             - name: server-files
               mountPath: /app/dist
-
-          # volumeMounts:
-          #   # - name: nfs-pvc
-          #   - name: home-host
-          #     mountPath: "/var/www/html/base"
 
         # - name: webslab-base-ff
         #   image: webslab/filefind:latest
