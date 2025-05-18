@@ -100,7 +100,7 @@ spec:
               "--parallel",
               "--port",
               "6000",
-              "dist/deno.ts",
+              "/app/dist/deno.ts",
             ]
 
           env:
