@@ -88,7 +88,19 @@ spec:
           image: docker.io/denoland/deno:distroless
           imagePullPolicy: Always
 
-          command: serve --unstable-otel --unstable-kv --unstable-cron -A --parallel --port 6000 dist/deno.ts
+          # command: serve --unstable-otel --unstable-kv --unstable-cron -A --parallel --port 6000 dist/deno.ts
+          command: ["serve"]
+          args:
+            [
+              "--unstable-otel",
+              "--unstable-kv",
+              "--unstable-cron",
+              "-A",
+              "--parallel",
+              "--port",
+              "6000",
+              "dist/deno.ts",
+            ]
 
           env:
             - name: DENO_KV_STORAGE
