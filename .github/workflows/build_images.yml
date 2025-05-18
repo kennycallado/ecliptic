@@ -12,6 +12,7 @@ jobs:
     env:
       BASE_URL: ${{ vars.BASE_URL }}
       SITE_URL: ${{ vars.SITE_URL }}
+      BETTER_AUTH_URL: ${{ vars.BETTER_AUTH_URL }}
       PUBLIC_PROJECT_SPEC: ${{ vars.PUBLIC_PROJECT_SPEC }}
       PUBLIC_PROJECT_NAME: ${{ vars.PUBLIC_PROJECT_NAME }}
       PUBLIC_TRACES: ${{ vars.PUBLIC_TRACES }}
@@ -27,6 +28,7 @@ jobs:
         run: |
           echo $BASE_URL
           echo $SITE_URL
+          echo $BETTER_AUTH_URL
           echo $PUBLIC_PROJECT_SPEC
           echo $PUBLIC_PROJECT_NAME
           echo $PUBLIC_TRACES
