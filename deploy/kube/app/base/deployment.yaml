@@ -93,17 +93,21 @@ spec:
                   name: webslab-cm
                   key: island_host
 
+            # TODO: fix this
             - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: webslab-cm
-                  key: db_host
+              value: "$(WEBSLAB_DB_SVC_SERVICE_HOST)"
+              # valueFrom:
+              #   configMapKeyRef:
+              #     name: webslab-cm
+              #     key: db_host
 
+            # TODO: fix this
             - name: DB_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: webslab-cm
-                  key: db_port
+              value: "$(WEBSLAB_DB_SVC_SERVICE_PORT)"
+              # valueFrom:
+              #   configMapKeyRef:
+              #     name: webslab-cm
+              #     key: db_port
 
           # volumeMounts:
           #   - name: server-files
