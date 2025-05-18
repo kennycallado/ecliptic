@@ -45,7 +45,7 @@ data:
   # db_port: "80"
 
   # server
-  deno_jobs: "1"
+  deno_jobs: "2"
   otel_deno: "true"
   otel_service_name: ecliptic_server
   otel_deno_exporter_otlp_endpoint: http://metrics-svc.metrics.svc.cluster.local:4318
