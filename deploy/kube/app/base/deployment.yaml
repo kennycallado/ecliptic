@@ -18,6 +18,16 @@ spec:
         app: webslab-app
 
     spec:
+      initContainers:
+        - name: copy-files
+          image: PLACEHOLDER_IMAGE
+
+          command: ["cp", "-r", "/app/dist/server/.", "/shared-server-files/"]
+
+          volumeMounts:
+            - name: server-files
+              mountPath: /shared-server-files
+
       containers:
         - name: webslab-app
           image: PLACEHOLDER_IMAGE
@@ -163,6 +173,10 @@ spec:
                 configmapkeyref:
                   name: webslab-cm
                   key: better_auth_url
+
+          volumeMounts:
+            - name: server-files
+              mountPath: /app/dist/server
 
           # volumeMounts:
           #   # - name: nfs-pvc
