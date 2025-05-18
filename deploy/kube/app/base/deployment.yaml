@@ -22,7 +22,18 @@ spec:
         - name: copy-files
           image: PLACEHOLDER_IMAGE
 
-          command: ["cp", "-r", "/app/dist/server/.", "/shared-server-files/"]
+          # command: ["cp", "-r", "/app/dist/server/.", "/shared-server-files/"]
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Listing files in /app/dist/server:"
+              ls -l /app/dist/server
+              echo "Copying files..."
+              cp -r /app/dist/server/. /shared-server-files/
+              echo "Listing files in /shared-server-files:"
+              ls -l /shared-server-files
+              sleep 60  # Give you time to kubectl exec and inspect if needed
 
           volumeMounts:
             - name: server-files
@@ -93,6 +104,10 @@ spec:
                 configMapKeyRef:
                   name: webslab-cm
                   key: db_port
+
+          # volumeMounts:
+          #   - name: server-files
+          #     mountPath: /app/dist/server
 
         - name: webslab-server
           image: docker.io/denoland/deno:distroless
