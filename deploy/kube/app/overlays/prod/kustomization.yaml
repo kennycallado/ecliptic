@@ -7,6 +7,7 @@ resources:
   - ./sealed-db.yaml
   - ./sealed-mail.yaml
   - ./sealed-vapid.yaml
+  - ./middleware.yaml
   - ./ingress.yaml
 
 nameSuffix: -prod

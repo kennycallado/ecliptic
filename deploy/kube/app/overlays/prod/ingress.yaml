@@ -1,29 +1,3 @@
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-
-metadata:
-  name: webslab-app-mid-https
-
-spec:
-  redirectScheme:
-    scheme: https
-    permanent: true
-
----
-apiVersion: traefik.io/v1alpha1 # or traefik.io/v1alpha1
-kind: Middleware
-
-metadata:
-  name: webslab-app-mid-nowww
-
-spec:
-  redirectRegex:
-    regex: "^(https?://)www\\.ipsitec\\.es(.*)" # Specific to www.ipsitec.es
-    replacement: "${1}ipsitec.es${2}"
-    permanent: true
-
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 
