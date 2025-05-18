@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+
+metadata:
+  name: standalone
+  namespace: argocd
+
+spec:
+  generators:
+    - list:
+        elements:
+          - name: infra
+            path: deploy/kube/infra
+            wave: "0"
+
+          - name: db
+            path: deploy/kube/db
+            wave: "1"
+
+          - name: prod
+            path: deploy/kube/app/overlays/prod
+            wave: "2"
+
+          # - name: dev
+          #   path: deploy/kube/app/overlays/dev
+          #   wave: "2"
+
+  template:
+    metadata:
+      name: "{{name}}"
+      annotations:
+        argocd.argoproj.io/sync-wave: "{{wave}}"
+
+    spec:
+      project: webslab
+
+      source:
+        repoURL: https://github.com/kennycallado/ecliptic
+        targetRevision: main
+        path: "{{path}}"
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: webslab-foo
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

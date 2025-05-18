@@ -6,5 +6,15 @@ COPY deploy/nginx.default.conf /etc/nginx/conf.d/default.conf
 COPY deploy/nginx.variables.conf /etc/nginx/templates/10-variables.conf.template
 COPY deploy/nginx.locations.conf /etc/nginx/templates/20-locations.conf.template
 
-# web app
-COPY /dist /var/www/html
+# web
+COPY /dist/client /var/www/html
+
+# server
+COPY /dist/server /app/dist/server
+COPY deploy/deno.ts /app/dist/deno.ts
+COPY deploy/deno.json /app/dist/deno.json
+COPY deploy/scripts/queue.ts /app/dist/scripts/queue.ts
+COPY deploy/scripts/migration.ts /app/dist/scripts/migration.ts
+
+# migrations
+COPY /deploy/database /app/dist/deploy/database

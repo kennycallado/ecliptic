@@ -73,11 +73,10 @@ services:
     command: serve --unstable-otel --unstable-kv --unstable-cron -A --parallel --port 6000 dist/deno.ts
 
     environment:
+      OTEL_JOBS: "2"
       OTEL_DENO: true
       OTEL_SERVICE_NAME: ecliptic_server
       # OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}:4318
-      BASE_URL: ${BASE_URL}
-      SITE_URL: ${SITE_URL}
       PUBLIC_PROJECT_SPEC: ${PUBLIC_PROJECT_SPEC}
       PUBLIC_PROJECT_NAME: ${PUBLIC_PROJECT_NAME}
       PUBLIC_DB_ENDPOINT: http://127.0.0.1${BASE_URL}/db # NOTE: best way
@@ -97,7 +96,6 @@ services:
       - ../deploy/deno.json:/app/deno.json:ro
       - ../deploy/deno.ts:/app/dist/deno.ts:ro
       - ../deploy/scripts/queue.ts:/app/dist/scripts/queue.ts:ro
-      - ../deploy/scripts/migration.ts:/app/dist/scripts/migration.ts:ro
       - ../dist/server:/app/dist/server:ro
 
     network_mode: service:web

@@ -1,0 +1,20 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+
+metadata:
+  creationTimestamp: null
+  name: webslab-secret-vapid
+  annotations:
+    sealedsecrets.bitnami.com/namespace-wide: "true"
+
+spec:
+  encryptedData:
+    secret_vapid: AgBzyW1e2RBVm6J/Mras9lPXeeld08h08J2WoCoNV3zGr9wE2fTBX5FQOoh7rNFMrD29qdzAyq/gzNIOOXh1+qc4HaqQEjwDaEGtBiQu/4/h9/bfulNhq4tim/HYdN5FIZPMUTrzXa3EMPR0rWnokH3m01VayR6wnvBSSniOvZk0jBP3t1uW+epuA9NPka4oNQKCNMf8lxyjTXcEZXjtgnM5YDFiv1S0On14+Lhglhh5vGnvDX8owb8Z2ciXcVD2v7VEFrqtMCFI/0VgK/hHO2v7OoM1QFkbG+4sBG6mRQpqqmvb2euJCgIMiQXu+MCeLEOKZkDRM7yBXtguCLLSKpnTESH6WmNIz+KKWkefBnMBCXnvt7wx2pjIk1iDEKcpugsjSMTg4lhxjDOesX3PNJtcw/g2YQWtT310/mM02AWHdIP/OgiOgkL8dk7FWJ2EqbHmF+rTpvv2q3oF4BQBeGi4IX8eiF0EjOlWIi9k8tNsuf/0l75mrBFLNAsk26yOpQVvxTf+EGne92eVgUjDRmiZzHoBGBiTk4fEiiNCd9xnFLDzAf6Ek3XgmlE0oqj5tkRh9194RWGGJJKP5JRfjrabPQ3VGZm7vOwlRXj3KsTMkdBbSs545fGhfejlKuD/4rQa/AtJUWM3E1d5Mm0Qo6b7tOh8aXdean1xMvmj/rhA0ZOyxh9Ox296Cgl/PeesHd6/9bodIfVLNSiltBr9gfjAZaTpTFLoooo29LmDE3RRN8nlt30SLl7rR/97
+
+  template:
+    type: Opaque
+    metadata:
+      creationTimestamp: null
+      name: webslab-secret-vapid-prod
+      annotations:
+        sealedsecrets.bitnami.com/namespace-wide: "true"

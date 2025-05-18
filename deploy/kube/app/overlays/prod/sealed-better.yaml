@@ -1,0 +1,20 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+
+metadata:
+  creationTimestamp: null
+  name: webslab-secret-better
+  annotations:
+    sealedsecrets.bitnami.com/namespace-wide: "true"
+
+spec:
+  encryptedData:
+    secret_better_auth_secret: AgC0iulTtPzSEpc+Id4aUF5ESg3IfB2V6ObwuN17cBw/3gMop4Nf8xAysnvMvdAqiLQQk+luMeMu9d+WgSHDCXHHKuqskepcwtxd3iGpV4hpZf7ETYoR8Ek7SHBbvJxKJYkaTj4g6QOqZC5QN8VjpEZQ5qfwD2sHN51YqhPaY3uktdP1uQP1SCYkJCP+v1JT06Y2QpSlz2BvoXlTa9nqA9JZyOaehGn45AF849SuLUhxlB8OYapz4R/DCPkZuonwz/cKtRzC6mF8axM0p3dMwzRhg7vT0s6WWSASVBkW5M4VvwgP9Nz5RkqTBMc/xTquPRNMFyudVFg4Bv1bzKwm3OC9tpodJJUkOOUXElBYKPomk2EM+fKzoTXDlymTNi06d+Zg4svKF6HRY8GdrDo3/uql3yD7jwHeKlcF8dS7nDwrM4Nh7NfKQB2lmMzbNiOeFV83fZEuqPFhJJBh0jjjqbVbH8DQJ1BKgpLeXioSAcSZz+xYvrn2IWgHO//eH7Rx2M+Xp0fVTswfzAr9tJXYlfvnxah4JZ3W/K5mmWRu5TX15fzjqP/LtASP8gEUVfIBFCvNCFVzvQEnJkahW3r9Se3z9TVbQDhk7UWQSMZ57Wjp2h35DLD7XTfaNT/rVtWwGP0uzwYtZPy+u3VagxUcpMRk2BzRL3QUJCNk3YZXJ8Qtok4DY0azRZ7E33Jpa3mGOw59uXafzRS4lm7h9/Pbja6xX+4qkj6+3QBOOX5MUTOCrA==
+
+  template:
+    type: Opaque
+    metadata:
+      creationTimestamp: null
+      name: webslab-secret-better-prod
+      annotations:
+        sealedsecrets.bitnami.com/namespace-wide: "true"

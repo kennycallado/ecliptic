@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: webslab-cm
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+
+data:
+  # base_url: ""
+  base_url: /ecliptic
+  # site_url: https://ecliptic.ipsitec.es
+  site_url: https://ipsitec.es
+
+  # project
+  public_project_spec: webslab
+  public_project_name: ecliptic
+
+  # database
+  # public_db_endpoint: https://ecliptic.ipsitec.es/db
+  public_db_endpoint: https://ipsitec.es/ecliptic/db
+
+  # auth
+  better_auth_url: http://127.0.0.1
+
+  # client observability
+  public_traces: "false"
+  public_logs: "false"
+
+  # notifications
+  public_vapid: BBjPmHoBP41dYZARI77MpsBBR_65Yl_1JKLUfsNGKG2D0y6_suc9xxxq7nKXvUUuc8qfMSyDHbHgLybTqMAAR8s
+
+  # telemetry
+  otel_exporter_otlp_endpoint: http://metrics-svc.metrics.svc.cluster.local
+  otel_http_port: "4318"
+  otel_grpc_port: "4317"
+
+  # api
+  api_port: "6000"
+  api_host: 127.0.0.1
+  island_port: "6000"
+  island_host: 127.0.0.1
+  # TODO: fix it
+  # db_host: webslab-db-svc
+  # db_port: "80"
+
+  # server
+  deno_jobs: "2"
+  otel_deno: "true"
+  otel_service_name: ecliptic_server
+  otel_deno_exporter_otlp_endpoint: http://metrics-svc.metrics.svc.cluster.local:4318
+  deno_kv_storage: kv.sqlite3

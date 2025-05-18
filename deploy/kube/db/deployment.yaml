@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: webslab-db-dp
+  labels:
+    app: webslab-db
+
+spec:
+  selector:
+    matchLabels:
+      app: webslab-db
+  template:
+    metadata:
+      labels:
+        app: webslab-db
+
+    spec:
+      containers:
+        - name: webslab-db
+          image: surrealdb/surrealdb:v2.2
+          imagePullPolicy: "Always"
+          command:
+            - /surreal
+            - start
+            - rocksdb://data/labdb-foo # TODO: change
+
+          # TODO: change
+          ports:
+            - containerPort: 8000
+
+          volumeMounts:
+            #- name: nfs-pvc
+            - name: home-host
+              mountPath: "/data"
+
+          resources:
+            requests:
+              memory: "512M"
+              cpu: "250m"
+
+            limits:
+              memory: "1G"
+              cpu: "500m"
+
+          env:
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-db-cm
+                  key: otel_endpoint
+
+            # TODO: configMap
+            - name: SURREAL_LOG
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-db-cm
+                  key: surreal_log
+              # value: none # none, full, error, warn, info, debug, trace
+
+            # TODO: configMap
+            - name: SURREAL_TELEMETRY_PROVIDER
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-db-cm
+                  key: surreal_telemetry_provider
+              # value: otlp
+
+            - name: SURREAL_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-infra-secret-db-root # NOTE: no resource ref
+                  key: surreal_pass
+            - name: SURREAL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-infra-secret-db-root # NOTE: no resource ref
+                  key: surreal_user
+
+            - name: SURREAL_NO_BANNER
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-db-cm
+                  key: surreal_no_banner
+
+            - name: SURREAL_CAPS_ALLOW_ALL
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-db-cm
+                  key: surreal_caps_allow_all
+      volumes:
+        # - name: nfs-pvc
+        #   persistentVolumeClaim:
+        #     claimName: nfs-pvc
+
+        - name: home-host
+          hostPath:
+            path: /home/webslab/
+            type: Directory

@@ -1,0 +1,223 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: webslab-app-dp
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  labels:
+    app: webslab-app
+
+spec:
+  selector:
+    matchLabels:
+      app: webslab-app
+  template:
+    metadata:
+      labels:
+        app: webslab-app
+
+    spec:
+      initContainers:
+        - name: copy-files
+          image: PLACEHOLDER_IMAGE
+
+          command: ["cp", "-r", "/app/dist/.", "/shared-server-files/"]
+
+          volumeMounts:
+            - name: server-files
+              mountPath: /shared-server-files
+
+      containers:
+        - name: webslab-app
+          image: PLACEHOLDER_IMAGE
+          imagePullPolicy: Always
+
+          env:
+            - name: BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: base_url
+
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: otel_exporter_otlp_endpoint
+
+            - name: OTEL_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: otel_http_port
+
+            - name: OTEL_GRPC_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: otel_grpc_port
+
+            - name: API_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: api_port
+
+            - name: API_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: api_host
+
+            - name: ISLAND_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: island_port
+
+            - name: ISLAND_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: island_host
+
+            # TODO: fix this
+            - name: DB_HOST
+              value: "$(WEBSLAB_DB_SVC_SERVICE_HOST)"
+              # valueFrom:
+              #   configMapKeyRef:
+              #     name: webslab-cm
+              #     key: db_host
+
+            # TODO: fix this
+            - name: DB_PORT
+              value: "$(WEBSLAB_DB_SVC_SERVICE_PORT)"
+              # valueFrom:
+              #   configMapKeyRef:
+              #     name: webslab-cm
+              #     key: db_port
+
+          # volumeMounts:
+          #   # - name: nfs-pvc
+          #   - name: home-host
+          #     mountPath: "/var/www/html/base"
+
+        - name: webslab-server
+          image: docker.io/denoland/deno:distroless
+          imagePullPolicy: Always
+
+          workingDir: /app/dist
+          command: ["deno"]
+          args:
+            [
+              "serve",
+              "--unstable-otel",
+              "--unstable-kv",
+              "--unstable-cron",
+              "-A",
+              "--parallel",
+              "--port",
+              "6000",
+              "/app/dist/deno.ts",
+            ]
+
+          env:
+            - name: DENO_JOBS
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: deno_jobs
+
+            - name: OTEL_DENO
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: otel_deno
+
+            - name: OTEL_SERVICE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: otel_service_name
+
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: otel_deno_exporter_otlp_endpoint
+
+            - name: DENO_KV_STORAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: deno_kv_storage
+
+            # - name: BASE_URL
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: webslab-cm
+            #       key: base_url
+            #
+            # - name: SITE_URL
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: webslab-cm
+            #       key: site_url
+
+            - name: PUBLIC_PROJECT_SPEC
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: public_project_spec
+
+            - name: PUBLIC_PROJECT_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: public_project_name
+
+            - name: PUBLIC_DB_ENDPOINT
+              value: http://webslab-db-svc
+              # valueFrom:
+              #   configMapKeyRef:
+              #     name: webslab-cm
+              #     key: public_db_endpoint
+
+            - name: PUBLIC_VAPID
+              valuefrom:
+                configmapkeyref:
+                  name: webslab-cm
+                  key: public_vapid
+
+            - name: BETTER_AUTH_URL
+              valuefrom:
+                configmapkeyref:
+                  name: webslab-cm
+                  key: better_auth_url
+
+          volumeMounts:
+            - name: server-files
+              mountPath: /app/dist
+
+        # - name: webslab-base-ff
+        #   image: webslab/filefind:latest
+        #   imagePullPolicy: "Always"
+        #
+        #   volumeMounts:
+        #     #- name: nfs-pvc
+        #     - name: home-host
+        #       mountPath: "/app/resources/base"
+
+      volumes:
+        - name: server-files
+          emptyDir: {}
+
+        # - name: nfs-pvc
+        #   persistentVolumeClaim:
+        #     claimName: nfs-pvc
+
+        # - name: home-host
+        #   hostPath:
+        #     path: /home/webslab/base
+        #     type: Directory
