@@ -17,12 +17,13 @@ kind: Ingress
 metadata:
   name: webslab-app-ing
   annotations:
-    spec.ingressClassName: traefic
+    spec.ingressClassName: traefik
     cert-manager.io/issuer: webslab-infra-issuer
     traefic.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.middlewares: "webslab-foo-webslab-app-mid@kubernetescrd"
 
 spec:
+  ingressClassName: traefik
   tls:
     - hosts:
         - ipsitec.es
