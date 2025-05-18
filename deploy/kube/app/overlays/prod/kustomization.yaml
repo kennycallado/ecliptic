@@ -9,7 +9,6 @@ resources:
   - ./sealed-vapid.yaml
   - ./ingress.yaml
 
-namespace: webslab-foo
 nameSuffix: -prod
 
 commonLabels:
@@ -29,16 +28,3 @@ patches:
     target:
       kind: Deployment
       name: webslab-app-dp
-
-replacements:
-  - source:
-      kind: Namespace
-      fieldPath: metadata.name
-
-    targets:
-      - select:
-          kind: Ingress
-        fieldPaths:
-          - metadata.annotations.[traefik.ingress.kubernetes.io/router.middlewares]
-        options:
-          delimiter: "-"
