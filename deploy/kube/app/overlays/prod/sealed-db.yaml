@@ -5,6 +5,7 @@ metadata:
   creationTimestamp: null
   name: webslab-secret-db
   annotations:
+    argocd.argoproj.io/sync-wave: "-1"
     sealedsecrets.bitnami.com/namespace-wide: "true"
 
 spec:
