@@ -33,7 +33,7 @@ jobs:
         run: bun install
 
       - name: Build app
-        run: deno run build:prod
+        run: bun run build:prod
 
       - uses: actions/upload-artifact@v4
         id: artifact-upload-step
