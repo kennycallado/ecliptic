@@ -23,6 +23,16 @@ jobs:
       packages: write
 
     steps:
+      - name: Env test
+        run: |
+          echo $BASE_URL
+          echo $SITE_URL
+          echo $PUBLIC_PROJECT_SPEC
+          echo $PUBLIC_PROJECT_NAME
+          echo $PUBLIC_TRACES
+          echo $PUBLIC_LOGS
+          echo $PUBLIC_VAPID
+
       - name: Checkout
         uses: actions/checkout@v4
 
