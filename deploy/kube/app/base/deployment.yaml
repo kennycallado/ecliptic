@@ -114,20 +114,20 @@ spec:
           image: docker.io/denoland/deno:alpine
           imagePullPolicy: Always
 
-          # command: serve --unstable-otel --unstable-kv --unstable-cron -A --parallel --port 6000 dist/deno.ts
-          command: ["deno"]
-          args:
-            [
-              "serve",
-              "--unstable-otel",
-              "--unstable-kv",
-              "--unstable-cron",
-              "-A",
-              "--parallel",
-              "--port",
-              "6000",
-              "/app/dist/deno.ts",
-            ]
+          command: ["sleep", "120"]
+          # command: ["deno"]
+          # args:
+          #   [
+          #     "serve",
+          #     "--unstable-otel",
+          #     "--unstable-kv",
+          #     "--unstable-cron",
+          #     "-A",
+          #     "--parallel",
+          #     "--port",
+          #     "6000",
+          #     "/app/dist/deno.ts",
+          #   ]
 
           env:
             - name: DENO_KV_STORAGE
