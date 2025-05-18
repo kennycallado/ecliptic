@@ -3,6 +3,8 @@ kind: ConfigMap
 
 metadata:
   name: webslab-cm
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 
 data:
   # base_url: ""
