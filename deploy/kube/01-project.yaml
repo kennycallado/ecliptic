@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+
+metadata:
+  name: webslab
+  namespace: argocd
+
+spec:
+  description: Proyecto WebsLab
+
+  sourceRepos:
+    # - git@github.com:kennycallado/ecliptic.git
+    - https://github.com/kennycallado/ecliptic # TODO: move to git@
+
+  destinations:
+    - namespace: webslab-foo
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
