@@ -113,6 +113,7 @@ spec:
           image: docker.io/denoland/deno:distroless
           # image: docker.io/denoland/deno:alpine
           imagePullPolicy: Always
+          workingDir: /app
 
           # command: ["sleep", "120"]
           command: ["deno"]
