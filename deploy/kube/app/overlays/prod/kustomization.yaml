@@ -18,8 +18,8 @@ commonLabels:
 
 images:
   - name: PLACEHOLDER_IMAGE
-    newName: docker.io/kennycallado/borrar # TODO: update
-    newTag: latest
+    newName: docker.io/kennycallado/ecliptic
+    newTag: latest # TODO: update
 
 generatorOptions:
   disableNameSuffixHash: true

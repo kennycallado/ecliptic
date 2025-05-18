@@ -17,7 +17,7 @@ spec:
 
       initContainers:
         - name: copy-files
-          image: docker.io/kennycallado/borrar:latest # TODO: update
+          image: docker.io/kennycallado/ecliptic:latest # TODO: update
 
           command: ["cp", "-r", "/app/dist/.", "/shared-server-files/"]
 
