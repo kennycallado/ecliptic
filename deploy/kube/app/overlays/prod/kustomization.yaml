@@ -17,7 +17,7 @@ commonLabels:
 
 images:
   - name: PLACEHOLDER_IMAGE
-    newName: docker.io/webslab/base # TODO: update
+    newName: docker.io/kennycallado/borrar # TODO: update
     newTag: latest
 
 generatorOptions:
