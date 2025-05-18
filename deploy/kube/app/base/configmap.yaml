@@ -38,7 +38,7 @@ data:
   island_port: "6000"
   island_host: 127.0.0.1
   db_host: webslab-db-svc
-  db_port: "80"
+  db_port: "8000"
 
   # server
   otel_deno: "true"

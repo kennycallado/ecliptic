@@ -174,10 +174,11 @@ spec:
                   key: public_project_name
 
             - name: PUBLIC_DB_ENDPOINT
-              valueFrom:
-                configMapKeyRef:
-                  name: webslab-cm
-                  key: public_db_endpoint
+              value: http://webslab-db-svc
+              # valueFrom:
+              #   configMapKeyRef:
+              #     name: webslab-cm
+              #     key: public_db_endpoint
 
             - name: PUBLIC_VAPID
               valuefrom:
