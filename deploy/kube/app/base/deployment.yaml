@@ -193,6 +193,9 @@ spec:
         #       mountPath: "/app/resources/base"
 
       volumes:
+        - name: server-files
+          emptyDir: {}
+
         # - name: nfs-pvc
         #   persistentVolumeClaim:
         #     claimName: nfs-pvc
