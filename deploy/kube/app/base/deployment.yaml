@@ -22,18 +22,18 @@ spec:
         - name: copy-files
           image: PLACEHOLDER_IMAGE
 
-          # command: ["cp", "-r", "/app/dist/server/.", "/shared-server-files/"]
-          command:
-            - /bin/sh
-            - -c
-            - |
-              echo "Listing files in /app/dist/server:"
-              ls -l /app/dist/server
-              echo "Copying files..."
-              cp -r /app/dist/server/. /shared-server-files/
-              echo "Listing files in /shared-server-files:"
-              ls -l /shared-server-files
-              sleep 60  # Give you time to kubectl exec and inspect if needed
+          command: ["cp", "-r", "/app/dist/server/.", "/shared-server-files/"]
+          # command:
+          #   - /bin/sh
+          #   - -c
+          #   - |
+          #     echo "Listing files in /app/dist/server:"
+          #     ls -l /app/dist/server
+          #     echo "Copying files..."
+          #     cp -r /app/dist/server/. /shared-server-files/
+          #     echo "Listing files in /shared-server-files:"
+          #     ls -l /shared-server-files
+          #     sleep 60  # Give you time to kubectl exec and inspect if needed
 
           volumeMounts:
             - name: server-files
@@ -110,7 +110,8 @@ spec:
           #     mountPath: /app/dist/server
 
         - name: webslab-server
-          image: docker.io/denoland/deno:distroless
+          # image: docker.io/denoland/deno:distroless
+          image: docker.io/denoland/deno:alpine
           imagePullPolicy: Always
 
           # command: serve --unstable-otel --unstable-kv --unstable-cron -A --parallel --port 6000 dist/deno.ts
@@ -215,7 +216,7 @@ spec:
         #   persistentVolumeClaim:
         #     claimName: nfs-pvc
 
-        - name: home-host
-          hostPath:
-            path: /home/webslab/base
-            type: Directory
+        # - name: home-host
+        #   hostPath:
+        #     path: /home/webslab/base
+        #     type: Directory
