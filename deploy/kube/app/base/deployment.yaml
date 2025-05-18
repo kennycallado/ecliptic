@@ -89,9 +89,10 @@ spec:
           imagePullPolicy: Always
 
           # command: serve --unstable-otel --unstable-kv --unstable-cron -A --parallel --port 6000 dist/deno.ts
-          command: ["serve"]
+          command: ["deno"]
           args:
             [
+              "serve",
               "--unstable-otel",
               "--unstable-kv",
               "--unstable-cron",
