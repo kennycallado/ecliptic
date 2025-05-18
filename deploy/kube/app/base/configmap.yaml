@@ -37,12 +37,13 @@ data:
   api_host: 127.0.0.1
   island_port: "6000"
   island_host: 127.0.0.1
-  db_host: webslab-db-svc
-  db_port: "80"
+  # TODO: fix it
+  # db_host: webslab-db-svc
+  # db_port: "80"
 
   # server
+  deno_jobs: "1"
   otel_deno: "true"
   otel_service_name: ecliptic_server
-
-  # storage
+  otel_deno_exporter_otlp_endpoint: http://metrics-svc.metrics.svc.cluster.local:4318
   deno_kv_storage: kv.sqlite3

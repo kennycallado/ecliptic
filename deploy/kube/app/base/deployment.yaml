@@ -135,11 +135,11 @@ spec:
             ]
 
           env:
-            - name: DENO_KV_STORAGE
+            - name: DENO_JOBS
               valueFrom:
                 configMapKeyRef:
                   name: webslab-cm
-                  key: deno_kv_storage
+                  key: deno_jobs
 
             - name: OTEL_DENO
               valueFrom:
@@ -152,6 +152,18 @@ spec:
                 configMapKeyRef:
                   name: webslab-cm
                   key: otel_service_name
+
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: otel_deno_exporter_otlp_endpoint
+
+            - name: DENO_KV_STORAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: deno_kv_storage
 
             - name: BASE_URL
               valueFrom:
