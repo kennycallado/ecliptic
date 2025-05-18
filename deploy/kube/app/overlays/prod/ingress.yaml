@@ -12,10 +12,22 @@ spec:
   tls:
     - hosts:
         - ipsitec.es
+        - www.ipsitec.es
       secretName: webslab-app-base-ing
 
   rules:
     - host: ipsitec.es
+      http:
+        paths:
+          - path: /ecliptic
+            pathType: Prefix
+            backend:
+              service:
+                name: webslab-app-svc
+                port:
+                  number: 80
+
+    - host: www.ipsitec.es
       http:
         paths:
           - path: /ecliptic
