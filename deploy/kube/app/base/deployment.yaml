@@ -153,17 +153,17 @@ spec:
                   name: webslab-cm
                   key: deno_kv_storage
 
-            - name: BASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: webslab-cm
-                  key: base_url
-
-            - name: SITE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: webslab-cm
-                  key: site_url
+            # - name: BASE_URL
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: webslab-cm
+            #       key: base_url
+            #
+            # - name: SITE_URL
+            #   valueFrom:
+            #     configMapKeyRef:
+            #       name: webslab-cm
+            #       key: site_url
 
             - name: PUBLIC_PROJECT_SPEC
               valueFrom:

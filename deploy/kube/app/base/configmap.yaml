@@ -8,7 +8,7 @@ metadata:
 
 data:
   # base_url: ""
-  base_url: "/ecliptic"
+  base_url: /ecliptic
   # site_url: https://ecliptic.ipsitec.es
   site_url: https://ipsitec.es
 
