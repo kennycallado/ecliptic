@@ -11,11 +11,10 @@ const installButton = document.getElementById(
 ) as HTMLButtonElement;
 
 window.addEventListener("beforeinstallprompt", () => {
-  // event.preventDefault();
-  // installPrompt = event;
-  // seems not needed
-
+  installPrompt = event;
   installButton.classList.remove("disabled");
+
+  // event.preventDefault();
 });
 
 installButton.addEventListener("click", async () => {
