@@ -2,27 +2,27 @@
 
 ## LIST:
 
-- [ ] content: move prerender calls to db
-- [ ] kube: with argocd
-- [ ] server: migrations on its own script
+- [x] kube: with argocd
+  - [x] continue with the job
+- [x] workflows: buid images
+- [x] server: migrations on its own script
+- [x] surreal: template and ?? deploy
+  - [x] deploy: using templates
+- [ ] surreal: prod real ip is wrong
+- [ ] content: move prerender calls to db int content dir
 
 - [?] wl-security
 - [x] wl-database: live parameter
-- [ ] surreal: template and ?? deploy
-  - [ ] deploy: use `envsubst`
 - [ ] ssr-lit: try from actions and defer
 
 - [ ] libraries lenis (js), gasap (js)
 
-- [ ] components: TestLogger: check `TRACES` & `LOGS` consts
-- [ ] workflows: build docker images
-- [ ] workflows: deployment ¿argocd?
 - [x] is-land: integration
   - waiting for view-transition [issue](https://github.com/11ty/is-land/issues/37#issue-3037451524)
 - [ ] surreal: devices user->user_devices->device
   - event from session... relate with user
   - [ ] notification object into device
-- [ ] package: deno: ?? rethink parallelism (seems difficult to manage cron jobs)
+- [x] package: deno: ?? rethink parallelism (seems difficult to manage cron jobs)
 - [~] package: astro.config: prefetch no tested
 - [x] feat/astro-actions: alternative to endpoints with validation
   - [x] new endpoint: _\_actions/_
@@ -48,6 +48,7 @@
   - I have try it however I don't like how it looks. I prefer to use capacitor.
 - [?] package: install: [link](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/How_to/Trigger_install_prompt)
   - not sure if [apply](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/How_to/Trigger_install_prompt#responding_to_platform-specific_apps_being_installed)
+- [ ] components: TestLogger: check `TRACES` & `LOGS` consts
 - [ ] otel: ? active it from server (feature flag)
 - [x] OTEL: there is something wrong
 - [ ] look:
