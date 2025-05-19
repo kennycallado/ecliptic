@@ -185,25 +185,25 @@ spec:
               #     key: public_db_endpoint
 
             - name: PUBLIC_MAIL_HOST
-              valuefrom:
+              valueFrom:
                 configmapkeyref:
                   name: webslab-cm
                   key: public_mail_host
 
             - name: PUBLIC_MAIL_PORT
-              valuefrom:
+              valueFrom:
                 configmapkeyref:
                   name: webslab-cm
                   key: public_mail_port
 
             - name: PUBLIC_VAPID
-              valuefrom:
+              valueFrom:
                 configmapkeyref:
                   name: webslab-cm
                   key: public_vapid
 
             - name: BETTER_AUTH_URL
-              valuefrom:
+              valueFrom:
                 configmapkeyref:
                   name: webslab-cm
                   key: better_auth_url
