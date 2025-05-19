@@ -22,7 +22,12 @@ export class WlSecurity extends WebslabElement {
       display: block;
       position: relative;
 
+      --wl-security-border-pending: aquamarine;
+      --wl-security-border-complete: green;
+      --wl-security-border-error: red;
+
       border-radius: 2px;
+      transition: border-color 0.6s;
     }
 
     .wrap {
@@ -33,7 +38,6 @@ export class WlSecurity extends WebslabElement {
       height: 100%;
       min-height: 90svh;
 
-      background-color: var(--wl-security-bg-inner);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
 
@@ -69,10 +73,10 @@ export class WlSecurity extends WebslabElement {
       <slot></slot>
       <div class="wrap">
         ${this.task.render({
-          pending: () => { this.style.border = "1px solid aquamarine" },
+          pending: () => { this.setBorderColor("pending"); },
 
           complete: () => {
-            this.style.border = "1px solid green";
+            this.setBorderColor("complete");
             this.wrap.style.opacity = "0";
             this.unlockWrapStyle();
 
@@ -83,8 +87,7 @@ export class WlSecurity extends WebslabElement {
           },
 
           error: () => {
-            this.style.border = "1px solid red";
-
+            this.setBorderColor("error");
             return html`<div class="error"><p>Error</p></div>`
           },
         })}
@@ -110,7 +113,7 @@ export class WlSecurity extends WebslabElement {
       }
 
       // wait 1s
-      // await new Promise((resolve) => setTimeout(resolve, 60000));
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
 
       this.emit("wl-task:complete", { detail: { user: this.auth.getUser() } });
     },
@@ -168,5 +171,17 @@ export class WlSecurity extends WebslabElement {
   private unlockWrapStyle() {
     this.wrapStyleObserver?.disconnect();
     this.wrapStyleObserver = undefined;
+  }
+
+  private setBorderColor(state: "pending" | "complete" | "error") {
+    const varName = {
+      pending: "--wl-security-border-pending",
+      complete: "--wl-security-border-complete",
+      error: "--wl-security-border-error",
+    }[state];
+
+    // Get the computed style for the variable
+    const color = getComputedStyle(this).getPropertyValue(varName).trim();
+    this.style.border = `2px solid ${color || "transparent"}`; // fallback
   }
 }

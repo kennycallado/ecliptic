@@ -25,3 +25,9 @@ $font-size-base: 1.25rem;
 h1 {
   color: var(--bs-primary);
 }
+
+wl-security {
+  --wl-security-border-pending: var(--bs-indigo);
+  --wl-security-border-complete: var(--bs-primary);
+  --wl-security-border-error: crimson;
+}
