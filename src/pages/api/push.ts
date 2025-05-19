@@ -1,16 +1,7 @@
-import webpush from "web-push";
 import { db } from "$lib/server/services/database.ts";
+import { sendNotification } from "$lib/server/services/push.ts";
 
 import type { AstroSharedContext as Ctx } from "astro";
-
-const secretVapid = import.meta.env.SECRET_VAPID;
-const publicVapid = import.meta.env.PUBLIC_VAPID;
-
-webpush.setVapidDetails(
-  "mailto:foo@ipsitec.es",
-  publicVapid,
-  secretVapid,
-);
 
 export const prerender = false;
 
@@ -53,7 +44,7 @@ export async function GET(_ctx: Ctx): Promise<Response> {
   });
 
   try {
-    await webpush.sendNotification(subscription, payload);
+    await sendNotification(subscription, payload);
   } catch (e) {
     console.error("Error sending push notification:", e);
     return new Response("Error sending push notification", { status: 500 });
