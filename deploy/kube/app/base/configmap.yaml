@@ -30,6 +30,10 @@ data:
   # notifications
   public_vapid: BBjPmHoBP41dYZARI77MpsBBR_65Yl_1JKLUfsNGKG2D0y6_suc9xxxq7nKXvUUuc8qfMSyDHbHgLybTqMAAR8s
 
+  # mail
+  public_mail_host: ipsitec.es
+  public_mail_port: "465"
+
   # telemetry
   otel_exporter_otlp_endpoint: http://metrics-svc.metrics.svc.cluster.local
   otel_http_port: "4318"

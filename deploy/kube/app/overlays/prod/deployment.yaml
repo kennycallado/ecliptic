@@ -29,18 +29,6 @@ spec:
                   name: webslab-secret-vapid-prod
                   key: secret_vapid
 
-            - name: SECRET_MAIL_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: webslab-secret-mail-prod
-                  key: secret_mail_port
-
-            - name: SECRET_MAIL_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: webslab-secret-mail-prod
-                  key: secret_mail_host
-
             - name: SECRET_MAIL_USERNAME
               valueFrom:
                 secretKeyRef:

@@ -184,6 +184,18 @@ spec:
               #     name: webslab-cm
               #     key: public_db_endpoint
 
+            - name: PUBLIC_MAIL_HOST
+              valuefrom:
+                configmapkeyref:
+                  name: webslab-cm
+                  key: public_mail_host
+
+            - name: PUBLIC_MAIL_PORT
+              valuefrom:
+                configmapkeyref:
+                  name: webslab-cm
+                  key: public_mail_port
+
             - name: PUBLIC_VAPID
               valuefrom:
                 configmapkeyref:
