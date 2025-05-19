@@ -17,7 +17,7 @@ spec:
 
       initContainers:
         - name: copy-files
-          image: docker.io/kennycallado/ecliptic:latest # TODO: update
+          image: PLACEHOLDER_IMAGE
 
           command: ["cp", "-r", "/app/dist/.", "/shared-server-files/"]
 
