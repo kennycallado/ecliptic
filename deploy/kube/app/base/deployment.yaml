@@ -186,25 +186,25 @@ spec:
 
             - name: PUBLIC_MAIL_HOST
               valueFrom:
-                configmapkeyref:
+                configMapKeyRef:
                   name: webslab-cm
                   key: public_mail_host
 
             - name: PUBLIC_MAIL_PORT
               valueFrom:
-                configmapkeyref:
+                configMapKeyRef:
                   name: webslab-cm
                   key: public_mail_port
 
             - name: PUBLIC_VAPID
               valueFrom:
-                configmapkeyref:
+                configMapKeyRef:
                   name: webslab-cm
                   key: public_vapid
 
             - name: BETTER_AUTH_URL
               valueFrom:
-                configmapkeyref:
+                configMapKeyRef:
                   name: webslab-cm
                   key: better_auth_url
 
