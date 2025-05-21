@@ -1,0 +1,55 @@
+---
+import { pwaAssetsHead } from 'virtual:pwa-assets/head';
+import { pwaInfo } from 'virtual:pwa-info';
+import { BASE, SITE } from "$lib/client/consts.ts";
+
+import '$assests/styles/layout.scss'
+
+import Navbar from "./components/Navbar.astro"
+import Footer from "./components/Footer.astro"
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const {
+  description,
+  title,
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+  <head>
+    <base target="_top" href={SITE + BASE} />
+
+    <meta charset="UTF-8"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="title" content={title} />
+    { pwaAssetsHead.themeColor && <meta name="theme-color" content={pwaAssetsHead.themeColor.content} /> }
+
+    <link rel="canonical" href={canonicalURL.href} />
+    { pwaAssetsHead.links.map(link => (<link {...link} />)) }
+
+    <title>{title}</title>
+
+    <script src="$lib/client/pwa.ts"></script>
+    { pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
+  </head>
+
+  <body>
+    <slot />
+    <Footer />
+
+    <script src="bootstrap/js/index.esm.js"></script>
+    <script src="$lib/client/webslab/security.ts"></script>
+    <script is:inline src={BASE + "js/theme.js"}></script>
+
+    <script>
+      import "$lib/client/services/tracer.ts"
+      import "$lib/client/services/logger.ts"
+      import "$lib/client/services/push.ts"
+    </script>
+  </body>
+</html>
