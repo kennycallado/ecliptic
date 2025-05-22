@@ -60,6 +60,7 @@ export default defineConfig({
         navigateFallback: base,
         globPatterns: ["**/*.{css,js,html,svg,png,ico,txt}"],
         importScripts: ["js/workers/push.js"],
+        navigateFallbackDenylist: [/^\/content\//], // TODO: check if can use /content/fallback
       },
 
       devOptions: {

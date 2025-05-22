@@ -1,0 +1,27 @@
+main {
+  min-height: 80svh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+article {
+  max-width: 960px;
+  margin: 0 auto;
+
+  text-align: justify;
+  min-height: 80svh;
+}
+
+article figure img,
+article p img {
+  max-width: 720px;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+}
+
+p:has(> img) {
+  text-align: center;
+}

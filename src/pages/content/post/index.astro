@@ -1,0 +1,64 @@
+---
+import "./_slug.css"
+
+import Layout from '$components/client/layouts/Layout.astro';
+---
+
+<Layout
+  description="Blog post"
+  needs={{ auth: false, roles: [] }}
+  page=""
+  back={{ enable: false }}
+  title="Post: tab">
+
+  <!-- actions -->
+    <!-- visit -->
+    <!-- likes -->
+  <!-- actions -->
+
+  <img
+    class="d-block img-fluid mx-auto border border-2 rounded shadow-sm"
+    width="960"
+    height="540"
+    loading="lazy" />
+
+  <wl-database target="#article">
+    <article id="article"></article>
+  </wl-database>
+
+  <script>
+    import { hydrate } from './_slug.ts'
+    hydrate()
+  </script>
+</Layout>
+
+<script>
+  const wlDatabase = document.querySelector("wl-database")
+
+  const metaDescriptionEl = document.querySelector("meta[name='description']")
+  const titleEl = document.querySelector("title")
+  const imgEl = document.querySelector("img")
+  const h1El = document.querySelector("h1")
+
+  wlDatabase.addEventListener("wl-task:completed", (event) => {
+    const post = event.detail.result
+
+    titleEl.innerText = post.title
+    h1El.innerText = post.title
+
+    imgEl.style.viewTransitionName = `item-${post.slug}`
+    imgEl.alt = post.title
+    imgEl.src = post.hero
+
+    if (!metaDescriptionEl) {
+      const metaDescription = document.createElement("meta")
+
+      metaDescription.name = "description"
+      metaDescription.content = post.description
+
+      document.head.appendChild(metaDescription)
+    } else {
+      metaDescriptionEl.content = post.description
+    }
+  });
+</script>

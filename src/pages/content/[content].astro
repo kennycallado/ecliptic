@@ -1,0 +1,53 @@
+---
+import './_content.css'
+
+import { getCollection } from 'astro:content'
+import { catchErrorTyped } from "$lib/utils.ts"
+import { render } from '$lib/server/ssrLit.ts'
+import { template } from './_content.ts'
+
+import Layout from '$components/client/layouts/Layout.astro'
+
+export async function getStaticPaths() {
+  return [
+    { params: { content: "blog" }},
+    { params: { content: "modules" }},
+  ];
+}
+
+const { content } = Astro.params;
+
+const collectionName = content === "blog" ? "posts" : "modules"
+if (!collectionName) throw new Error(`Unknown table: ${content}`)
+
+const {error, data: collection} = await catchErrorTyped(getCollection(
+  collectionName as "posts" | "modules",
+  ({data}) => data.draft === false
+))
+
+if (error)  throw new Error(`Failed to fetch ${collectionName}: ${error}`)
+
+// Determine link prefix
+const pageTitle = content === "blog" ? "Blog Posts" : "Modules"
+
+const renderContent = render(template(collection.map(entry => ({ ...entry.data }))))
+---
+
+<script src="$lib/client/webslab/database.ts"></script>
+
+<Layout
+  description={`List of ${pageTitle}`}
+  needs={{ auth: false, roles: [] }}
+  page={pageTitle}
+  back={{ enabled: false }}
+  title={pageTitle}>
+
+  <wl-database target="#article">
+    <article id="article" set:html={renderContent}></article>
+  </wl-database>
+
+  <script>
+    import { hydrate } from './_content.ts'
+    hydrate()
+  </script>
+</Layout>

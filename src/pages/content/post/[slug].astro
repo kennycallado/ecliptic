@@ -1,0 +1,65 @@
+---
+import "./_slug.css"
+
+import { Image } from 'astro:assets'
+import { getCollection } from 'astro:content'
+import { render } from '$lib/server/ssrLit.ts'
+
+import { catchErrorTyped } from '$lib/utils.ts'
+import { template } from './_slug.ts'
+
+import Layout from '$components/client/layouts/Layout.astro'
+
+export async function getStaticPaths() {
+  const {error, data: posts} = await catchErrorTyped(getCollection('posts'))
+  if (error) {
+    console.error("Error fetching posts:", error)
+    return []
+  }
+
+  return posts.map(post => ({
+    params: { slug: post.data.slug },
+    props: { post: post.data }
+  }));
+}
+
+const { post } = Astro.props
+const renderContent = render(template(post))
+---
+
+<script src="$lib/client/webslab/database.ts"></script>
+
+<Layout
+  description={post.description}
+  needs={{ auth: false, roles: [] }}
+  page={post.title}
+  back={{ enabled: false }}
+  title={"Post: " + post.title}>
+
+  <!-- actions -->
+    <!-- visit -->
+    <!-- likes -->
+  <!-- actions -->
+
+  <Image
+    style="view-transition-name: item-${post.slug};"
+    class="d-block img-fluid mx-auto border border-2 rounded shadow-sm"
+    width="960"
+    height="540"
+    loading="lazy"
+    alt={post.title}
+    src={post.hero}
+    widths={[240, 540, 720]}
+    sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, 720px`}
+    format={'webp'}
+  />
+
+  <wl-database target="#article">
+    <article id="article" set:html={renderContent}></article>
+  </wl-database>
+
+  <script>
+    import { hydrate } from './_slug.ts'
+    hydrate()
+  </script>
+</Layout>
