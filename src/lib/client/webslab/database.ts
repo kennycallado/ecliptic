@@ -14,6 +14,7 @@ export class WlDatabase<T = unknown> extends WebslabElement {
   static requiredProps = ["query", "target", "template"];
   static styles: CSSResultGroup = css``;
 
+  // TODO: seems not working
   @property({ type: Boolean })
   accessor live: boolean = false;
 
@@ -77,6 +78,7 @@ export class WlDatabase<T = unknown> extends WebslabElement {
           const message = error.message;
           this.emit("wl-task:error", { detail: { message, error } });
 
+          console.error(message);
           throw new Error(message);
         }
       }
@@ -91,6 +93,7 @@ export class WlDatabase<T = unknown> extends WebslabElement {
           const message = error.message;
           this.emit("wl-task:error", { detail: { message, error } });
 
+          console.error(message);
           throw new Error(message);
         }
 
@@ -102,7 +105,12 @@ export class WlDatabase<T = unknown> extends WebslabElement {
 
       this.viewTransition(() => {
         this.targetEl!.innerHTML = "";
-        render(this.template(result), this.targetEl!);
+
+        try {
+          render(this.template(result), this.targetEl!);
+        } catch (error) {
+          console.error("Error rendering template", error);
+        }
       });
 
       if (this.live) {
@@ -114,14 +122,13 @@ export class WlDatabase<T = unknown> extends WebslabElement {
         // const query = this.query.replace(/(ORDER|LIMIT|GROUP)\s+BY\s+.+$/gi, "");
 
         { // scoped: get ws db
-          const { error, data } = await catchErrorTyped(
-            auth.getWsDb(),
-          );
+          const { error, data } = await catchErrorTyped(auth.getWsDb());
 
           if (error) {
             const message = error.message;
             this.emit("wl-task:error", { detail: { message, error } });
 
+            console.error(message);
             throw new Error(message);
           }
 
@@ -137,10 +144,12 @@ export class WlDatabase<T = unknown> extends WebslabElement {
           const message = errorLive.message;
           this.emit("wl-task:error", { detail: { message, error: errorLive } });
 
+          console.error(message);
           throw new Error(message);
         }
 
         this.listenDb(uuid[0], this.wsDb);
+        this.emit("wl-task:live", { detail: { uuid } });
       }
 
       this.emit("wl-task:completed", { detail: { result } });
