@@ -20,7 +20,6 @@ jobs:
       PUBLIC_DB_ENDPOINT: ${{ vars.PUBLIC_DB_ENDPOINT }}
       SECRET_BETTER_AUTH_SECRET: ${{ secrets.SECRET_BETTER_AUTH_SECRET }}
       BETTER_AUTH_URL: ${{ vars.BETTER_AUTH_URL }}
-      BETTER_AUTH_URL: ${{ vars.BETTER_AUTH_URL }}
 
     permissions:
       actions: write
