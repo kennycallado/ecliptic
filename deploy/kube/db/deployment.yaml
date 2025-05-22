@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: webslab-db
-          image: surrealdb/surrealdb:v2.2
+          image: surrealdb/surrealdb:v2.3.0
           imagePullPolicy: "Always"
           command:
             - /surreal
