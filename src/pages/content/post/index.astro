@@ -27,6 +27,7 @@ import Layout from '$components/client/layouts/Layout.astro';
   </wl-database>
 
   <script>
+    import { template } from './_slug.ts';
     import { type WlDatabase } from "$lib/client/webslab/database.ts";
 
     const url = new URL(location.href);
