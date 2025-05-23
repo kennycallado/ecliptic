@@ -12,14 +12,16 @@ jobs:
     env:
       BASE_URL: ${{ vars.BASE_URL }}
       SITE_URL: ${{ vars.SITE_URL }}
+      BETTER_AUTH_URL: ${{ vars.BETTER_AUTH_URL }}
       PUBLIC_PROJECT_SPEC: ${{ vars.PUBLIC_PROJECT_SPEC }}
       PUBLIC_PROJECT_NAME: ${{ vars.PUBLIC_PROJECT_NAME }}
       PUBLIC_TRACES: ${{ vars.PUBLIC_TRACES }}
       PUBLIC_LOGS: ${{ vars.PUBLIC_LOGS }}
       PUBLIC_VAPID: ${{ vars.PUBLIC_VAPID }}
       PUBLIC_DB_ENDPOINT: ${{ vars.PUBLIC_DB_ENDPOINT }}
+      SECRET_DB_USERNAME: ${{ secrets.SECRET_DB_USERNAME }}
+      SECRET_DB_PASSWORD: ${{ secrets.SECRET_DB_PASSWORD }}
       SECRET_BETTER_AUTH_SECRET: ${{ secrets.SECRET_BETTER_AUTH_SECRET }}
-      BETTER_AUTH_URL: ${{ vars.BETTER_AUTH_URL }}
 
     permissions:
       actions: write
