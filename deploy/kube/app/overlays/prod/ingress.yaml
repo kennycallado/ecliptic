@@ -6,8 +6,7 @@ metadata:
   annotations:
     spec.ingressClassName: traefik
     cert-manager.io/issuer: webslab-infra-issuer
-    traefic.ingress.kubernetes.io/router.tls: "true"
-    # traefik.ingress.kubernetes.io/router.middlewares: webslab-foo-webslab-app-mid-prod@kubernetescrd
+    traefik.ingress.kubernetes.io/router.tls: "true"
 
 spec:
   ingressClassName: traefik
