@@ -24,6 +24,7 @@ metadata:
   name: webslab-db-pv
 
 spec:
+  storageClassName: ""
   accessModes:
     - ReadWriteMany
 
