@@ -7,7 +7,7 @@ import deno from "@deno/astro-adapter";
 import purgecss from "astro-purgecss";
 import sitemap from "@astrojs/sitemap";
 
-const base = process.env.BASE_URL ? process.env.BASE_URL + "/" : "/";
+const base = getFormattedBaseUrl(process.env.BASE_URL);
 const site = process.env.SITE_URL || "http://localhost";
 
 // https://astro.build/config
@@ -60,7 +60,13 @@ export default defineConfig({
         navigateFallback: base,
         globPatterns: ["**/*.{css,js,html,svg,png,ico,txt}"],
         importScripts: ["js/workers/push.js"],
-        navigateFallbackDenylist: [/^\/content\//], // TODO: check if can use /content/fallback
+        navigateFallbackDenylist: [new RegExp(`^${base}content\\/`)], // TODO: check if can use /content/fallback
+        runtimeCaching: [
+          {
+            urlPattern: new RegExp(`^${base}content\\/`),
+            handler: "NetworkOnly", // avoid caching
+          },
+        ],
       },
 
       devOptions: {
@@ -99,3 +105,25 @@ export default defineConfig({
     },
   },
 });
+
+/**
+ * @param {string | undefined} envBaseUrl
+ * @returns {string} */
+function getFormattedBaseUrl(envBaseUrl) {
+  let rawBase = envBaseUrl || "";
+  rawBase = rawBase.replace(/\/\/+/g, "/");
+
+  if (rawBase && rawBase !== "/" && !rawBase.startsWith("/")) {
+    rawBase = `/${rawBase}`;
+  }
+
+  if (rawBase && rawBase !== "/" && !rawBase.endsWith("/")) {
+    rawBase = `${rawBase}/`;
+  }
+
+  if (rawBase === "" || rawBase === "//" || !rawBase.startsWith("/")) {
+    return "/";
+  }
+
+  return rawBase;
+}
