@@ -20,7 +20,7 @@ services:
       - ./nginx.variables.conf:/etc/nginx/templates/10-variables.conf.template:ro
       - ./nginx.locations.conf:/etc/nginx/templates/20-locations.conf.template:ro
       # 🔽 prod:
-      - ../dist/client:/var/www/html/${BASE_URL}:ro
+      - ../dist/client:/var/www/html:ro
 
     ports:
       - 8000:80 # nginx

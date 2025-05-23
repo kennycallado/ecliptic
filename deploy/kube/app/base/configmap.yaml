@@ -21,7 +21,7 @@ data:
   public_db_endpoint: https://ipsitec.es/ecliptic/db
 
   # auth
-  better_auth_url: https://ipsitec.es/ecliptic/
+  better_auth_url: https://ipsitec.es
 
   # client observability
   public_traces: "false"

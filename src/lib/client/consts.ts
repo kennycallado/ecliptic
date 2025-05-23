@@ -1,4 +1,4 @@
-const trailing = import.meta.env.PROD ? "/" : "";
+const trailing = import.meta.env.BASE_URL.endsWith("/") ? "" : "/";
 const port = import.meta.env.PROD
   ? (import.meta.env.PREV ? ":3000" : ":8000")
   : ":3000";
