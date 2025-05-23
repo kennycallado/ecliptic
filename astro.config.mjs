@@ -64,7 +64,7 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: new RegExp(`^${base}content\\/`),
-            handler: "NetworkOnly", // avoid caching
+            handler: "NetworkFirst",
           },
         ],
       },
