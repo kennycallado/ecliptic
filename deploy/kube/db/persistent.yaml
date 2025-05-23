@@ -12,7 +12,7 @@ spec:
 
   nfs:
     server: localhost
-    path: /home/nfs
+    path: /home/nfs/webslab/db
 
   persistentVolumeReclaimPolicy: Retain
 
