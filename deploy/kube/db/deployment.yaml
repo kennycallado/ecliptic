@@ -29,11 +29,6 @@ spec:
           ports:
             - containerPort: 8000
 
-          volumeMounts:
-            #- name: nfs-pvc
-            - name: home-host
-              mountPath: "/data"
-
           resources:
             requests:
               memory: "512M"
@@ -88,12 +83,17 @@ spec:
                 configMapKeyRef:
                   name: webslab-db-cm
                   key: surreal_caps_allow_all
-      volumes:
-        # - name: nfs-pvc
-        #   persistentVolumeClaim:
-        #     claimName: nfs-pvc
 
-        - name: home-host
-          hostPath:
-            path: /home/webslab/
-            type: Directory
+          volumeMounts:
+            - name: db-storage
+              mountPath: /data # or whatever path your DB expects
+
+      volumes:
+        - name: db-storage
+          persistentVolumeClaim:
+            claimName: webslab-db-pv
+
+        # - name: home-host
+        #   hostPath:
+        #     path: /home/webslab/
+        #     type: Directory
