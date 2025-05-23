@@ -11,7 +11,9 @@ export const template = (posts: any[]) =>
           style="view-transition-name: item-${post.id};">
           <img
             style="width: 100%; height: auto; border-radius: 5px; max-width: 10rem;"
-            src="${post.hero}" alt="${post.title}" />
+            src="${post.hero}"
+            alt="${post.title}"
+            loading="lazy" />
           <h2>${post.title}</h2>
           <p>${post.description}</p>
         </li>`
