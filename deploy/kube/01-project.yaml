@@ -19,3 +19,6 @@ spec:
   clusterResourceWhitelist:
     - group: ""
       kind: Namespace
+
+    - group: ""
+      kind: PersistentVolume
