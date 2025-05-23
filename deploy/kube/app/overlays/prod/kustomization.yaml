@@ -9,6 +9,7 @@ resources:
   - ./sealed-vapid.yaml
   - ./middleware.yaml
   - ./ingress.yaml
+  - ./persistent.yaml
 
 nameSuffix: -prod
 

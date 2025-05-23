@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: PersistentVolume
+
+metadata:
+  name: webslab-app-pv
+
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+
+  nfs:
+    server: localhost
+    path: /home/nfs/webslab/ecliptic
+
+  persistentVolumeReclaimPolicy: Retain
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+
+metadata:
+  name: webslab-app-pv
+
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+
+  resources:
+    requests:
+      storage: 2Gi

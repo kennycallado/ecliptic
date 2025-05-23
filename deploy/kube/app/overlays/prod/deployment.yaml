@@ -46,3 +46,12 @@ spec:
                 secretKeyRef:
                   name: webslab-secret-better-prod
                   key: secret_better_auth_secret
+
+          volumeMounts:
+            - name: app-storage
+              mountPath: /var/www/html/storage
+
+      volumes:
+        - name: app-storage
+          persistentVolumeClaim:
+            claimName: webslab-app-pvc-prod
