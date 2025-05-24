@@ -86,14 +86,16 @@ spec:
 
           volumeMounts:
             - name: db-storage
-              mountPath: /data # or whatever path your DB expects
+              mountPath: /data
+
+            - name: app-storage
+              mountPath: /data/bucket
 
       volumes:
         - name: db-storage
           persistentVolumeClaim:
             claimName: webslab-db-pv
 
-        # - name: home-host
-        #   hostPath:
-        #     path: /home/webslab/
-        #     type: Directory
+        - name: app-storage
+          persistentVolumeClaim:
+            claimName: webslab-infra-pvc

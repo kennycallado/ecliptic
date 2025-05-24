@@ -218,24 +218,21 @@ spec:
             - name: server-files
               mountPath: /app/dist
 
+            - name: app-storage
+              mountPath: /var/www/html/storage
+
         # - name: webslab-base-ff
         #   image: webslab/filefind:latest
         #   imagePullPolicy: "Always"
         #
         #   volumeMounts:
-        #     #- name: nfs-pvc
-        #     - name: home-host
+        #     - name: app-storage
         #       mountPath: "/app/resources/base"
 
       volumes:
         - name: server-files
           emptyDir: {}
 
-        # - name: nfs-pvc
-        #   persistentVolumeClaim:
-        #     claimName: nfs-pvc
-
-        # - name: home-host
-        #   hostPath:
-        #     path: /home/webslab/base
-        #     type: Directory
+        - name: app-storage
+          persistentVolumeClaim:
+            claimName: webslab-infra-pvc
