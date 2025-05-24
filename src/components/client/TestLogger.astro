@@ -7,7 +7,7 @@ import { logger } from "$lib/client/services/logger.ts";
 import { SpanStatusCode, trace } from "@opentelemetry/api";
 import { SeverityNumber } from "@opentelemetry/api-logs";
 
-import { LOGS } from "$lib/client/consts.ts";
+import { LOGS } from "$lib/client/services/logger.ts";
 
 const test = document.getElementById("test-otel");
 test?.addEventListener("click", handleButtonClick);

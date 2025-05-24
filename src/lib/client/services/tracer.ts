@@ -9,7 +9,14 @@ import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base";
 import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
 
-import { TRACES } from "$lib/client/consts.ts";
+// Determine if traces are enabled via localStorage override, fallback to build-time flag
+const defaultTraces = import.meta.env.PUBLIC_TRACES === "true";
+let tracesOverride = typeof window !== "undefined"
+  ? localStorage.getItem("tracesEnabled")
+  : null;
+export const TRACES = tracesOverride !== null
+  ? tracesOverride === "true"
+  : defaultTraces;
 
 const resource = resourceFromAttributes({
   [ATTR_SERVICE_NAME]: "ecliptic_client",

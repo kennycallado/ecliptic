@@ -1,15 +1,112 @@
 ---
-const today = new Date();
+import pkg from "$lib/../../package.json" with { type: "json" };
+
+const version = pkg.version;
+const year = new Date().getFullYear();
 ---
 
 <footer class="bg-body-tertiary">
-	&copy; {today.getFullYear()} Kenny. MIT license.
+  &copy; {year} Kenny. MIT license. Version {version}
 </footer>
 
+<dialog id="easter-egg-dialog">
+  <div class="dialog-content">
+    <p>You found the easter egg!</p>
+    <div class="switch-group">
+      <label><input type="checkbox" id="switch-traces"> Enable Traces</label>
+      <label><input type="checkbox" id="switch-logs"> Enable Logs</label>
+    </div>
+    <button id="close-dialog">Close</button>
+  </div>
+</dialog>
+
+<script>
+import { LOGS } from '$lib/client/services/logger.ts';
+import { TRACES } from '$lib/client/services/tracer.ts';
+
+const $ = (selector) => document.querySelector(selector);
+const dialog = $('#easter-egg-dialog');
+const footer = $('footer');
+const closeBtn = $('#close-dialog');
+const traceSwitch = $('#switch-traces');
+const logSwitch = $('#switch-logs');
+
+// Use services to determine initial checkbox state
+traceSwitch.checked = TRACES;
+logSwitch.checked = LOGS;
+
+// Still persist preference to localStorage
+traceSwitch.addEventListener('change', () => {
+  localStorage.setItem('tracesEnabled', traceSwitch.checked);
+});
+
+logSwitch.addEventListener('change', () => {
+  localStorage.setItem('logsEnabled', logSwitch.checked);
+});
+
+closeBtn.addEventListener('click', () => {
+  dialog.close();
+  location.reload();
+});
+
+let clicks = 0;
+let firstClick = null;
+
+footer.addEventListener('click', () => {
+  const now = Date.now();
+  if (!firstClick || now - firstClick > 2000) {
+    firstClick = now;
+    clicks = 1;
+    return;
+  }
+
+  if (++clicks === 5) {
+    traceSwitch.checked = TRACES;
+    logSwitch.checked = LOGS;
+    dialog.showModal();
+    clicks = 0;
+    firstClick = null;
+  }
+});
+</script>
+
 <style>
-	footer {
-    font-size: 1rem;
-		padding: 2em 1em 3em 1em;
-		text-align: center;
-	}
+footer {
+  font-size: 1rem;
+  padding: 2em 1em 3em;
+  text-align: center;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#easter-egg-dialog {
+  border: none;
+  border-radius: 8px;
+  padding: 1.5em;
+  width: 300px;
+  max-width: 90%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+#close-dialog {
+  padding: 0.5em 1em;
+  background: #007acc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#close-dialog:hover {
+  background: #005fab;
+}
 </style>
