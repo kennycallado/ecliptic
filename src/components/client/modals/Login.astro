@@ -1,0 +1,125 @@
+---
+interface Props {
+  selector: string;
+};
+
+const { selector } = Astro.props;
+---
+
+<div
+  id={selector}
+  class="modal fade"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="form-login">
+          <div class="mb-3">
+            <label
+              class="form-label"
+              for="inputUsername">
+              Username
+            </label>
+
+            <input
+              class="form-control"
+              id="inputEmail"
+              name="email"
+              autocomplete="on"
+              type="email" />
+          </div>
+
+          <div class="mb-3">
+            <label
+              class="form-label"
+              for="inputPassword">
+              Password
+            </label>
+
+            <input
+              class="form-control"
+              id="inputPassword"
+              name="password"
+              type="password"
+              autocomplete="on"
+              required />
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <div class="mb-3 form-check">
+              <input
+                class="form-check-input"
+                id="inputCheck"
+                type="checkbox" />
+
+              <label
+                class="form-check-label"
+                for="inputCheck">
+                Remember me
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal">
+          Close
+        </button>
+
+        <button
+          form="form-login"
+          type="submit"
+          class="btn btn-primary">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { auth } from "$lib/client/services/auth.ts"
+
+  const form = document.getElementById("form-login") as HTMLFormElement;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const entries = Object.fromEntries(formData);
+    const { email, password } = entries;
+
+    // validate form
+    if (!email || !password) {
+      alert("Error: Invalid credentials\n- Please fill in all fields");
+      return;
+    }
+
+    const credentials = { email: String(email), password: String(password) };
+    const { error, data } = await auth.signIn(credentials)
+
+    if (error) {
+      if (error.code === "INVALID_EMAIL") alert("Error: The email is invalid.");
+      else if (error.code === "UNAUTHORIZED") alert("Error: Unauthorized access.");
+      else if (error.code === "INVALID_EMAIL_OR_PASSWORD") {
+        alert("Error: The email or password is incorrect. Maybe both?");
+      }
+
+    } else location.reload();
+  })
+</script>
