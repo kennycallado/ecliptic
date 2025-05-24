@@ -1,18 +1,6 @@
 ---
 import Layout from '$components/client/layouts/Layout.astro'
 
-import TestDb from '$components/client/TestDb.astro'
-import TestApi from '$components/client/TestApi.astro'
-import TestLit from '$components/client/TestLit.astro'
-import TestUser from '$components/client/TestUser.astro'
-import TestMail from '$components/client/TestMail.astro'
-import TestAction from '$components/client/TestAction.astro'
-import TestLogger from '$components/client/TestLogger.astro'
-import TestNotify from '$components/client/TestNotify.astro'
-import TestIsLand from '$components/client/TestIsLand.astro'
-import TestInstall from '$components/client/TestInstall.astro'
-import TestListPost from '$components/client/TestListPost.astro'
-
 const needs = { auth: false, roles: [] }
 ---
 
@@ -22,41 +10,4 @@ const needs = { auth: false, roles: [] }
   page="Welcome to My Site"
   back={{enabled: false}}>
 
-  <h2 class="text-center">Tests</h2>
-
-  <div class="text-center mb-2">
-    <a class="btn btn-primary" href="content/blog/">blog</a>
-  </div>
-
-  <div class="row">
-    <div class="col-12 col-md-6 border-end">
-      <TestApi />
-      <TestAction />
-      <TestLogger />
-      <TestDb />
-      <TestUser />
-      <TestMail />
-      <TestNotify />
-      <TestInstall />
-    </div>
-
-    <div class="col-12 col-md-6">
-      <TestIsLand text="Test:" />
-      <TestLit />
-    </div>
-  </div>
-
-  <hr class="w-75 mx-auto" />
-
-  <div style="max-width: 800px; height: 50vh; margin: auto;">
-    <is-land on:interaction="mouseenter">
-      <h2 class="text-center">List Post: Test</h2>
-
-      <template data-island>
-        <div style="overflow: auto;">
-          <TestListPost />
-        </div>
-      </template>
-    </is-land>
-  </div>
 </Layout>
