@@ -11,11 +11,21 @@ const year = new Date().getFullYear();
 
 <dialog id="easter-egg-dialog">
   <div class="dialog-content">
-    <p>You found the easter egg!</p>
+    <h3>You found the easter egg!</h3>
+    <hr class="w-75 mt-0 mx-auto border border-primary" />
+
     <div class="switch-group">
-      <label><input type="checkbox" id="switch-traces"> Enable Traces</label>
-      <label><input type="checkbox" id="switch-logs"> Enable Logs</label>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="switch-traces" switch>
+        <label class="form-check-label" for="switch-traces">Enable Traces</label>
+      </div>
+
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="switch-logs" switch>
+        <label class="form-check-label" for="switch-logs">Enable Logs</label>
+      </div>
     </div>
+
     <button id="close-dialog">Close</button>
   </div>
 </dialog>
@@ -85,7 +95,8 @@ dialog::backdrop {
   border: none;
   border-radius: 8px;
   padding: 1.5em;
-  width: 300px;
+  width: 50svw;
+  min-width: 300px;
   max-width: 90%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
