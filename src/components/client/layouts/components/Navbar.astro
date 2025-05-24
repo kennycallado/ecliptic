@@ -201,4 +201,22 @@ const { loginModalSelector } = Astro.props
       navAdmin.forEach((el) => el.classList.add("d-none"));
     }
   });
+
+  btnLogout.addEventListener("click", async () => {
+    {
+      const { error } = await catchErrorTyped(auth.isReady);
+      if (error) {
+        console.error("Auth service is not ready:", error);
+
+        return;
+      }
+    }
+
+    const { error } = auth.signOut();
+    if (error) {
+      console.error("Logout failed:", error);
+
+      return;
+    }
+  });
 </script>
