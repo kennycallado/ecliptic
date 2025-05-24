@@ -104,10 +104,9 @@ spec:
               #     name: webslab-cm
               #     key: db_port
 
-          # volumeMounts:
-          #   # - name: nfs-pvc
-          #   - name: home-host
-          #     mountPath: "/var/www/html/base"
+          volumeMounts:
+            - name: app-storage
+              mountPath: /var/www/html/storage
 
         - name: webslab-server
           image: docker.io/denoland/deno:distroless
@@ -217,9 +216,6 @@ spec:
           volumeMounts:
             - name: server-files
               mountPath: /app/dist
-
-            - name: app-storage
-              mountPath: /var/www/html/storage
 
         # - name: webslab-base-ff
         #   image: webslab/filefind:latest
