@@ -16,9 +16,8 @@ await db.connect(process.env.PUBLIC_DB_ENDPOINT!, {
   },
 });
 
-export async function migrating(): Promise<
-  { error: Error | undefined; data: boolean }
-> {
+type Result = { error: Error | undefined; data: boolean };
+export async function migrating(): Promise<Result> {
   const tpl = new Template();
   const env = Deno.env.toObject();
 
