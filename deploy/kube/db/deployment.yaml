@@ -23,7 +23,7 @@ spec:
           command:
             - /surreal
             - start
-            - rocksdb://data/labdb-foo # TODO: change
+            - rocksdb://data/db/labdb-foo # TODO: change
 
           # TODO: change
           ports:
@@ -86,7 +86,7 @@ spec:
 
           volumeMounts:
             - name: db-storage
-              mountPath: /data
+              mountPath: /data/db
 
             - name: app-storage
               mountPath: /data/bucket
