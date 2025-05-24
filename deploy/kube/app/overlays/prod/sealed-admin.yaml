@@ -1,0 +1,21 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+
+metadata:
+  creationTimestamp: null
+  name: webslab-secret-admin-prod
+  annotations:
+    sealedsecrets.bitnami.com/namespace-wide: "true"
+
+spec:
+  encryptedData:
+    secret_admin_email: AgBCcoAMPZcmwJfjbdH0y8o3hIKLvC8W67Zsfui+KMo2vL/hkA3NzsTNmtOREgRKrjmjOeghGN1plC0ldJGCZAYnbTGlFOscohoDRRXubyF5eerdkr0AcvPwcJhXzUWh+cvjzN4heJzA9cE5u4CS/iCIdn3VLPzLaJdbt+QQzg1Xe9vgj78b3asxrJzsk1jmxYOwmt8RuSpzOBHWR9TCzmi/kfQlnc4UCo9wRDydo6iKUhwTWsJYFyRWqzhgQsxxru6S3ijGAoqMDf0KSY1jPEh8setE5NO2P+zIA/dBWigkYoguVgR9er6VQpoFMTOsw6mbf3baB+dAlFbgQI2O6FGHwiHYWPbVqN+CPg2megvfNQAL7vgpSPWq8HiD4Daz48/1SCR313alAPl1GdK9fkOnNjcmY1UwR1G3iHqmzVvLzl3j6x7sd1QJmDWKyaZekenhwBIGkLpdh2M0uCghzWPRfOVuMPorfYSwDO4mwa57uZaLvTEamMF9JyTJco1DYL+KA51p4wP5O6SHATxTmXm7rqesg9bWtvkDhrGw0hUDnZiraemZNM2MxgvI7yNSsRxSTNIPkn+MYsBHFjn3lJbHZCDXsL8IY/PSKXKQVSAKXx6sqiSqa56moS3TKcw09xihD2/BkezsM+GG+735/dKjXAFlI8rnhLdZhZcYXvx1L15HxS0judI0VF0hPI+aNxb55dTwdTuWEBwzhN1Nm61q
+    secret_admin_password: AgABIppq8rmpgalAbiOX8ytjJNZNU/lCkiYRyDCwXWh99NxSqnrSu1QLWaALSJjROBd6RGlnJN8+8Wqr7AyLdtKvrOJUy18QgxbVnY6O8Qay8zANoQ1aHZsGAF1wQKUTA8u71DPbmeSBa4WTRGaycD5cXi5GiQCu7YahLS+2X1iSm4asYDdk3IYBBVvi7WLmXFH7YQYQH14RtZC0ku7enhohFnJJKT/aMwTEdeVWOYemzRFwZhPHVGIarTMzSLYZERqd2Lc3/cI/7vV5SdlgLAuQYAWKKfjGQDYEWlQ+kkQ3D5cQvpEAdfLRYTmu77IRDDyl3THOGgX2Os6+C7J9C1EWHf/b5Ewh1Ss2zZ6N4NjtWgXOR2tv3soXHkNU6/Rjm06dM9ZlDyvOHZk2PD9ezeHazgPZYyyhkbEkVGUmcpZ5uMTiCH1n7Z617XMzp0e9OaK0vcEIoNLUUHnf5pyOrnaw2jfdJkm0/PygLHc6O09hCG27+r/Yf+P6kjUogNRLXdz91DWvdmRnjMbRB5buvunQ1oFWuQkIATAeJI9UoVM+KggIVMIjArU+mTPH8xPDxepyD56IvMDoZspalAexMFmZzlG3nVNTT785HIa7yv5ALySfTPqechjmK0NW96zUw60H/7gxOvcsdf0lRGuTKyo8KJrIdssS2zolAk1Thj8jyvUgSHaBpJxC0DQQ/GPs3ymI0NLmkp4n
+
+  template:
+    type: Opaque
+    metadata:
+      creationTimestamp: null
+      name: webslab-secret-admin-prod
+      annotations:
+        sealedsecrets.bitnami.com/namespace-wide: "true"

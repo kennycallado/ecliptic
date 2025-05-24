@@ -92,6 +92,18 @@ spec:
                   name: webslab-secret-db-prod
                   key: secret_db_password
 
+            - name: SECRET_ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-admin-prod
+                  key: secret_admin_email
+
+            - name: SECRET_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: webslab-secret-admin-prod
+                  key: secret_admin_password
+
           volumeMounts:
             - name: server-files
               mountPath: /app/dist

@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ../../base
   - ./sealed-better.yaml
+  - ./sealed-admin.yaml
   - ./sealed-db.yaml
   - ./sealed-mail.yaml
   - ./sealed-vapid.yaml
