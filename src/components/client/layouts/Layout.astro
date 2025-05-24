@@ -2,6 +2,7 @@
 import Base from './Base.astro';
 
 import Navbar from "./components/Navbar.astro"
+import LoginModal from "$components/client/modals/Login.astro"
 
 const {
   needs = { auth: true, roles: ["admin"] },
@@ -9,11 +10,13 @@ const {
   page = "noname",
   title = "home",
 } = Astro.props;
+
+const loginModalSelector = "login-modal";
 ---
 
 <Base description={description} page={page} title={title}>
   <header>
-    <Navbar />
+    <Navbar loginModalSelector={loginModalSelector} />
   </header>
 
   <wl-security needs={JSON.stringify(needs)}>
@@ -31,3 +34,5 @@ const {
     </main>
   </wl-security>
 </Base>
+
+<LoginModal selector={loginModalSelector} />
