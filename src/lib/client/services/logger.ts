@@ -12,7 +12,7 @@ const resource = resourceFromAttributes({
 });
 
 const collectorOptions = {
-  url: location.href + `otel/v1/traces/`,
+  url: location.href + `otel/v1/logs/`,
   headers: {},
   concurrencyLimit: 1,
 };
