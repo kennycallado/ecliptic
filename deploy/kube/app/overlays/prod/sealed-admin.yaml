@@ -3,7 +3,7 @@ kind: SealedSecret
 
 metadata:
   creationTimestamp: null
-  name: webslab-secret-admin-prod
+  name: webslab-secret-admin
   annotations:
     sealedsecrets.bitnami.com/namespace-wide: "true"
 
@@ -16,6 +16,6 @@ spec:
     type: Opaque
     metadata:
       creationTimestamp: null
-      name: webslab-secret-admin-prod
+      name: webslab-secret-admin
       annotations:
         sealedsecrets.bitnami.com/namespace-wide: "true"
