@@ -9,6 +9,8 @@ import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base";
 import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
 
+import { BASE } from "$lib/client/consts.ts";
+
 // Determine if traces are enabled via localStorage override, fallback to build-time flag
 const defaultTraces = import.meta.env.PUBLIC_TRACES === "true";
 let tracesOverride = typeof window !== "undefined"
@@ -23,7 +25,7 @@ const resource = resourceFromAttributes({
 });
 
 const exporter = new OTLPTraceExporter({
-  url: location.href + `otel/v1/traces/`,
+  url: location.origin + BASE + `otel/v1/logs/`,
 });
 
 const provider = new WebTracerProvider({

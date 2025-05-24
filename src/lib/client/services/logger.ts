@@ -7,6 +7,8 @@ import {
 } from "@opentelemetry/sdk-logs";
 import { ATTR_SERVICE_NAME } from "@opentelemetry/semantic-conventions";
 
+import { BASE } from "$lib/client/consts.ts";
+
 // Determine if logs are enabled via localStorage override, fallback to build-time flag
 const defaultLogs = import.meta.env.PUBLIC_LOGS === "true";
 let logsOverride = typeof window !== "undefined"
@@ -22,7 +24,7 @@ const resource = resourceFromAttributes({
 });
 
 const collectorOptions = {
-  url: location.href + `otel/v1/logs/`,
+  url: location.origin + BASE + `otel/v1/logs/`,
   headers: {},
   concurrencyLimit: 1,
 };
