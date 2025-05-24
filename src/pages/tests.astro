@@ -6,6 +6,7 @@ import TestApi from       '$components/client/tests/TestApi.astro'
 import TestLit from       '$components/client/tests/TestLit.astro'
 import TestUser from      '$components/client/tests/TestUser.astro'
 import TestMail from      '$components/client/tests/TestMail.astro'
+import TestDefer from     '$components/server/TestDefer.astro';
 import TestAction from    '$components/client/tests/TestAction.astro'
 import TestLogger from    '$components/client/tests/TestLogger.astro'
 import TestNotify from    '$components/client/tests/TestNotify.astro'
@@ -13,6 +14,7 @@ import TestIsLand from    '$components/client/tests/TestIsLand.astro'
 import TestInstall from   '$components/client/tests/TestInstall.astro'
 import TestListPost from  '$components/client/tests/TestListPost.astro'
 
+const textDefer = "Hello World!";
 const needs = { auth: false, roles: [] }
 ---
 
@@ -22,7 +24,11 @@ const needs = { auth: false, roles: [] }
   page="Welcome to Tests Page"
   back={{enabled: false}}>
 
-  <h2 class="text-center">Tests</h2>
+  <TestDefer
+    text={textDefer}
+    server:defer>
+    <h2 class="text-center" slot="fallback">{textDefer}</h2>
+  </TestDefer>
 
   <div class="text-center mb-2">
     <a class="btn btn-primary" href="content/blog/">blog</a>

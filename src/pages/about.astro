@@ -1,8 +1,6 @@
 ---
 import Layout from '$components/client/layouts/Layout.astro';
-import TestDefer from '$components/server/TestDefer.astro';
 
-const text = "Hello World!";
 const needs = { auth: false, roles: [] };
 ---
 
@@ -12,9 +10,4 @@ const needs = { auth: false, roles: [] };
   page="How we are?"
   back={{enabled: false}}>
 
-  <TestDefer
-    text={text}
-    server:defer>
-    <h2 class="text-center" slot="fallback">{text}</h2>
-  </TestDefer>
 </Layout>
