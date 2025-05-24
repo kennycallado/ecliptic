@@ -7,7 +7,7 @@
     "baseUrl": "./",
     "paths": {
       "$components/*": ["src/components/*"],
-      "$assests/*": ["./src/assests/*"],
+      "$assets/*": ["src/assets/*"],
       "$content/*": ["./src/content/*"],
       "$layouts/*": ["src/components/layouts/*"],
       "$lib/*": ["./src/lib/*"]
