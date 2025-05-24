@@ -40,6 +40,12 @@ spec:
                   name: webslab-cm
                   key: base_url
 
+            - name: NGINX_RESOLVER
+              valueFrom:
+                configMapKeyRef:
+                  name: webslab-cm
+                  key: nginx_resolver
+
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               valueFrom:
                 configMapKeyRef:

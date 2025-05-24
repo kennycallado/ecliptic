@@ -12,6 +12,8 @@ data:
   # site_url: https://ecliptic.ipsitec.es
   site_url: https://ipsitec.es
 
+  nginx_resolver: kube-dns.kube-system.svc.cluster.local
+
   # project
   public_project_spec: webslab
   public_project_name: ecliptic
