@@ -1,4 +1,4 @@
-import { Surreal } from "surrealdb";
+import { ResponseError, Surreal } from "surrealdb";
 import { createAuthClient } from "better-auth/client";
 import { adminClient } from "better-auth/client/plugins";
 
@@ -51,20 +51,18 @@ class AuthService {
   }
 
   private async init(): Promise<AuthConnectionStatus> {
-    this.connectionStatus = "pending";
-
     if (!navigator.onLine) this.connectionStatus = "offline";
+    else this.connectionStatus = "pending";
 
     { // scoped: connect to db
       const { error } = await catchErrorTyped(
         this.db.connect(this.dbconfig.url, { ...this.dbconfig.config }),
       );
 
-      if (error instanceof VersionRetrievalFailure) {
-        return this.connectionStatus = "offline";
+      if (error && this.connectionStatus === "offline") {
+        return this.connectionStatus;
       } else if (error) {
         this.connectionStatus = "error";
-
         throw new Error(`Failed to connect to database: ${error.message}`);
       }
     }
