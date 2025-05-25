@@ -58,7 +58,7 @@ export default defineConfig({
 
       workbox: {
         navigateFallback: base,
-        globPatterns: ["**/*.{css,js,html,svg,png,ico,txt}"],
+        globPatterns: ["**/*.{css,js,html,svg,png,ico,txt,webp,jpg,jpeg,gif}"],
         importScripts: [`${base}js/workers/push.js`],
         navigateFallbackDenylist: [new RegExp(`^${base}content\\/`)], // TODO: check if can use /content/fallback
         runtimeCaching: [
