@@ -66,6 +66,30 @@ export default defineConfig({
             urlPattern: new RegExp(`^${base}content\\/`),
             handler: "NetworkFirst",
           },
+          {
+            // Coincide con las imágenes en /_astro/ y otras extensiones comunes
+            urlPattern: ({ request, url }) => {
+              if (request.destination !== "image") {
+                return false;
+              }
+              // Puedes ser más específico si quieres, por ejemplo, con url.pathname.startsWith(`${base}_astro/`)
+              // o simplemente cachear todas las imágenes
+              return /\.(?:png|gif|jpg|jpeg|svg|webp)$/.test(url.pathname);
+            },
+            // Estrategia común para imágenes: CacheFirst o StaleWhileRevalidate
+            handler: "CacheFirst", // Intenta servir desde caché primero, si no, red y cachea.
+            options: {
+              cacheName: "images-cache", // Un nombre descriptivo para este caché
+              expiration: {
+                maxEntries: 100, // Máximo número de imágenes a cachear
+                maxAgeSeconds: 30 * 24 * 60 * 60, // Cachear por 30 días
+              },
+              // Opcional: si las imágenes son de dominios cruzados y quieres cachearlas
+              // cacheableResponse: {
+              //   statuses: [0, 200], // Cachea respuestas opacas (0) y exitosas (200)
+              // },
+            },
+          },
         ],
       },
 
