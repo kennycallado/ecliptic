@@ -2,6 +2,12 @@
 
 ## LIST:
 
+- [ ] astro: ?? config prefetch
+- [x] auth: manage connection status
+  - [x] wl-security: borders
+  - [x] wl-database: borders
+- [x] wl-security: add warning
+
 - [x] kube: with argocd
   - [x] continue with the job
 - [x] workflows: buid images
