@@ -2,8 +2,8 @@ import { Task } from "@lit/task";
 import { css, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 
+import { auth, type AuthConnectionStatus } from "$lib/client/services/auth.ts";
 import { catchErrorTyped } from "$lib/utils.ts";
-import { auth } from "$lib/client/services/auth.ts";
 import { WebslabElement } from "./_element.ts";
 
 import type { CSSResultGroup, TemplateResult } from "lit";
@@ -23,6 +23,7 @@ export class WlSecurity extends WebslabElement {
       position: relative;
 
       --wl-security-border-pending: aquamarine;
+      --wl-security-border-offline: orange;
       --wl-security-border-complete: green;
       --wl-security-border-error: red;
 
@@ -94,8 +95,9 @@ export class WlSecurity extends WebslabElement {
         ${this.task.render({
           pending: () => { this.setBorderColor("pending"); },
 
-          complete: () => {
-            this.setBorderColor("complete");
+          complete: (status: AuthConnectionStatus) => {
+            this.setBorderColor(status);
+
             this.wrap.style.opacity = "0";
             this.unlockWrapStyle();
 
@@ -126,23 +128,17 @@ export class WlSecurity extends WebslabElement {
 
   private task = new Task(this, {
     task: async ([_auth]) => {
-      { // scoped: check auth ready
-        const { error } = await catchErrorTyped(_auth.isReady);
-        if (error) {
-          const message = error.message;
-          this.emit("wl-task:error", { detail: { message } });
+      const { error, data: status } = await catchErrorTyped(_auth.isReady);
 
-          throw new Error(message);
-        }
+      if (error) {
+        this.emit("wl-task:error", { detail: { message: error.message } });
+        throw error;
       }
 
       { // scoped: check auth user
         const { error: error } = this.checkRoles();
         if (error) {
-          this.emit("wl-task:error", {
-            detail: { message: error.message },
-          });
-
+          this.emit("wl-task:error", { detail: { message: error.message } });
           throw error;
         }
       }
@@ -151,6 +147,7 @@ export class WlSecurity extends WebslabElement {
       // await new Promise((resolve) => setTimeout(resolve, 1000));
 
       this.emit("wl-task:complete", { detail: { user: _auth.getUser() } });
+      return status;
     },
     args: () => [this.auth],
   });
@@ -208,10 +205,11 @@ export class WlSecurity extends WebslabElement {
     this.wrapStyleObserver = undefined;
   }
 
-  private setBorderColor(state: "pending" | "complete" | "error") {
+  private setBorderColor(state: AuthConnectionStatus) {
     const varName = {
-      pending: "--wl-security-border-pending",
       complete: "--wl-security-border-complete",
+      pending: "--wl-security-border-pending",
+      offline: "--wl-security-border-offline",
       error: "--wl-security-border-error",
     }[state];
 

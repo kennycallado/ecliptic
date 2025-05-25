@@ -8,8 +8,10 @@ import { catchErrorTyped } from "$lib/utils.ts";
 import { adminRole, theraRoles, userRole } from "$lib/roles.ts";
 import type { User } from "$lib/types.ts";
 
+export type AuthConnectionStatus = "pending" | "complete" | "offline" | "error";
+
 class AuthService {
-  public isReady: Promise<boolean>;
+  public isReady: Promise<AuthConnectionStatus>;
   public client = createAuthClient({
     basePath: BASE + "api/auth", // NOTE: needed
 
@@ -36,6 +38,9 @@ class AuthService {
   private user?: User;
   private token?: string;
 
+  // Nuevo estado para la conexión
+  public connectionStatus: AuthConnectionStatus = "pending";
+
   constructor(private dbconfig: DBConfig) {
     const user = localStorage.getItem("user");
 
@@ -45,26 +50,37 @@ class AuthService {
     this.isReady = this.init();
   }
 
-  private async init(): Promise<boolean> {
-    // check db is ready
-    const { error: errorReady } = await catchErrorTyped(this.db.ready);
-    if (errorReady) return false;
+  private async init(): Promise<AuthConnectionStatus> {
+    this.connectionStatus = "pending";
 
-    // connect to db
-    const { error: errorConnect } = await catchErrorTyped(
-      this.db.connect(this.dbconfig.url, { ...this.dbconfig.config }),
-    );
-    if (errorConnect) return false;
+    if (!navigator.onLine) this.connectionStatus = "offline";
+
+    { // scoped: connect to db
+      const { error } = await catchErrorTyped(
+        this.db.connect(this.dbconfig.url, { ...this.dbconfig.config }),
+      );
+
+      if (error instanceof VersionRetrievalFailure) {
+        return this.connectionStatus = "offline";
+      } else if (error) {
+        this.connectionStatus = "error";
+
+        throw new Error(`Failed to connect to database: ${error.message}`);
+      }
+    }
 
     if (this.token) {
       // authenticate with token
-      const { error: errorAuth } = await catchErrorTyped(
+      const { error } = await catchErrorTyped(
         this.db.authenticate(this.token),
       );
-      if (errorAuth) this.clearToken();
+
+      if (error instanceof ResponseError) {
+        this.clearToken();
+      }
     }
 
-    return true;
+    return this.connectionStatus = "complete";
   }
 
   public async refresh() {

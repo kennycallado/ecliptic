@@ -27,7 +27,15 @@ h1 {
 }
 
 wl-security {
-  --wl-security-border-pending: var(--bs-indigo);
   --wl-security-border-complete: var(--bs-primary);
+  --wl-security-border-offline: var(--bs-orange);
+  --wl-security-border-pending: var(--bs-indigo);
   --wl-security-border-error: darkmagenta;
+}
+
+wl-database {
+  --wl-database-border-complete: transparent;
+  --wl-database-border-offline: var(--bs-orange);
+  --wl-database-border-pending: var(--bs-indigo);
+  --wl-database-border-error: darkmagenta;
 }

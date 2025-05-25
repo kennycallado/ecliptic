@@ -2,7 +2,7 @@ import { Task } from "@lit/task";
 import { css, html, render } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 
-import { auth } from "$lib/client/services/auth.ts";
+import { auth, type AuthConnectionStatus } from "$lib/client/services/auth.ts";
 import { catchErrorTyped } from "$lib/utils.ts";
 import { WebslabElement } from "./_element.ts";
 
@@ -12,7 +12,16 @@ import type { Surreal, Uuid } from "surrealdb";
 @customElement("wl-database")
 export class WlDatabase<T = unknown> extends WebslabElement {
   static requiredProps = ["query", "target", "template"];
-  static styles: CSSResultGroup = css``;
+  static styles: CSSResultGroup = css`
+    :host {
+      display: block;
+
+      --wl-database-border-pending: aquamarine;
+      --wl-database-border-offline: orange;
+      --wl-database-border-complete: green;
+      --wl-database-border-error: red;
+    }
+  `;
 
   // TODO: seems not working
   @property({ type: Boolean })
@@ -41,6 +50,7 @@ export class WlDatabase<T = unknown> extends WebslabElement {
 
   get targetEl(): HTMLElement | undefined {
     const assigned = this.bodySlot.assignedElements();
+
     return assigned.find((el) => el.matches(this.target)) as
       | HTMLElement
       | undefined;
@@ -57,12 +67,14 @@ export class WlDatabase<T = unknown> extends WebslabElement {
     return html`
       <slot></slot>
       ${this.task.render({
+        pending: () => { this.setBorderColor("pending") },
+
+        complete: (status: AuthConnectionStatus) => {
+          this.setBorderColor(status);
+        },
+
         error: () => {
-          const body = this.bodySlot.assignedElements().map((el) => el as HTMLElement)[0];
-
-          body.style.border = "1px solid red";
-          body.style.borderRadius = "2px";
-
+          this.setBorderColor("error");
           return html`<div class="error"><p>Error</p></div>`
         },
       })}
@@ -73,22 +85,24 @@ export class WlDatabase<T = unknown> extends WebslabElement {
   private task = new Task(this, {
     task: async ([auth]) => {
       { // scoped: check auth
-        const { error } = await catchErrorTyped(auth.isReady);
-        if (error) {
-          const message = error.message;
-          this.emit("wl-task:error", { detail: { message, error } });
+        const { error, data: status } = await catchErrorTyped(auth.isReady);
 
-          console.error(message);
-          throw new Error(message);
+        if (error) {
+          this.emit("wl-task:error", { detail: { message: error.message } });
+          throw error;
+        }
+
+        if (status === "offline") {
+          return status;
         }
       }
 
       // scoped: query
       const result = await (async () => {
-        const {
-          error,
-          data,
-        } = await catchErrorTyped(auth.getDB().query<[T[]]>(this.query));
+        const { error, data } = await catchErrorTyped(
+          auth.getDB().query<[T[]]>(this.query),
+        );
+
         if (error) {
           const message = error.message;
           this.emit("wl-task:error", { detail: { message, error } });
@@ -153,6 +167,7 @@ export class WlDatabase<T = unknown> extends WebslabElement {
       }
 
       this.emit("wl-task:completed", { detail: { result } });
+      return "complete";
     },
     args: () => [this.auth],
   });
@@ -234,6 +249,19 @@ export class WlDatabase<T = unknown> extends WebslabElement {
 
       this.emit(`wl-action:${action.toLowerCase()}`, { detail: { item } });
     });
+  }
+
+  private setBorderColor(state: AuthConnectionStatus) {
+    const varName = {
+      complete: "--wl-database-border-complete",
+      pending: "--wl-database-border-pending",
+      offline: "--wl-database-border-offline",
+      error: "--wl-database-border-error",
+    }[state];
+
+    // Get the computed style for the variable
+    const color = getComputedStyle(this).getPropertyValue(varName).trim();
+    this.style.border = `2px solid ${color || "transparent"}`; // fallback
   }
 }
 
