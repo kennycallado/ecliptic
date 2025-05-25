@@ -31,12 +31,20 @@ export class WlSecurity extends WebslabElement {
     }
 
     .wrap {
+      display: flex;
+
       position: absolute;
       top: 0;
 
       width: 100%;
       height: 100%;
-      min-height: 90svh;
+
+      & .message {
+        color: crimson;
+        font-weight: bold;
+      }
+
+      justify-content: center;
 
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
@@ -44,8 +52,15 @@ export class WlSecurity extends WebslabElement {
       transition: opacity 1s;
     }
 
-    .error {
-      text-align: center;
+    .warning {
+      position: absolute;
+      top: 30svh;
+
+      width: 100%;
+
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
   `;
 
@@ -63,6 +78,9 @@ export class WlSecurity extends WebslabElement {
   @query(".wrap")
   accessor wrap!: HTMLDivElement;
 
+  @query('slot[name="warning"]')
+  accessor warningSlot!: HTMLSlotElement;
+
   firstUpdated() {
     this.lockWrapStyle();
   }
@@ -71,6 +89,7 @@ export class WlSecurity extends WebslabElement {
     // deno-fmt-ignore-start
     return html`
       <slot></slot>
+
       <div class="wrap">
         ${this.task.render({
           pending: () => { this.setBorderColor("pending"); },
@@ -86,36 +105,52 @@ export class WlSecurity extends WebslabElement {
             }, Number(1) * 600);
           },
 
-          error: () => {
+          error: (e) => {
+            const error = e instanceof Error ? e : new Error("Unknown error");
+
             this.setBorderColor("error");
-            return html`<div class="error"><p>Error</p></div>`
+            this.warningSlot.style.display = "flex";
+
+            return html`<p>Error: <span class="message">${error.message}</span></p>`
           },
         })}
       </div>
+
+      <slot style="display: none;" class="warning" name="warning">
+        <h4>Please login to access:</h4>
+        <a href="login/" class="button button-primary">Login</a>
+      </slot>
     `;
     // deno-fmt-ignore-end
   }
 
   private task = new Task(this, {
-    task: async ([auth]) => {
-      const { error: readyError } = await catchErrorTyped(auth.isReady);
-      if (readyError) {
-        const message = readyError.message;
-        this.emit("wl-task:error", { detail: { message } });
+    task: async ([_auth]) => {
+      { // scoped: check auth ready
+        const { error } = await catchErrorTyped(_auth.isReady);
+        if (error) {
+          const message = error.message;
+          this.emit("wl-task:error", { detail: { message } });
 
-        throw new Error(message);
+          throw new Error(message);
+        }
       }
 
-      const { error: errorRoles } = this.checkRoles();
-      if (errorRoles) {
-        this.emit("wl-task:error", { detail: { message: errorRoles.message } });
-        throw errorRoles;
+      { // scoped: check auth user
+        const { error: error } = this.checkRoles();
+        if (error) {
+          this.emit("wl-task:error", {
+            detail: { message: error.message },
+          });
+
+          throw error;
+        }
       }
 
       // wait 1s
       // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      this.emit("wl-task:complete", { detail: { user: this.auth.getUser() } });
+      this.emit("wl-task:complete", { detail: { user: _auth.getUser() } });
     },
     args: () => [this.auth],
   });
