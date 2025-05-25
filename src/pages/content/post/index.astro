@@ -2,13 +2,16 @@
 import "./_slug.css"
 
 import Layout from '$components/client/layouts/Layout.astro';
+
+const needs = { auth: false, roles: [] }
+const back = { enabled: true, path: "content/blog/" }
 ---
 
 <Layout
   description="Blog post"
-  needs={{ auth: false, roles: [] }}
+  needs={needs}
+  back={back}
   page=""
-  back={{ enable: false }}
   title="Post: tab">
 
   <!-- actions -->
