@@ -31,13 +31,18 @@ if (error)  throw new Error(`Failed to fetch ${collectionName}: ${error}`)
 const pageTitle = content === "blog" ? "Blog Posts" : "Modules"
 
 const renderContent = render(template(collection.map(entry => ({ ...entry.data }))))
+
+const needs = {
+  auth: content === "modules",
+  roles: content === "modules" ? ["user"] : [],
+}
 ---
 
 <script src="$lib/client/webslab/database.ts"></script>
 
 <Layout
   description={`List of ${pageTitle}`}
-  needs={{ auth: false, roles: [] }}
+  needs={needs}
   page={pageTitle}
   back={{ enabled: false }}
   title={pageTitle}>
