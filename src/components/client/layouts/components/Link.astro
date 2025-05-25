@@ -3,13 +3,48 @@ import type { HTMLAttributes } from 'astro/types';
 
 type Props = HTMLAttributes<'a'>;
 
-const { href, class: className, ...props } = Astro.props;
-
+const { href = '', class: className, ...props } = Astro.props;
 const { pathname } = Astro.url;
-const subpath = pathname.match(/[^\/]+/g);
-const isActive = href === pathname
-  || href === '/' + subpath?.[0]
-  || href.toString().includes(subpath?.[1]);
+
+// Remove leading/trailing slashes for comparison
+function normalize(path) {
+  return (path || '')
+    .replace(/^\/+|\/+$/g, '') // remove leading/trailing slashes
+    .toLowerCase();
+}
+
+const normalizedHref = normalize(href);
+const normalizedPathname = normalize(pathname);
+
+// Section mapping: which nav link should be active for which path segments
+const sectionMap = {
+  'content/blog': ['content/blog', 'content/post'],
+  'content/modules': ['content/modules', 'content/module'],
+  'about': ['about'],
+  '': [''], // home
+};
+
+// Find which section this link belongs to
+function getSectionKey(href) {
+  if (!href) return '';
+  if (href.startsWith('content/blog')) return 'content/blog';
+  if (href.startsWith('content/modules')) return 'content/modules';
+  if (href.startsWith('about')) return 'about';
+  return '';
+}
+
+const sectionKey = getSectionKey(normalizedHref);
+const sectionPaths = sectionMap[sectionKey] || [];
+
+let isActive;
+if (sectionKey === '') {
+  // Home is only active if the path is empty (i.e., '/')
+  isActive = normalizedPathname === '';
+} else {
+  isActive = sectionPaths.some(section =>
+    normalizedPathname.startsWith(section)
+  );
+}
 ---
 
 <a
