@@ -35,6 +35,19 @@ const loginModalSelector = "login-modal";
         <slot />
       </header>
     </main>
+
+    <div class="text-center" slot="warning">
+      <h4>Please login to access</h4>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        aria-label="login to access"
+        data-bs-toggle="modal"
+        data-bs-target={"#" + loginModalSelector}>
+        Login
+      </button>
+    </div>
   </wl-security>
 </Base>
 
