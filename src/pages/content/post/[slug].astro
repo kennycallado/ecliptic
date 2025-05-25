@@ -24,16 +24,19 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props
+
 const renderContent = render(template(post))
+const needs = { auth: false, roles: [] }
+const back = { enabled: true, path: "content/blog/" }
 ---
 
 <script src="$lib/client/webslab/database.ts"></script>
 
 <Layout
   description={post.description}
-  needs={{ auth: false, roles: [] }}
   page={post.title}
-  back={{ enabled: true, path: "content/blog/" }}
+  needs={needs}
+  back={back}
   title={"Post: " + post.title}>
 
   <!-- actions -->

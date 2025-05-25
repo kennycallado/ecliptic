@@ -4,7 +4,6 @@ const { page, back = { enabled: false, path: undefined }} = Astro.props
 
 <header class="position-relative">
   <a
-    onclick="this.href !== undefined && window.history.back()"
     class:list={["p-2 pt-1 position-absolute top-0 start-0 border border-primary rounded", { "d-none": !back.enabled  }]}
     href={back.path}>
     <svg
