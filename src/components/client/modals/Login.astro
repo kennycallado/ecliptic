@@ -120,6 +120,10 @@ const { selector } = Astro.props;
         alert("Error: The email or password is incorrect. Maybe both?");
       }
 
-    } else location.reload();
+    } else {
+      if (location.pathname.endsWith("login/")) {
+        location.href = "/";
+      } else location.reload();
+    }
   })
 </script>

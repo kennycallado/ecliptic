@@ -1,0 +1,96 @@
+---
+import Layout from '$components/client/layouts/Layout.astro';
+
+const needs = { auth: false, roles: [] };
+---
+<!-- WARNING: uses script from de modal  -->
+
+<Layout
+  needs={needs}
+  title="About"
+  page="How we are?"
+  back={{enabled: true, path: ''}}>
+
+  <div
+    style="height: 80svh; display: flex; justify-content: center;">
+
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <form id="form-login">
+            <div class="mb-3">
+              <label
+                class="form-label"
+                for="inputUsername">
+                Username
+              </label>
+
+              <input
+                class="form-control"
+                id="inputEmail"
+                name="email"
+                autocomplete="on"
+                type="email" />
+            </div>
+
+            <div class="mb-3">
+              <label
+                class="form-label"
+                for="inputPassword">
+                Password
+              </label>
+
+              <input
+                class="form-control"
+                id="inputPassword"
+                name="password"
+                type="password"
+                autocomplete="on"
+                required />
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <div class="mb-3 form-check">
+                <input
+                  class="form-check-input"
+                  id="inputCheck"
+                  type="checkbox" />
+
+                <label
+                  class="form-check-label"
+                  for="inputCheck">
+                  Remember me
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            data-bs-dismiss="modal">
+            Close
+          </button>
+
+          <button
+            form="form-login"
+            type="submit"
+            class="btn btn-primary">
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
