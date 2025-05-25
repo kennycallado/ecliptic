@@ -17,6 +17,7 @@ import Layout from '$components/client/layouts/Layout.astro';
   <!-- actions -->
 
   <img
+    id="post-hero"
     class="d-block img-fluid mx-auto border border-2 rounded shadow-sm"
     width="960"
     height="540"
@@ -49,7 +50,7 @@ import Layout from '$components/client/layouts/Layout.astro';
 
   const metaDescriptionEl = document.querySelector("meta[name='description']")
   const titleEl = document.querySelector("title")
-  const imgEl = document.querySelector("img")
+  const imgEl = document.querySelector("#post-hero")
   const h1El = document.querySelector("h1")
 
   wlDatabase.addEventListener("wl-task:completed", (event) => {
