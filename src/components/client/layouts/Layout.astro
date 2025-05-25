@@ -1,6 +1,7 @@
 ---
 import Base from './Base.astro';
 
+import Back from "./components/Back.astro"
 import Navbar from "./components/Navbar.astro"
 import LoginModal from "$components/client/modals/Login.astro"
 
@@ -9,6 +10,7 @@ const {
   description = "home",
   page = "noname",
   title = "home",
+  back,
 } = Astro.props;
 
 const loginModalSelector = "login-modal";
@@ -25,12 +27,13 @@ const loginModalSelector = "login-modal";
       class="container bg-body-tertiary rounded shadow-lg mt-4 mb-5"
       id="content">
 
-      <header class="pt-3 text-center">
-        <h1 style="view-transition-name: header-title;">{page}</h1>
-        <hr class="mt-0 w-75 mx-auto text-primary" />
-      </header>
+      <header class="p-1">
+        <Back back={back} page={page}>
+          <slot name="actions" />
+        </Back>
 
-      <slot />
+        <slot />
+      </header>
     </main>
   </wl-security>
 </Base>

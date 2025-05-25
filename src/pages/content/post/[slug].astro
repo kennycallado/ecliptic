@@ -33,7 +33,7 @@ const renderContent = render(template(post))
   description={post.description}
   needs={{ auth: false, roles: [] }}
   page={post.title}
-  back={{ enabled: false }}
+  back={{ enabled: true, path: "content/blog/" }}
   title={"Post: " + post.title}>
 
   <!-- actions -->
