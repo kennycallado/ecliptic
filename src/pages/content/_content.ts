@@ -14,20 +14,34 @@ export const template = (content: any[]) =>
             aria-label=${item.title}
             href=${`content/${item.table}/${item.slug}/`}>
 
-            <img
-              style="view-transition-name: item-${item.slug};"
-              class="img-fluid rounded"
-              src=${item.hero}
-              alt=${item.title}
-              width="${index === 0 ? 960: 480 }"
-              height="${index === 0 ? 540 : 270}"
-              size="(max-width: 720px) 540px, 960px"
-              loading="${index === 0 ? 'eager' : 'lazy'}" />
+            <div
+              class="mx-auto position-relative"
+              style="max-width: ${index === 0 ? '960px' : '480px'};">
+
+              <img
+                style="view-transition-name: item-${item.slug};"
+                class="img-fluid rounded"
+                src=${item.hero}
+                alt=${item.title}
+                width="${index === 0 ? 960: 480 }"
+                height="${index === 0 ? 540 : 270}"
+                size="(max-width: 720px) 540px, 960px"
+                loading="${index === 0 ? 'eager' : 'lazy'}" />
+
+              <small class="position-absolute bottom-0 end-0 mb-1 p-2 text-light bg-dark bg-opacity-75 rounded-start">
+                <em>${item.publish.toLocaleDateString('es-ES', {year: 'numeric', month: 'short', day: 'numeric'})}</em>
+              </small>
+
+              <small class="position-absolute bottom-0 start-0 mb-1 p-2 text-white bg-dark bg-opacity-75 rounded-end">
+                Visits - Likes
+              </small>
+            </div>
 
             <p class="m-0 l-1">
               <span class="${index === 0 ? 'display-6' : 'lead'}">${item.title}</span>
-              <small class="d-block text-sm text-secondary">${item.publish.toLocaleDateString('es-ES')}</small>
             </p>
+
+            <p class="w-75 mx-auto text-secondary text-truncate"><em>${item.description}</em></p>
           </a>
         </li>
       `
@@ -44,7 +58,7 @@ export const hydrate = () => {
   const wlDatabase = document.querySelector("wl-database") as WlDatabase;
 
   wlDatabase.template = template;
-  wlDatabase.query = `SELECT id,meta::tb(id) as table,hero,title,slug,publish FROM ${table}
+  wlDatabase.query = `SELECT id,meta::tb(id) as table,hero,title,description,slug,publish FROM ${table}
     WHERE !draft AND publish < time::now()
     ORDER BY publish DESC;
   `;
