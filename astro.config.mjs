@@ -19,7 +19,7 @@ export default defineConfig({
   site,
 
   // TODO: not really tested
-  // prefetch: { defaultStrategy: "viewport" },
+  prefetch: { defaultStrategy: "viewport" },
   trailingSlash: "always",
 
   integrations: [
@@ -58,14 +58,17 @@ export default defineConfig({
 
       workbox: {
         navigateFallback: base,
-        globPatterns: ["**/*.{css,js,html,svg,png,ico,txt,webp,jpg,jpeg,gif}"],
         importScripts: [`${base}js/workers/push.js`],
+        globPatterns: ["**/*.{css,js,html,svg,png,ico,txt,webp,jpg,jpeg,gif}"],
+        globIgnores: ["**/*404.html"],
+
         navigateFallbackDenylist: [new RegExp(`^${base}content\\/`)], // TODO: check if can use /content/fallback
         runtimeCaching: [
           {
             urlPattern: new RegExp(`^${base}content\\/`),
             handler: "NetworkFirst",
           },
+
           {
             // Coincide con las imágenes en /_astro/ y otras extensiones comunes
             urlPattern: ({ request, url }) => {
@@ -76,6 +79,7 @@ export default defineConfig({
               // o simplemente cachear todas las imágenes
               return /\.(?:png|gif|jpg|jpeg|svg|webp)$/.test(url.pathname);
             },
+
             // Estrategia común para imágenes: CacheFirst o StaleWhileRevalidate
             handler: "CacheFirst", // Intenta servir desde caché primero, si no, red y cachea.
             options: {
@@ -84,10 +88,9 @@ export default defineConfig({
                 maxEntries: 100, // Máximo número de imágenes a cachear
                 maxAgeSeconds: 30 * 24 * 60 * 60, // Cachear por 30 días
               },
+
               // Opcional: si las imágenes son de dominios cruzados y quieres cachearlas
-              // cacheableResponse: {
-              //   statuses: [0, 200], // Cachea respuestas opacas (0) y exitosas (200)
-              // },
+              cacheableResponse: { statuses: [0, 200] }, // Cachea respuestas opacas (0) y exitosas (200)
             },
           },
         ],
