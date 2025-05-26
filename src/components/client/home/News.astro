@@ -17,6 +17,7 @@ if (error)  throw new Error(`Failed to fetch posts: ${error}`)
 
 // 3 latest by publish date
 const filtered = collection
+  // @ts-ignorea: NOTE: `data` is not typed in Astro's content collections
   .sort((a, b) => new Date(b.data.publish) < new Date(a.data.publish))
   .slice(0, 3)
 
