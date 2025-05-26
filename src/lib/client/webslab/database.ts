@@ -49,11 +49,7 @@ export class WlDatabase<T = unknown> extends WebslabElement {
   accessor templateSlot!: HTMLSlotElement;
 
   get targetEl(): HTMLElement | undefined {
-    const assigned = this.bodySlot.assignedElements();
-
-    return assigned.find((el) => el.matches(this.target)) as
-      | HTMLElement
-      | undefined;
+    return this.querySelector(this.target) as HTMLElement | undefined;
   }
 
   disconnectedCallback() {
