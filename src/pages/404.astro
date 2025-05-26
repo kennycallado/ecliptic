@@ -1,0 +1,22 @@
+<!-- WARNING: just during dev -->
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+  <script>
+    import { BASE } from "../lib/client/consts.ts"
+
+    const pathname = location.pathname;
+
+    if (pathname.includes("content")) {
+      if (pathname.includes("post")) {
+        const slug = pathname.split("/").slice(-2)[0];
+        location.href = `${BASE}content/post/?slug=${slug}`;
+      }
+
+      if (pathname.includes("module")) {
+        const slug = pathname.split("/").slice(-2)[0];
+        location.href = `${BASE}content/module/?slug=${slug}`;
+      }
+    }
+  </script>
+</html>
