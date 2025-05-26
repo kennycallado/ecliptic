@@ -35,8 +35,8 @@ const preRender = render(template(filtered.map(entry => ({ ...entry.data }))))
   </article>
 
   <template data-island="replace">
-    <wl-database target="#article">
-      <article id="article" set:html={preRender}></article>
+    <wl-database target="#news-article">
+      <article id="news-article" set:html={preRender}></article>
     </wl-database>
   </template>
 </is-land>
