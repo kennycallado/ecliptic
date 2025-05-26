@@ -1,0 +1,20 @@
+li,
+li * {
+  transition: all 0.5s;
+}
+
+li:hover {
+  transform: scale(1.02);
+}
+
+li a img {
+  filter: grayscale(50%);
+}
+
+li a:hover img {
+  filter: grayscale(0);
+}
+
+li a:hover p {
+  color: var(--bs-primary);
+}

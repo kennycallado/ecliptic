@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets'
+
 import Layout from '$components/client/layouts/Layout.astro'
+import News   from '$components/client/home/News.astro'
 
 import logoP from '$assets/images/logo-base-1080_1080.png'
 import logoC from '$assets/images/logo-conselleria-rgb_rojo_cast.png'
@@ -40,4 +42,10 @@ const needs = { auth: false, roles: [] }
     <div class="col-6 col-md-3 col-lg-3 mx-auto bg-warning"></div>
     <div class="col mx-auto bg-primary">f</div>
   </div>
+
+  <hr class="my-4" />
+
+  <section class="px-0 px-md-4 my-4 py-4 mx-auto">
+    <News />
+  </section>
 </Layout>

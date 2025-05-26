@@ -1,0 +1,61 @@
+---
+import './_news.css'
+
+import { getCollection } from 'astro:content'
+
+import { catchErrorTyped } from "$lib/utils.ts"
+import { render } from '$lib/server/ssrLit.ts'
+
+import { template } from './_news.ts'
+
+const {error, data: collection} = await catchErrorTyped(getCollection(
+  "posts",
+  ({data}) => data.draft === false
+))
+
+if (error)  throw new Error(`Failed to fetch posts: ${error}`)
+
+// 3 latest by publish date
+const filtered = collection
+  .sort((a, b) => new Date(b.data.publish) < new Date(a.data.publish))
+  .slice(0, 3)
+
+const preRender = render(template(filtered.map(entry => ({ ...entry.data }))))
+---
+
+<script src="@11ty/is-land/is-land.js"></script>
+<script src="$lib/client/webslab/database.ts"></script>
+
+<h2 class="text-center">Noticias:</h2>
+
+<is-land id="news-island" on:visible>
+  <article
+    set:html={preRender}
+    style="border: 2px solid transparent;">
+  </article>
+
+  <template data-island="replace">
+    <wl-database target="#article">
+      <article id="article" set:html={preRender}></article>
+    </wl-database>
+  </template>
+</is-land>
+
+<div class="text-center">
+  <a class="btn btn-secondary" href="/content/blog/">Ver más noticias</a>
+</div>
+
+<script>
+  import { template } from './_news.ts'
+  import { type WlDatabase } from "$lib/client/webslab/database.ts";
+
+  const islandTemplate = document.querySelector("#news-island template") as HTMLTemplateElement;
+  const wlDatabase = islandTemplate.content.querySelector("wl-database") as WlDatabase;
+
+  wlDatabase.template = template;
+  wlDatabase.query = `SELECT id,hero,title,description,slug,publish FROM post ORDER BY publish DESC LIMIT 3;`
+
+  wlDatabase.addEventListener("wl-task:completed", () => {
+    console.log("Database is ready");
+  });
+</script>
