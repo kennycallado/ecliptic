@@ -7,7 +7,7 @@ export const template = (content: any[]) => html`
       <li class="card col-11 col-md-5 col-lg-4 col-xxl-3 p-0 mb-2 h-100">
         <a
           class="d-block text-center text-decoration-none"
-          href="/content/post/${post.slug}/">
+          href="content/post/${post.slug}/">
 
           <img
             src="${post.hero}"
