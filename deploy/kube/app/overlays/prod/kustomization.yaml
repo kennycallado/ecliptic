@@ -20,7 +20,7 @@ commonLabels:
 images:
   - name: PLACEHOLDER_IMAGE
     newName: docker.io/kennycallado/ecliptic
-    newTag: 0.1.14 # TODO: update
+    newTag: 0.1.15 # TODO: update
 
 generatorOptions:
   disableNameSuffixHash: true
