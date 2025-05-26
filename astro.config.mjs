@@ -62,10 +62,19 @@ export default defineConfig({
         globPatterns: ["**/*.{css,js,html,svg,png,ico,txt,webp,jpg,jpeg,gif}"],
         globIgnores: ["**/*404.html"],
 
-        navigateFallbackDenylist: [new RegExp(`^${base}content\\/`)], // TODO: check if can use /content/fallback
+        navigateFallbackDenylist: [
+          new RegExp(`^${base}content\\/`),
+          new RegExp(`^${base}auth\\/`),
+        ],
+
         runtimeCaching: [
           {
             urlPattern: new RegExp(`^${base}content\\/`),
+            handler: "NetworkFirst",
+          },
+
+          {
+            urlPattern: new RegExp(`^${base}auth\\/`),
             handler: "NetworkFirst",
           },
 

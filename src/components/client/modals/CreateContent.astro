@@ -1,0 +1,83 @@
+---
+interface Props {
+	table: string;
+	modalId: string;
+}
+
+const { table, modalId } = Astro.props;
+---
+
+<div
+  class="modal fade"
+  id={modalId}
+  tabindex="-1"
+  aria-labelledby={modalId + "-label"}
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id={modalId + "-label"}>Create Content</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body my-4">
+        <form data-table={table} id="admin-content-modal-form">
+          <div class="mb-3">
+            <label class="form-label d-block">
+              Title
+              <input type="text" class="form-control" name="title" minlength="5" maxlength="100" />
+            </label>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" form="admin-content-modal-form" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { auth } from '$lib/client/services/auth.ts'
+
+  const url = new URL(location.href);
+  const table = url.pathname.split("/").slice(-2)[0];
+
+  // NOTE: modalId
+  const modal = document.getElementById(`modal-create-${table}`)
+  const close = modal.querySelector('.btn-close')
+  const form = modal.querySelector('form')
+
+  form.addEventListener('submit', async (evt) => {
+    evt.preventDefault()
+
+    const formData = new FormData(form)
+    const values = Object.fromEntries(formData)
+    const table = evt.target.dataset.table
+
+    if (values.title.length < 5) {
+      alert('Title must be at least 5 characters')
+      return
+    }
+
+    const post = {
+      title: values.title,
+    }
+
+    let res
+
+    try {
+      res = await auth.getDB().create(table, post)
+    } catch (err) {
+      if (err.message.includes('index')) alert('Title already exists')
+
+      console.error(err.message)
+      return
+    }
+
+    form.reset()
+    close.click()
+    // window.location.href = `auth/admin/content/edit?id=${res[0].id.toString()}`
+  })
+</script>

@@ -1,0 +1,20 @@
+---
+import Layout from '$components/client/layouts/Layout.astro'
+
+const needs = {
+  auth: true,
+  roles: ["admin", "thera"],
+}
+---
+
+<script src="$lib/client/webslab/database.ts"></script>
+
+<Layout
+  description="Edit and manage a post"
+  needs={needs}
+  page="Page"
+  title="Títle"
+  back={{ enabled: true, path: "auth/admin/content/post/" }}>
+
+  <h2>Post Editor</h2>
+</Layout>
