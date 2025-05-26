@@ -1,17 +1,17 @@
 -- NOTE: TABLE: user
 DEFINE TABLE OVERWRITE user TYPE NORMAL SCHEMAFULL PERMISSIONS FOR select, update WHERE id = $auth.id;
 
-DEFINE FIELD OVERWRITE name ON user TYPE string;
+DEFINE FIELD OVERWRITE name ON user TYPE string PERMISSIONS FOR select FULL;
 DEFINE FIELD OVERWRITE role ON user TYPE string ASSERT $value IN ['user', 'admin'] DEFAULT 'user' PERMISSIONS FOR update NONE;
 DEFINE FIELD OVERWRITE email ON user TYPE string ASSERT string::is::email($value) PERMISSIONS FOR update NONE; -- update only by server
 DEFINE FIELD OVERWRITE image ON user TYPE option<string> ASSERT $value = NONE OR string::is::url($value);
-DEFINE FIELD OVERWRITE createdAt ON user TYPE datetime PERMISSIONS FOR select, update NONE;
-DEFINE FIELD OVERWRITE updatedAt ON user TYPE datetime PERMISSIONS FOR select, update NONE;
-DEFINE FIELD OVERWRITE emailVerified ON user TYPE bool PERMISSIONS FOR select, update NONE; -- update only by server
+DEFINE FIELD OVERWRITE createdAt ON user TYPE option<datetime> PERMISSIONS FOR select, update NONE VALUE $before OR time::now();
+DEFINE FIELD OVERWRITE updatedAt ON user TYPE option<datetime> PERMISSIONS FOR select, update NONE VALUE time::now();
+DEFINE FIELD OVERWRITE emailVerified ON user TYPE option<bool> PERMISSIONS FOR select, update NONE DEFAULT false; -- update only by server
 
 DEFINE FIELD OVERWRITE notification ON user FLEXIBLE TYPE option<object>; -- will be at devices
 
-DEFINE FIELD OVERWRITE banned ON user TYPE bool DEFAULT false PERMISSIONS FOR select, update NONE;
+DEFINE FIELD OVERWRITE banned ON user TYPE option<bool> PERMISSIONS FOR select, update NONE DEFAULT false ;
 DEFINE FIELD OVERWRITE banReason ON user TYPE option<string> PERMISSIONS FOR update NONE;
 DEFINE FIELD OVERWRITE banExpires ON user TYPE option<datetime> PERMISSIONS FOR update NONE;
 
