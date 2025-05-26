@@ -34,7 +34,7 @@ DEFINE FIELD OVERWRITE author ON post TYPE option<record<user>>
   VALUE $before OR $value OR $auth
   PERMISSIONS FULL;
 DEFINE FIELD OVERWRITE description ON post TYPE option<string>
-  ASSERT string::len($value) INSIDE 0..=50;
+  ASSERT string::len($value) INSIDE 0..=100;
 DEFINE FIELD OVERWRITE content ON post TYPE option<array<string>>
   DEFAULT ['']
   ASSERT array::map($value, |$inner: string| string::len($inner) < 10000)
