@@ -40,6 +40,7 @@ const { table, modalId } = Astro.props;
 
 <script>
   import { auth } from '$lib/client/services/auth.ts'
+  import { catchErrorTyped } from '$lib/utils.ts'
 
   const url = new URL(location.href);
   const table = url.pathname.split("/").slice(-2)[0];
@@ -65,19 +66,18 @@ const { table, modalId } = Astro.props;
       title: values.title,
     }
 
-    let res
+    const {error, data} = await catchErrorTyped(auth.getDB().create(table, post))
 
-    try {
-      res = await auth.getDB().create(table, post)
-    } catch (err) {
-      if (err.message.includes('index')) alert('Title already exists')
+    if (error) {
+      if (error.message.includes('index')) alert('Title already exists')
 
-      console.error(err.message)
+      console.error(error.message)
       return
     }
 
     form.reset()
     close.click()
-    // window.location.href = `auth/admin/content/edit?id=${res[0].id.toString()}`
+
+    // location.href = `auth/admin/content/edit/?id=${data[0].id.toString()}`
   })
 </script>
