@@ -1,7 +1,7 @@
 {
   "name": "ecliptic-eclipse",
   "type": "module",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "scripts": {
     "dev": "astro dev",
     "build:prev": "PREV=true astro build && mv dist/*.* dist/client",
