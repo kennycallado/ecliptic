@@ -2,6 +2,7 @@ $primary: #613583;
 $font-size-base: 1.25rem;
 
 @import "bootstrap/scss/bootstrap";
+@import "./editor-colors.scss";
 
 @view-transition {
   navigation: auto;
@@ -20,6 +21,11 @@ $font-size-base: 1.25rem;
 
 :not(:defined) {
   visibility: hidden;
+}
+
+::selection {
+  background-color: rgba(var(--bs-primary-rgb), 0.5);
+  color: white;
 }
 
 h1 {

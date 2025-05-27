@@ -1,0 +1,51 @@
+.lab-green {
+  color: #007398;
+}
+
+[data-bs-theme="dark"] .lab-green {
+  color: #a0d1ca;
+}
+
+.lab-green-invert {
+  color: #a0d1ca;
+}
+
+[data-bs-theme="dark"] .lab-green-invert {
+  color: #007398;
+}
+
+.lab-blue {
+  color: #365abd;
+}
+
+[data-bs-theme="dark"] .lab-blue {
+  color: #98b6e4;
+}
+
+.lab-blue-invert {
+  color: #98b6e4;
+}
+
+[data-bs-theme="dark"] .lab-blue-invert {
+  color: #365abd;
+}
+
+.lab-purple {
+  color: #8659b5;
+}
+
+[data-bs-theme="dark"] .lab-purple {
+  color: #c7b2de;
+}
+
+.lab-purple-invert {
+  color: #c7b2de;
+}
+
+[data-bs-theme="dark"] .lab-purple-invert {
+  color: #8659b5;
+}
+
+.text-blue {
+  color: var(--bs-blue);
+}
