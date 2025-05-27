@@ -94,8 +94,11 @@ const needs = {
     const wlDatabase = document.querySelector("wl-database") as WlDatabase;
 
     wlDatabase.template = template;
-    wlDatabase.query = `SELECT
-id,meta::tb(id) as table,title,author.name as author,publish,publish < time::now() AND !draft as published
+    wlDatabase.query = `
+      SELECT
+        meta::tb(id) as table,
+        publish,publish < time::now() AND !draft as published,
+        id,title,author.name as author
       FROM ${table} ORDER BY publish DESC;
     `;
 

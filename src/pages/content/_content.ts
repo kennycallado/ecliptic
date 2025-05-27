@@ -58,9 +58,10 @@ export const hydrate = () => {
   const wlDatabase = document.querySelector("wl-database") as WlDatabase;
 
   wlDatabase.template = template;
-  wlDatabase.query = `SELECT id,meta::tb(id) as table,hero,title,description,slug,publish FROM ${table}
-    WHERE !draft AND publish < time::now()
-    ORDER BY publish DESC;
+  wlDatabase.query = `
+    SELECT
+      id,meta::tb(id) as table,hero,title,description,slug,publish
+    FROM ${table} WHERE !draft AND publish < time::now() ORDER BY publish DESC;
   `;
 
   wlDatabase.addEventListener("wl-task:completed", () => {

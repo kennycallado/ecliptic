@@ -54,7 +54,10 @@ const preRender = render(template(filtered.map(entry => ({ ...entry.data }))))
   const wlDatabase = islandTemplate.content.querySelector("wl-database") as WlDatabase;
 
   wlDatabase.template = template;
-  wlDatabase.query = `SELECT id,hero,title,description,slug,publish FROM post ORDER BY publish DESC LIMIT 3;`
+  wlDatabase.query = `
+    SELECT
+      id,hero,title,description,slug,publish
+    FROM post ORDER BY publish DESC LIMIT 3;`
 
   wlDatabase.addEventListener("wl-task:completed", () => {
     console.log("Database is ready");

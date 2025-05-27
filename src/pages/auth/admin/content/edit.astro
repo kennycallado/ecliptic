@@ -40,10 +40,12 @@ const needs = {
       const wlDatabase = document.querySelector("wl-database");
 
       wlDatabase.template = template;
-      wlDatabase.query = `SELECT *,
-        time::format(publish, '%Y-%m-%d') as publish_fmt,
-        meta::tb(id) as table,
-        '${editSelector}' as selector FROM ${contentId};
+      wlDatabase.query = `
+        SELECT *,
+          meta::tb(id) as table,
+          '${editSelector}' as selector,
+          time::format(publish, '%Y-%m-%d') as publish_fmt
+        FROM ${contentId};
       `;
 
       wlDatabase.addEventListener("wl-task:completed", (e) => {
