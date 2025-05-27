@@ -127,6 +127,7 @@ export function saveContent() {
   const prepare = {
     hero: values.hero,
     title: values.title,
+    publish: new Date(values.publish.toString()),
     description: values.description,
     // author,
     content,
