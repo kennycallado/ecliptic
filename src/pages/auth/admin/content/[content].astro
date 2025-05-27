@@ -100,9 +100,8 @@ id,meta::tb(id) as table,title,author.name as author,publish,publish < time::now
     `;
 
     wlDatabase.addEventListener("wl-task:completed", (e) => {
-      const { result } = (e as CustomEvent).detail;
+      // const { result } = (e as CustomEvent).detail;
 
-      console.log("Query result:", result);
       console.log("Database is ready");
     });
 

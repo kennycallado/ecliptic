@@ -26,11 +26,8 @@ const needs = {
     <article id="edit-article"></article>
 
     <script>
-      // import { hydrate, saveContent, template } from "./_edit.ts";
       import { editor } from "$lib/client/services/editor.ts";
-
       import { saveContent, template } from "./_edit.ts";
-      import { type WlDatabase } from "$lib/client/webslab/database.ts";
 
       document
         .querySelector("#edit-content-save")!
@@ -40,7 +37,7 @@ const needs = {
       const contentId = new URLSearchParams(location.search).get("id");
       const editSelector = "content-editor";
 
-      const wlDatabase = document.querySelector("wl-database") as WlDatabase;
+      const wlDatabase = document.querySelector("wl-database");
 
       wlDatabase.template = template;
       wlDatabase.query = `SELECT *,
@@ -52,9 +49,7 @@ const needs = {
       wlDatabase.addEventListener("wl-task:completed", (e) => {
         const { result } = (e as CustomEvent).detail;
 
-        const editSelector = result[0].selector;
-        const content = document.getElementById(editSelector) as HTMLTextAreaElement;
-
+        const content = wlDatabase.querySelector("#" + editSelector);
         editor.makeEditor(content);
       });
     </script>
