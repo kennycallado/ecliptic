@@ -54,7 +54,7 @@ export const template = (content: any[]) =>
 
           <li>
             <a
-              href="auth/admin/content/${item.table}/edit/?id=${item.id}"
+              href="auth/admin/content/edit/?id=${item.id}"
               class="btn btn-sm btn-success dropdown-item">update</a>
           </li>
 
