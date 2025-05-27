@@ -26,7 +26,7 @@ export const template = (content: any[]) =>
           @click=${statsItem}
           class="btn btn-sm btn-info">stats</button>
 
-        <a href="auth/admin/content/${item.table}/edit/?id=${item.id}" class="btn btn-sm btn-success">update</a>
+        <a href="auth/admin/content/edit/?id=${item.id}" class="btn btn-sm btn-success">update</a>
 
         <button
           @click=${deleteItem}

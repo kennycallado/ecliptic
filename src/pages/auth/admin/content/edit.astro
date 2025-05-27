@@ -1,0 +1,62 @@
+---
+import '$assets/styles/editor.scss'
+
+import Layout from '$components/client/layouts/Layout.astro'
+
+const needs = {
+  auth: true,
+  roles: ["admin", "thera"],
+}
+---
+
+<script src="$lib/client/webslab/database.ts"></script>
+
+<Layout
+  description="Edit and manage a post"
+  needs={needs}
+  page="Page"
+  title="Títle"
+  back={{ enabled: true, path: "auth/admin/content/post/" }}>
+
+  <div slot="actions">
+    <button id="edit-content-save" class="btn btn-primary">save</button>
+  </div>
+
+  <wl-database target="#edit-article">
+    <article id="edit-article"></article>
+
+    <script>
+      // import { hydrate, saveContent, template } from "./_edit.ts";
+      import { editor } from "$lib/client/services/editor.ts";
+
+      import { saveContent, template } from "./_edit.ts";
+      import { type WlDatabase } from "$lib/client/webslab/database.ts";
+
+      document
+        .querySelector("#edit-content-save")!
+        .addEventListener("click", saveContent);
+      // saveButton.addEventListener("click", saveContent);
+
+      const contentId = new URLSearchParams(location.search).get("id");
+      const editSelector = "content-editor";
+
+      const wlDatabase = document.querySelector("wl-database") as WlDatabase;
+
+      wlDatabase.template = template;
+      wlDatabase.query = `SELECT *,
+        time::format(publish, '%Y-%m-%d') as publish_fmt,
+        meta::tb(id) as table,
+        '${editSelector}' as selector FROM ${contentId};
+      `;
+
+      wlDatabase.addEventListener("wl-task:completed", (e) => {
+        const { result } = (e as CustomEvent).detail;
+
+        const editSelector = result[0].selector;
+        const content = document.getElementById(editSelector) as HTMLTextAreaElement;
+
+        editor.makeEditor(content);
+      });
+    </script>
+  </wl-database>
+</Layout>
