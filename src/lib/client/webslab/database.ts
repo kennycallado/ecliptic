@@ -113,7 +113,7 @@ export class WlDatabase<T = unknown> extends WebslabElement {
       // wait 1s
       // await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      this.viewTransition(() => {
+      const transition = this.viewTransition(() => {
         this.targetEl!.innerHTML = "";
 
         try {
@@ -162,6 +162,9 @@ export class WlDatabase<T = unknown> extends WebslabElement {
         this.emit("wl-task:live", { detail: { uuid } });
       }
 
+      // wait for transition to finish
+      await transition?.finished;
+
       this.emit("wl-task:completed", { detail: { result } });
       return "complete";
     },
@@ -170,7 +173,7 @@ export class WlDatabase<T = unknown> extends WebslabElement {
 
   private viewTransition(cb: () => void) {
     if ("startViewTransition" in document) {
-      document.startViewTransition(() => cb());
+      return document.startViewTransition(() => cb());
     } else cb();
   }
 
