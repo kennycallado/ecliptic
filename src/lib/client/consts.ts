@@ -6,6 +6,10 @@ const port = import.meta.env.PROD
 export const SITE = import.meta.env.SITE_URL || import.meta.env.SITE + port;
 export const BASE = import.meta.env.BASE_URL + trailing;
 
+export const PROJECT_SPEC = import.meta.env.PUBLIC_PROJECT_SPEC || "webslab";
+export const PROJECT_NAME = import.meta.env.PUBLIC_PROJECT_NAME || "ecliptic";
+export const PROJECT_TOKEN = "TOKEN";
+
 export type DBConfig = typeof DB;
 export const DB = {
   url: import.meta.env.PUBLIC_DB_ENDPOINT!,
