@@ -162,6 +162,8 @@ class AuthService {
   }
 
   public async getWsDb(token?: string): Promise<Surreal> {
+    token ??= this.token;
+
     if (!this.db || !this.isReady) {
       throw new Error("Database is not ready yet");
     }
