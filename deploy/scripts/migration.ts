@@ -21,11 +21,11 @@ export async function migrating(): Promise<Result> {
   const tpl = new Template();
   const env = Deno.env.toObject();
 
-  await db.isReady;
+  await db.ready;
 
-  for await (const entry of expandGlob(join(MIGRATIONS_DIR, "*.tpl"))) {
+  // Apply .tpl files
+  for await (const entry of expandGlob(join(MIGRATIONS_DIR, "**/*.tpl"))) {
     if (!entry.isFile) continue;
-    if (entry.path.endsWith(".surql")) continue; // skip .tpl files
 
     const templateText = await Deno.readTextFile(entry.path);
     const rendered = tpl.render(templateText, env);
@@ -41,9 +41,9 @@ export async function migrating(): Promise<Result> {
     console.log(`Applied migration template: ${entry.path}`);
   }
 
-  for await (const entry of expandGlob(join(MIGRATIONS_DIR, "*.surql"))) {
+  // Apply .surql files
+  for await (const entry of expandGlob(join(MIGRATIONS_DIR, "**/*.surql"))) {
     if (!entry.isFile) continue;
-    if (entry.path.endsWith(".tpl")) continue;
 
     const sql = await Deno.readTextFile(entry.path);
     const res = await db.query<unknown[]>(sql);
