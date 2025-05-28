@@ -126,7 +126,7 @@ export default defineConfig({
 
   vite: {
     esbuild: {
-      target: "es2021",
+      target: "es2022",
     },
 
     server: {
