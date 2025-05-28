@@ -1,6 +1,6 @@
 DEFINE TABLE OVERWRITE account TYPE NORMAL SCHEMALESS;
 
-DEFINE FIELD password ON account TYPE string
+DEFINE FIELD OVERWRITE password ON account TYPE string
   ASSERT $value.contains('$argon2id$')
   PERMISSIONS NONE;
 
