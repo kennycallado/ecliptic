@@ -1,37 +1,38 @@
+import { RecordId } from "surrealdb";
 import { defineCollection, z } from "astro:content";
 
-import { db as dbSvc } from "$lib/server/services/database.ts";
+import { dbService } from "$lib/server/services/database.ts";
 import { catchErrorTyped } from "$lib/utils.ts";
+
+type Post = { id: string | RecordId };
 
 export const posts = defineCollection({
   loader: async () => {
-    const db = dbSvc.db;
-
-    { // scoped: db ready
-      const { error } = await catchErrorTyped(db.ready);
-      if (error) {
-        console.error("Database not ready:", error);
-      }
+    const {
+      error: errorDB,
+      data: db,
+    } = await catchErrorTyped(dbService.getDB());
+    if (errorDB) {
+      console.error("Database not ready:", errorDB);
+      // throw new Error("Database not ready");
     }
 
-    const query =
-      "SELECT *,meta::tb(id) as table FROM post WHERE !draft AND publish < time::now() ORDER BY publish DESC;";
+    if (!db) return [];
 
-    const { error, data } = await catchErrorTyped(db.query<object[][]>(query));
-    if (error) {
-      console.error("Failed to fetch posts:", error);
-    }
+    const query = `
+      SELECT *,meta::tb(id) as table FROM post
+      WHERE !draft AND publish < time::now()
+      ORDER BY publish DESC;`;
 
+    const { error, data } = await catchErrorTyped(db.query<Post[][]>(query));
+    if (error) console.error("Failed to fetch posts:", error);
     if (!data) return [];
 
-    return data[0].map((post) => ({
-      ...post,
-      id: post.id.toString(),
-    }));
+    return data[0].map((post) => ({ ...post, id: post.id.toString() }));
   },
 
   schema: z.object({
-    id: z.string(),
+    id: z.string().or(z.instanceof(RecordId)),
     content: z.array(z.string()),
     created: z.date(),
     description: z.string().optional(),
