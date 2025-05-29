@@ -3,7 +3,7 @@ import { css, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 
 import { auth, type AuthConnectionStatus } from "$lib/client/services/auth.ts";
-import { catchErrorTyped } from "$lib/utils.ts";
+import { catchErrorTyped } from "$lib/utils/index.ts";
 import { WebslabElement } from "./_element.ts";
 
 import type { CSSResultGroup, TemplateResult } from "lit";

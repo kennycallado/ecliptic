@@ -161,7 +161,7 @@ const { loginModalSelector } = Astro.props
 </nav>
 
 <script>
-  import { catchErrorTyped } from "$lib/utils";
+  import { catchErrorTyped } from "$lib/utils/index.ts";
   import { auth } from "$lib/client/services/auth.ts";
 
   const navAdmin = document

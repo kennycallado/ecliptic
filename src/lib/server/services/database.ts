@@ -1,6 +1,6 @@
 import { Surreal } from "surrealdb";
 import { DB_SERVER } from "$lib/server/consts.ts";
-import { catchErrorTyped } from "$lib/utils.ts";
+import { catchErrorTyped } from "$lib/utils/index.ts";
 
 class Database {
   private _db = new Surreal();

@@ -2,6 +2,7 @@ import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro:schema";
 
 import { auth } from "$lib/server/services/auth.ts";
+import { catchErrorTyped } from "$lib/utils/index.ts";
 
 export const server = {
   getGreeting: defineAction({

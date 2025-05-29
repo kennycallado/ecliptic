@@ -40,7 +40,7 @@ const { table, modalId } = Astro.props;
 
 <script>
   import { auth } from '$lib/client/services/auth.ts'
-  import { catchErrorTyped } from '$lib/utils.ts'
+  import { catchErrorTyped } from "$lib/utils/index.ts";
 
   const url = new URL(location.href);
   const table = url.pathname.split("/").slice(-2)[0];

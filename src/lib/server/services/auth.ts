@@ -5,7 +5,7 @@ import { surrealAdapter } from "surreal-better-auth";
 import { AUTH_SECRET } from "$lib/server/consts.ts";
 import { adminRole, theraRoles, userRole } from "$lib/roles.ts";
 import { dbService } from "$lib/server/services/database.ts";
-import { catchErrorTyped } from "$lib/utils.ts";
+import { catchErrorTyped } from "$lib/utils/index.ts";
 
 export const auth = betterAuth({
   database: surrealAdapter(await dbService.getDB()),

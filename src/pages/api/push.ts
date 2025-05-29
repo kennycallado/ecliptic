@@ -1,6 +1,6 @@
 import { dbService } from "$lib/server/services/database.ts";
 import { sendNotification } from "$lib/server/services/push.ts";
-import { catchErrorTyped } from "$lib/utils";
+import { catchErrorTyped } from "$lib/utils/index.ts";
 
 import type { AstroSharedContext as Ctx } from "astro";
 

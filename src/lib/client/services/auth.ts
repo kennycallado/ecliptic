@@ -3,7 +3,7 @@ import { createAuthClient } from "better-auth/client";
 import { adminClient } from "better-auth/client/plugins";
 
 import { BASE, DB, type DBConfig } from "$lib/client/consts.ts";
-import { catchErrorTyped } from "$lib/utils.ts";
+import { catchErrorTyped } from "$lib/utils/index.ts";
 
 import { adminRole, theraRoles, userRole } from "$lib/roles.ts";
 import type { User } from "$lib/types.ts";

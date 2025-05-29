@@ -2,7 +2,7 @@ import { RecordId } from "surrealdb";
 import { defineCollection, z } from "astro:content";
 
 import { dbService } from "$lib/server/services/database.ts";
-import { catchErrorTyped } from "$lib/utils.ts";
+import { catchErrorTyped } from "$lib/utils/index.ts";
 
 type Post = { id: string | RecordId };
 
