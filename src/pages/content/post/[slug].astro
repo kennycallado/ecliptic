@@ -1,12 +1,12 @@
 ---
-import "./_slug.css"
+import "./_style.css"
 
 import { Image } from 'astro:assets'
 import { getCollection } from 'astro:content'
 import { render } from '$lib/server/ssrLit.ts'
 
 import { catchErrorTyped } from "$lib/utils/index.ts";
-import { template } from './_slug.ts'
+import { template } from './_template.ts'
 
 import Layout from '$components/client/layouts/Layout.astro'
 import Visits from '$components/client/content/Visits.astro'
@@ -70,7 +70,7 @@ const countId = "content-visits"
   </wl-database>
 
   <script>
-    import { template } from './_slug.ts';
+    import { template } from './_template.ts';
     import { type WlDatabase } from "$lib/client/webslab/database.ts";
 
     const url = new URL(location.href);
@@ -80,17 +80,20 @@ const countId = "content-visits"
     const wlDatabase = document.querySelector("wl-database") as WlDatabase;
     wlDatabase.query = `SELECT * FROM ONLY post WHERE slug = '${slug}'`;
     wlDatabase.template = template;
-
-    wlDatabase.addEventListener("wl-task:completed", (e) => {
-      const { result } = e.detail;
-
-      // TODO: less tricky
-      const visitsElement = document.getElementById("content-visits");
-      visitsElement.textContent = result.visits.toString();
-    });
   </script>
 </Layout>
 
 <script>
-import("$lib/client/utils/index.ts").then(({ visit }) => { visit(); });
+  const wlDatabase = document.querySelector("wl-database") as WlDatabase;
+  wlDatabase.addEventListener("wl-task:completed", (e) => {
+    const { result } = e.detail;
+
+    // TODO: less tricky
+    const visitsElement = document.getElementById("content-visits");
+    visitsElement.textContent = result.visits.toString();
+  });
+</script>
+
+<script>
+import { visit } from "$lib/client/utils/index.ts"; visit();
 </script>

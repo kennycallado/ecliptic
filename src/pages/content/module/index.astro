@@ -1,5 +1,5 @@
 ---
-import "../post/_slug.css"
+import "../post/_style.css"
 
 import Layout from '$components/client/layouts/Layout.astro';
 import Visits from '$components/client/content/Visits.astro'
@@ -38,7 +38,7 @@ const countId = "content-visits"
   </wl-database>
 
   <script>
-    import { template } from '../post/_slug.ts';
+    import { template } from '../post/_template.ts';
     import { type WlDatabase } from "$lib/client/webslab/database.ts";
 
     const url = new URL(location.href);
@@ -48,46 +48,11 @@ const countId = "content-visits"
     const wlDatabase = document.querySelector("wl-database") as WlDatabase;
     wlDatabase.query = `SELECT * FROM ONLY module WHERE slug = '${slug}'`;
     wlDatabase.template = template;
-
-    wlDatabase.addEventListener("wl-task:completed", () => {
-      console.log("Database is ready");
-    });
   </script>
 </Layout>
 
-<script>
-  const wlDatabase = document.querySelector("wl-database")
-
-  const metaDescriptionEl = document.querySelector("meta[name='description']")
-  const visitsElement = document.getElementById("content-visits");
-  const titleEl = document.querySelector("title")
-  const imgEl = document.querySelector("#post-hero")
-  const h1El = document.querySelector("h1")
-
-  wlDatabase.addEventListener("wl-task:completed", (event) => {
-    const post = event.detail.result
-
-    visitsElement.textContent = post.visits.toString();
-    titleEl.innerText = post.title
-    h1El.innerText = post.title
-
-    imgEl.style.viewTransitionName = `item-${post.slug}`
-    imgEl.alt = post.title
-    imgEl.src = post.hero
-
-    if (!metaDescriptionEl) {
-      const metaDescription = document.createElement("meta")
-
-      metaDescription.name = "description"
-      metaDescription.content = post.description
-
-      document.head.appendChild(metaDescription)
-    } else {
-      metaDescriptionEl.content = post.description
-    }
-  });
-</script>
+<script src="../post/_index.ts"></script>
 
 <script>
-import("$lib/client/utils/index.ts").then(({ visit }) => { visit(); });
+import { visit } from "$lib/client/utils/index.ts"; visit();
 </script>
