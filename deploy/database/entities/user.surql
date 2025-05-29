@@ -1,7 +1,7 @@
 DEFINE TABLE OVERWRITE user TYPE NORMAL SCHEMAFULL
   PERMISSIONS
-    FOR select WHERE id = $auth.id OR $auth.role INSIDE ['admin', 'thera'],
-    FOR create, update, delete WHERE $auth.role = 'admin';
+    FOR select, update WHERE id = $auth.id OR $auth.role INSIDE ['admin', 'thera'],
+    FOR create, delete WHERE $auth.role = 'admin';
 
 DEFINE FIELD OVERWRITE name ON user TYPE string PERMISSIONS FULL;
 DEFINE FIELD OVERWRITE role ON user TYPE string
@@ -25,7 +25,7 @@ DEFINE FIELD OVERWRITE emailVerified ON user TYPE option<bool>
   DEFAULT false
   PERMISSIONS NONE;
 DEFINE FIELD OVERWRITE notification ON user FLEXIBLE TYPE option<object>
-  PERMISSIONS FOR update, create, delete WHERE id = $auth.id; -- NOTE: will be at devices
+  PERMISSIONS FOR update, create WHERE id = $auth.id; -- NOTE: will be at devices
 DEFINE FIELD OVERWRITE banned ON user TYPE option<bool>
   DEFAULT false
   PERMISSIONS NONE;
@@ -35,4 +35,4 @@ DEFINE FIELD OVERWRITE banExpires ON user TYPE option<datetime>
   PERMISSIONS NONE;
 
 
-DEFINE INDEX email_index ON user FIELDS email UNIQUE;
+DEFINE INDEX OVERWRITE email_index ON user FIELDS email UNIQUE;
