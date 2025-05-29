@@ -1,17 +1,17 @@
 ---
 import { catchErrorTyped } from "$lib/utils"
 import { render } from "$lib/server/ssrLit.ts"
-import { db } from '$lib/server/services/database.ts'
+import { dbService } from '$lib/server/services/database.ts'
 
 import { template, testData } from "./TestListPost.template.ts"
 
 let posts = [];
 const query = "SELECT * FROM post;"
 
-const {data: dataReady} = await catchErrorTyped(db.isReady)
+const {data: db} = await catchErrorTyped(dbService.getDB())
 
-if (dataReady) {
-  const {error, data} = await catchErrorTyped(db.db.query<unknown[][]>(query))
+if (db) {
+  const {error, data} = await catchErrorTyped(db.query<unknown[][]>(query))
   if (error) {
    console.error("Error fetching data:", error)
    throw new Error("Database query failed")
