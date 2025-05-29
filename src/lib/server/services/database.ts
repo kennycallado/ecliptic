@@ -26,7 +26,8 @@ class Database {
 
     { // scoped: connection
       const { error } = await catchErrorTyped(connection);
-      if (error) throw new Error("Failed to connect to database");
+      // if (error) throw new Error("Failed to connect to database");
+      if (error) return undefined;
     }
   }
 
@@ -62,7 +63,8 @@ class Database {
 
     if (error) {
       this._isReady = undefined;
-      throw new Error("Database is not ready after retry");
+      console.error("Database connection error:", error);
+      // throw new Error("Database is not ready after retry");
     }
 
     return this._db;
