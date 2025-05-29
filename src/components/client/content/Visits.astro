@@ -1,5 +1,5 @@
 ---
-const { countId, count = 0 } = Astro.props;
+const { visitsId, count = 0 } = Astro.props;
 ---
 
 <div class="d-flex flex-column text-center">
@@ -11,7 +11,7 @@ const { countId, count = 0 } = Astro.props;
   </svg>
 
   <span
-    id={countId}
+    id={visitsId}
     style="font-size: .75rem;"
     class="badge rounded-pill mt-1 text-bg-primary fw-bold">{count}</span>
 </div>

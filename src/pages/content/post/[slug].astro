@@ -30,7 +30,7 @@ const renderContent = render(template(post))
 const needs = { auth: false, roles: [] }
 const back = { enabled: true, path: "content/blog/" }
 
-const countId = "content-visits"
+const visitsId = "content-visits"
 ---
 
 <script src="$lib/client/webslab/database.ts"></script>
@@ -43,7 +43,7 @@ const countId = "content-visits"
   title={"Post: " + post.title}>
 
   <div slot="actions">
-    <Visits countId={countId} count={post.visits} />
+    <Visits visitsId={visitsId} count={post.visits} />
   </div>
 
   <!-- actions -->
