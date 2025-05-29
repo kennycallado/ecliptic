@@ -1,5 +1,6 @@
-import { db } from "$lib/server/services/database.ts";
+import { dbService } from "$lib/server/services/database.ts";
 import { sendNotification } from "$lib/server/services/push.ts";
+import { catchErrorTyped } from "$lib/utils";
 
 import type { AstroSharedContext as Ctx } from "astro";
 
@@ -8,12 +9,8 @@ export const prerender = false;
 export async function GET(_ctx: Ctx): Promise<Response> {
   const url = new URL(_ctx.request.url);
 
-  try {
-    await db.isReady;
-  } catch (e) {
-    console.error("Error connecting to database:", e);
-    return new Response(null, { status: 500 });
-  }
+  const { error, data: db } = await catchErrorTyped(dbService.getDB());
+  if (error) return new Response(null, { status: 500 });
 
   const userId = url.searchParams.get("user");
   if (!userId) {
@@ -25,7 +22,7 @@ export async function GET(_ctx: Ctx): Promise<Response> {
     keys: { p256dh: string; auth: string };
   };
 
-  const [[subscription]]: [[Notify]] = await db.db.query(
+  const [[subscription]]: [[Notify]] = await db.query(
     `SELECT
       notification.endpoint as endpoint,
       encoding::base64::encode(notification.keys.p256dh) as keys.p256dh,
@@ -43,12 +40,12 @@ export async function GET(_ctx: Ctx): Promise<Response> {
     icon: "/apple-touch-icon-180x180.png",
   });
 
-  try {
-    await sendNotification(subscription, payload);
-  } catch (e) {
-    console.error("Error sending push notification:", e);
-    return new Response("Error sending push notification", { status: 500 });
+  {
+    const { error } = await catchErrorTyped(
+      sendNotification(subscription, payload),
+    );
+    if (error) {
+      return new Response("Error sending push notification", { status: 500 });
+    } else return new Response(null, { status: 200 });
   }
-
-  return new Response(null, { status: 200 });
 }
