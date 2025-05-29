@@ -79,3 +79,7 @@ const back = { enabled: true, path: "content/blog/" }
     });
   </script>
 </Layout>
+
+<script>
+import("$lib/client/utils/index.ts").then(({ visit }) => { visit(); });
+</script>

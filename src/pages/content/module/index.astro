@@ -78,3 +78,7 @@ const back = { enabled: true, path: "content/modules/" }
     }
   });
 </script>
+
+<script>
+import("$lib/client/utils/index.ts").then(({ visit }) => { visit(); });
+</script>

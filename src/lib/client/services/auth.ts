@@ -1,4 +1,4 @@
-import { ResponseError, Surreal } from "surrealdb";
+import { RecordId, ResponseError, Surreal } from "surrealdb";
 import { createAuthClient } from "better-auth/client";
 import { adminClient } from "better-auth/client/plugins";
 
@@ -192,12 +192,29 @@ class AuthService {
     localStorage.removeItem("token");
   }
 
+  public getGuest() {
+    let guest = JSON.parse(localStorage.getItem("guest") || "null");
+
+    if (!guest) {
+      guest = {
+        id: new RecordId("user", crypto.randomUUID()),
+        name: "Guest",
+      };
+
+      localStorage.setItem("guest", JSON.stringify(guest));
+    }
+
+    return guest as User;
+  }
+
   public getUser() {
     return this.user;
   }
 
   private setUser(user: User) {
     this.user = user;
+
+    localStorage.removeItem("guest");
     localStorage.setItem("user", JSON.stringify(user));
   }
 
