@@ -6,12 +6,12 @@ export const prerender = false;
 
 export async function POST({ request }: Ctx): Promise<Response> {
   if (request.headers.get("Content-Type") === "application/json") {
-    const { subject, message } = await request.json();
+    const { to, subject, message } = await request.json();
 
     try {
       await transporter.sendMail({
         from: '"Info 🤓" <dev.impulsa@ipsitec.es>',
-        to: "kennycallado@hotmail.com",
+        to,
         subject,
         text: message,
         html: `<b>${message}</b>`,

@@ -11,12 +11,15 @@ const mailButton = document.getElementById("test-mail")!;
 const resMail = document.getElementById("res-mail")!;
 
 mailButton.addEventListener("click", () => {
+  const email = prompt("Enter your email address to receive the test mail:");
+
   fetch("api/mail/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
+      to: email,
       subject: "Test mail",
       message: "This is a test mail",
     }),
