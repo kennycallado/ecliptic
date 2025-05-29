@@ -30,5 +30,10 @@
     li small {
       font-size: 0.7rem;
     }
+
+    li small,
+    .badge {
+      font-size: 0.6rem;
+    }
   }
 }

@@ -28,12 +28,16 @@ export const template = (content: any[]) =>
                 size="(max-width: 720px) 540px, 960px"
                 loading="${index === 0 ? 'eager' : 'lazy'}" />
 
-              <small class="position-absolute bottom-0 end-0 mb-1 p-2 text-light bg-dark bg-opacity-75 rounded-start">
+              <small class="position-absolute top-0 start-0 mt-1 p-2 text-light bg-dark bg-opacity-75 rounded-end">
                 <em>${item.publish.toLocaleDateString('es-ES', {year: 'numeric', month: 'short', day: 'numeric'})}</em>
               </small>
 
-              <small class="position-absolute bottom-0 start-0 mb-1 p-2 text-white bg-dark bg-opacity-75 rounded-end">
-                Visits - Likes
+              <small class="position-absolute top-0 end-0 mt-1 p-2 text-white bg-dark bg-opacity-75 rounded-start">
+                <span class="badge rounded-pill text-bg-primary">${item.visits || 0}</span>
+
+                <span
+                  style="background-color: var(--bs-pink);"
+                  class="badge rounded-pill">${item.likes || 0}</span>
               </small>
             </div>
 
@@ -60,7 +64,7 @@ export const hydrate = () => {
   wlDatabase.template = template;
   wlDatabase.query = `
     SELECT
-      id,meta::tb(id) as table,hero,title,description,slug,publish
+      id,meta::tb(id) as table,hero,title,description,slug,publish,visits,likes
     FROM ${table} WHERE !draft AND publish < time::now() ORDER BY publish DESC;
   `;
 
