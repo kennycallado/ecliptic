@@ -9,6 +9,7 @@ import { catchErrorTyped } from "$lib/utils/index.ts";
 import { template } from './_slug.ts'
 
 import Layout from '$components/client/layouts/Layout.astro'
+import Visits from '$components/client/content/Visits.astro'
 
 export async function getStaticPaths() {
   const {error, data: posts} = await catchErrorTyped(getCollection('posts'))
@@ -28,6 +29,8 @@ const { post } = Astro.props
 const renderContent = render(template(post))
 const needs = { auth: false, roles: [] }
 const back = { enabled: true, path: "content/blog/" }
+
+const countId = "content-visits"
 ---
 
 <script src="$lib/client/webslab/database.ts"></script>
@@ -38,6 +41,10 @@ const back = { enabled: true, path: "content/blog/" }
   needs={needs}
   back={back}
   title={"Post: " + post.title}>
+
+  <div slot="actions">
+    <Visits countId={countId} count={post.visits} />
+  </div>
 
   <!-- actions -->
     <!-- visit -->
@@ -74,8 +81,12 @@ const back = { enabled: true, path: "content/blog/" }
     wlDatabase.query = `SELECT * FROM ONLY post WHERE slug = '${slug}'`;
     wlDatabase.template = template;
 
-    wlDatabase.addEventListener("wl-task:completed", () => {
-      console.log("Database is ready");
+    wlDatabase.addEventListener("wl-task:completed", (e) => {
+      const { result } = e.detail;
+
+      // TODO: less tricky
+      const visitsElement = document.getElementById("content-visits");
+      visitsElement.textContent = result.visits.toString();
     });
   </script>
 </Layout>

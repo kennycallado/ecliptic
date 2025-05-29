@@ -2,9 +2,12 @@
 import "./_slug.css"
 
 import Layout from '$components/client/layouts/Layout.astro';
+import Visits from '$components/client/content/Visits.astro'
 
 const needs = { auth: false, roles: [] }
 const back = { enabled: true, path: "content/blog/" }
+
+const countId = "content-visits"
 ---
 
 <Layout
@@ -13,6 +16,10 @@ const back = { enabled: true, path: "content/blog/" }
   back={back}
   page=""
   title="Post: tab">
+
+  <div slot="actions">
+    <Visits countId={countId} />
+  </div>
 
   <!-- actions -->
     <!-- visit -->
@@ -52,6 +59,7 @@ const back = { enabled: true, path: "content/blog/" }
   const wlDatabase = document.querySelector("wl-database")
 
   const metaDescriptionEl = document.querySelector("meta[name='description']")
+  const visitsElement = document.getElementById("content-visits");
   const titleEl = document.querySelector("title")
   const imgEl = document.querySelector("#post-hero")
   const h1El = document.querySelector("h1")
@@ -59,6 +67,7 @@ const back = { enabled: true, path: "content/blog/" }
   wlDatabase.addEventListener("wl-task:completed", (event) => {
     const post = event.detail.result
 
+    visitsElement.textContent = post.visits.toString();
     titleEl.innerText = post.title
     h1El.innerText = post.title
 
