@@ -1,6 +1,4 @@
 ---
-// import './_content.css'
-
 import { getCollection } from 'astro:content'
 import { catchErrorTyped } from "$lib/utils/index.ts";
 import { render } from '$lib/server/ssrLit.ts'
@@ -96,9 +94,10 @@ const needs = {
     wlDatabase.template = template;
     wlDatabase.query = `
       SELECT
+        id,title,likes,
         meta::tb(id) as table,
         publish,publish < time::now() AND !draft as published,
-        id,title,author.name as author
+        author.name as author
       FROM ${table} ORDER BY publish DESC;
     `;
 
