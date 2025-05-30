@@ -27,13 +27,13 @@ const loginModalSelector = "login-modal";
       class="container bg-body-tertiary rounded shadow-lg mt-4 mb-5"
       id="content">
 
-      <header class="p-1">
+      <div class="p-1">
         <Back back={back} page={page}>
           <slot name="actions" />
         </Back>
-      </header>
 
-      <slot />
+        <slot />
+      </div>
     </main>
 
     <div class="text-center" slot="warning">

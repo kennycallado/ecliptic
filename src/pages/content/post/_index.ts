@@ -3,8 +3,11 @@ import type { WlDatabase } from "$lib/client/webslab/database";
 const metaDescriptionEl = document
   .querySelector("meta[name='description']") as HTMLMetaElement;
 
-const visitsElement = document
+const visitsEl = document
   .getElementById("content-visits") as HTMLSpanElement;
+
+const likesEl = document
+  .getElementById("content-likes") as HTMLSpanElement;
 
 const wlDatabase = document.querySelector("wl-database") as WlDatabase;
 const titleEl = document.querySelector("title") as HTMLTitleElement;
@@ -14,7 +17,8 @@ const h1El = document.querySelector("h1")!;
 wlDatabase.addEventListener("wl-task:completed", (event: Event) => {
   const { result } = (event as CustomEvent).detail;
 
-  visitsElement.textContent = result.visits || 0;
+  visitsEl.textContent = result.visits || 0;
+  likesEl.textContent = result.likes || 0;
   titleEl.innerText = result.title;
   h1El.innerText = result.title;
 

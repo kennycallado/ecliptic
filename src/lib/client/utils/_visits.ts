@@ -1,4 +1,5 @@
 import { actions } from "astro:actions";
+
 import { auth } from "$lib/client/services/auth.ts";
 import { catchErrorTyped } from "$lib/utils/index.ts";
 
