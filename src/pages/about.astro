@@ -13,15 +13,15 @@ import {
 } from './_about.ts'
 
 const groupOne = await getCollection('members', ({ data }) => {
-  return data.group === 1;
+  return data.group === 1 && data.active;
 })
 
 const groupTwo = await getCollection('members', ({ data }) => {
-  return data.group === 2;
+  return data.group === 2 && data.active;
 })
 
 const groupThree = await getCollection('members', ({ data }) => {
-  return data.group === 3;
+  return data.group === 3 && data.active;
 })
 
 const preRendGroupOne = render(templateGroupOne(groupOne.map(member => ({ ...member.data }))))
@@ -84,7 +84,7 @@ section {
 
     <wl-database
       id="about-group-one"
-      query="SELECT * FROM member WHERE group = 1;"
+      query="SELECT * FROM member WHERE active AND group = 1;"
       target="#about-group-one-content">
       <div id="about-group-one-content" class="row mt-4" set:html={preRendGroupTwo}></div>
     </wl-database>
@@ -103,7 +103,7 @@ section {
       <template data-island="replace">
         <wl-database
           id="about-group-two"
-          query="SELECT * FROM member WHERE group = 2;"
+          query="SELECT * FROM member WHERE active AND group = 2;"
           target="#about-group-two-content">
           <div id="about-group-two-content"
             class="row gap-3 justify-content-center"
@@ -128,7 +128,7 @@ section {
       <template data-island="replace">
         <wl-database
           id="about-group-two"
-          query="SELECT * FROM member WHERE group = 3;"
+          query="SELECT * FROM member WHERE active AND group = 3;"
           target="#about-group-three-content">
           <div id="about-group-three-content"
             class="row gap-3 justify-content-center"
