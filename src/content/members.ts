@@ -8,6 +8,7 @@ export type Member = {
   id: string | RecordId;
   name: string;
   group: number;
+  active: boolean;
   position: string;
   department: string;
   photo: string;
@@ -39,6 +40,7 @@ export const members = defineCollection({
     id: z.string().or(z.instanceof(RecordId)),
     name: z.string(),
     group: z.number().min(1).max(3),
+    active: z.boolean(),
     position: z.string().min(4).max(10),
     department: z.string(),
     photo: z.string(),
