@@ -1,0 +1,68 @@
+<button
+  id="create-member"
+  class="btn btn-primary d-none d-lg-block flex-shrink-1"
+  type="button">Create</button>
+
+<script>
+import { html } from "lit";
+import { auth } from "$lib/client/services/auth.ts";
+import { catchErrorTyped } from "$lib/utils/index.ts";
+import { template } from "./template.ts";
+
+import type { WlDialog } from "$lib/client/webslab/dialog";
+
+const createBtn = document.getElementById("create-member") as HTMLButtonElement;
+createBtn.addEventListener("click", () => {
+  const dialog = document.querySelector("wl-dialog") as WlDialog;
+
+  dialog.openDialog({
+    header: "Create Member",
+
+    content: html`
+      <form
+        id="create-member-form"
+        class="w-100"
+        @submit=${() => { submit(event); dialog.close(); }}>
+        ${template()}
+      </form>
+    `,
+
+    footer: html`
+      <button
+        type="submit"
+        form="create-member-form"
+        class="btn btn-primary float-end ms-2">Create</button>
+      <button
+        class="btn btn-outline-primary float-end"
+        @click=${dialog.close}>Close</button>
+    `,
+  });
+});
+
+const submit = async (event: Event) => {
+  event.preventDefault();
+
+  const values = Object.fromEntries(
+    new FormData(event.target as HTMLFormElement).entries(),
+  );
+
+  const promise = auth.getDB().create("member", {
+    ...values,
+    group: values.group ? Number(values.group) : undefined,
+    active: values.active === "on",
+  });
+
+  await auth.isReady;
+  const { error } = await catchErrorTyped(promise);
+  if (error) {
+    if (error.message.includes("name_index")) {
+      alert("Member with this name already exists.");
+      return;
+    }
+
+    console.error("Error creating member:", error);
+    alert("Failed to create member. Please try again.");
+    return;
+  }
+};
+</script>
