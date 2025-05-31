@@ -9,7 +9,8 @@ import teamPhoto from '$assets/images/about/about_team-group_cartoon.png'
 import { render } from '$lib/server/ssrLit.ts'
 import {
   templateGroupOne,
-  templateGroupTwo
+  templateGroupTwo,
+  templateGroupThree
 } from './_about.ts'
 
 const groupOne = await getCollection('members', ({ data }) => {
@@ -26,7 +27,7 @@ const groupThree = await getCollection('members', ({ data }) => {
 
 const preRendGroupOne = render(templateGroupOne(groupOne.map(member => ({ ...member.data }))))
 const preRendGroupTwo = render(templateGroupTwo(groupTwo.map(member => ({ ...member.data }))))
-const preRendGroupThree = render(templateGroupTwo(groupThree.map(member => ({ ...member.data }))))
+const preRendGroupThree = render(templateGroupThree(groupThree.map(member => ({ ...member.data }))))
 
 const needs = { auth: false, roles: [] };
 ---
@@ -86,7 +87,7 @@ section {
       id="about-group-one"
       query="SELECT * FROM member WHERE active AND group = 1;"
       target="#about-group-one-content">
-      <div id="about-group-one-content" class="row mt-4" set:html={preRendGroupTwo}></div>
+      <div id="about-group-one-content" class="row mt-4" set:html={preRendGroupOne}></div>
     </wl-database>
   </section>
 
@@ -98,7 +99,7 @@ section {
     <is-land on:visible id="about-group-two">
       <div id="about-group-two-content"
         class="row gap-3 justify-content-center"
-        set:html={preRendGroupOne}></div>
+        set:html={preRendGroupTwo}></div>
 
       <template data-island="replace">
         <wl-database
@@ -107,7 +108,7 @@ section {
           target="#about-group-two-content">
           <div id="about-group-two-content"
             class="row gap-3 justify-content-center"
-            set:html={preRendGroupOne}></div>
+            set:html={preRendGroupTwo}></div>
         </wl-database>
       </template>
     </is-land>
