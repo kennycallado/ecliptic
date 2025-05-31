@@ -5,71 +5,30 @@ const version = pkg.version;
 const year = new Date().getFullYear();
 ---
 
+<style>
+footer {
+  font-size: 1rem;
+  padding: 2em 1em 3em;
+  text-align: center;
+}
+</style>
+
 <footer class="bg-body-tertiary">
   &copy; {year} Kenny. MIT license. Version {version}
 </footer>
 
-<dialog id="easter-egg-dialog">
-  <div class="dialog-content">
-    <h3>You found the easter egg!</h3>
-    <hr class="w-75 mt-0 mx-auto border border-primary" />
-
-    <div class="row w-100">
-      <div class="col-12 col-md-6 border-end">
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="switch-traces" switch>
-          <label class="form-check-label" for="switch-traces">Enable Traces</label>
-        </div>
-
-        <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" role="switch" id="switch-logs" switch>
-          <label class="form-check-label" for="switch-logs">Enable Logs</label>
-        </div>
-      </div>
-
-      <div class="col-12 col-md-6">
-        > <a href="tests/">Tests Page</a>
-      </div>
-    </div>
-
-    <button id="close-dialog">Close</button>
-  </div>
-</dialog>
-
 <script>
+import { html } from "lit"
 import { LOGS } from '$lib/client/services/logger.ts';
 import { TRACES } from '$lib/client/services/tracer.ts';
 
-const $ = (selector) => document.querySelector(selector);
-const dialog = $('#easter-egg-dialog');
-const footer = $('footer');
-const closeBtn = $('#close-dialog');
-const traceSwitch = $('#switch-traces');
-const logSwitch = $('#switch-logs');
-
-// Use services to determine initial checkbox state
-traceSwitch.checked = TRACES;
-logSwitch.checked = LOGS;
-
-// Still persist preference to localStorage
-traceSwitch.addEventListener('change', () => {
-  localStorage.setItem('tracesEnabled', traceSwitch.checked);
-});
-
-logSwitch.addEventListener('change', () => {
-  localStorage.setItem('logsEnabled', logSwitch.checked);
-});
-
-closeBtn.addEventListener('click', () => {
-  dialog.close();
-  location.reload();
-});
+const footer = document.querySelector('footer');
 
 let clicks = 0;
 let firstClick = null;
-
 footer.addEventListener('click', () => {
   const now = Date.now();
+
   if (!firstClick || now - firstClick > 2000) {
     firstClick = now;
     clicks = 1;
@@ -77,53 +36,73 @@ footer.addEventListener('click', () => {
   }
 
   if (++clicks === 5) {
-    traceSwitch.checked = TRACES;
-    logSwitch.checked = LOGS;
-    dialog.showModal();
-    clicks = 0;
-    firstClick = null;
+    const submit = (e) => {
+      e.preventDefault()
+
+      const values = Object.fromEntries(new FormData(e.target).entries())
+
+      localStorage.setItem('tracesEnabled', values.traces === 'on')
+      localStorage.setItem('logsEnabled', values.logs === 'on')
+
+      dialog.close()
+      location.reload()
+    }
+
+    const dialog = document.querySelector("wl-dialog")
+    dialog.openDialog({
+      header: "You found the easter egg!",
+
+      content: html`
+        <div class="row w-100">
+          <div class="col-12 col-md-6">
+            <h5>Logs</h5>
+
+            <form
+              id="easter-form"
+              @submit=${submit}>
+              <div class="form-check form-switch">
+                <input
+                  switch
+                  id="switch-traces"
+                  name="traces"
+                  role="switch"
+                  type="checkbox"
+                  class="form-check-input"
+                  .checked=${TRACES}>
+                <label class="form-check-label" for="switch-traces">Enable Traces</label>
+              </div>
+
+              <div class="form-check form-switch">
+                <input
+                  switch
+                  id="switch-logs"
+                  name="logs"
+                  role="switch"
+                  type="checkbox"
+                  class="form-check-input"
+                  .checked=${LOGS}>
+                <label class="form-check-label" for="switch-logs">Enable Logs</label>
+              </div>
+            </form>
+          </div>
+
+          <hr class="d-md-none m-3 border-primary" />
+          <div class="col-12 col-md-6">
+            <h5>Paths</h5>
+
+            -> <a href="tests/">Tests Page</a>
+          </div>
+        </div>
+      `,
+
+      footer: html`
+        <button
+          type="submit"
+          form="easter-form"
+          class="btn btn-primary float-end ms-2">Send</button>
+        <button class="btn btn-outline-primary float-end" @click=${dialog.close}>Close</button>
+      `
+    })
   }
-});
+})
 </script>
-
-<style>
-footer {
-  font-size: 1rem;
-  padding: 2em 1em 3em;
-  text-align: center;
-}
-
-dialog::backdrop {
-  background: rgba(0, 0, 0, 0.5);
-}
-
-#easter-egg-dialog {
-  border: none;
-  border-radius: 8px;
-  padding: 1.5em;
-  width: 50svw;
-  min-width: 300px;
-  max-width: 90%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-.dialog-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1em;
-}
-
-#close-dialog {
-  padding: 0.5em 1em;
-  background: #007acc;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#close-dialog:hover {
-  background: #005fab;
-}
-</style>

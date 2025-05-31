@@ -43,6 +43,7 @@ const {
     <Footer />
 
     <script src="bootstrap/js/index.esm.js"></script>
+    <script src="$lib/client/webslab/dialog.ts"></script>
     <script src="$lib/client/webslab/security.ts"></script>
     <script is:inline src={BASE + "js/theme.js"}></script>
 
@@ -51,5 +52,7 @@ const {
       import "$lib/client/services/logger.ts"
       import "$lib/client/services/push.ts"
     </script>
+
+    <wl-dialog></wl-dialog>
   </body>
 </html>

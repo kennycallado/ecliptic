@@ -19,7 +19,8 @@ export const template = (content: any[]) =>
           @click=${draftItem}
           class="btn btn-sm">${item.published ? "✅" : "❎"}</button>
       </td>
-      <td class="d-none d-md-table-cell">NONE</td>
+
+      <td class="d-none d-md-table-cell">${item.likes || 0}</td>
 
       <td class="d-none d-lg-table-cell text-center">
         <button

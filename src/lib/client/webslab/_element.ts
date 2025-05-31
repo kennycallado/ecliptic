@@ -1,6 +1,6 @@
 import { LitElement, type PropertyValues } from "lit";
 
-export class WebslabElement extends LitElement {
+export abstract class WebslabElement extends LitElement {
   emit<T extends string>(name: T, options?: CustomEventInit): CustomEvent<T> {
     const event = new CustomEvent(name, {
       bubbles: true,
@@ -26,6 +26,12 @@ export class WebslabElement extends LitElement {
       this.emit("wl-props:error", { detail: { message } });
       throw new Error(message);
     }
+  }
+
+  protected viewTransition(cb: () => void) {
+    if ("startViewTransition" in document) {
+      return document.startViewTransition(() => cb());
+    } else cb();
   }
 
   willUpdate(changedProperties: PropertyValues) {

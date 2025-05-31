@@ -171,12 +171,6 @@ export class WlDatabase<T = unknown> extends WebslabElement {
     args: () => [this.auth],
   });
 
-  private viewTransition(cb: () => void) {
-    if ("startViewTransition" in document) {
-      return document.startViewTransition(() => cb());
-    } else cb();
-  }
-
   private createItem(item: Record<string, unknown>) {
     this.viewTransition(() => {
       if (!this.targetEl) return;

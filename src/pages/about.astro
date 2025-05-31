@@ -1,8 +1,55 @@
 ---
+import { Image } from 'astro:assets'
+import { getCollection } from 'astro:content'
+
 import Layout from '$components/client/layouts/Layout.astro';
+
+import teamPhoto from '$assets/images/about/about_team-group_cartoon.png'
+
+import { render } from '$lib/server/ssrLit.ts'
+import {
+  templateGroupOne,
+  templateGroupTwo,
+  templateGroupThree
+} from './_about.ts'
+
+const groupOne = await getCollection('members', ({ data }) => {
+  return data.group === 1 && data.active;
+})
+
+const groupTwo = await getCollection('members', ({ data }) => {
+  return data.group === 2 && data.active;
+})
+
+const groupThree = await getCollection('members', ({ data }) => {
+  return data.group === 3 && data.active;
+})
+
+const preRendGroupOne = render(templateGroupOne(groupOne.map(member => ({ ...member.data }))))
+const preRendGroupTwo = render(templateGroupTwo(groupTwo.map(member => ({ ...member.data }))))
+const preRendGroupThree = render(templateGroupThree(groupThree.map(member => ({ ...member.data }))))
 
 const needs = { auth: false, roles: [] };
 ---
+
+<script src="@11ty/is-land/is-land.js"></script>
+<script src="$lib/client/webslab/database.ts"></script>
+
+<style>
+section {
+  img {
+    transition: all 0.5s;
+    filter: grayscale(10%);
+  }
+
+  img:hover {
+    border: 2px solid var(--bs-primary) !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7) !important;
+    filter: grayscale(0);
+  }
+}
+</style>
+
 
 <Layout
   needs={needs}
@@ -10,4 +57,107 @@ const needs = { auth: false, roles: [] };
   page="How we are?"
   back={{enabled: false}}>
 
+  <section class="px-0 px-md-4 pt-2 pb-4 mx-auto text-center">
+    <div class="row justify-content-center">
+      <div class="col col-md-9">
+        <p class="lead">
+          Introductory text about the project and its members. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea architecto hic impedit at eum sint iste quia voluptatum.
+        </p>
+      </div>
+    </div>
+
+    <div style="max-width: 720px; margin: 0 auto;">
+      <Image
+        alt="Team members photo"
+        class="img-fluid border border-2 rounded shadow-sm"
+        src={teamPhoto}
+        widths={[240, 540, 720, teamPhoto.width]}
+        sizes={`(max-width: 360px) 240px, (max-width: 720px) 540px, (max-width: 1600px) 720px, ${teamPhoto.width}px`}
+        format={'webp'}
+      />
+    </div>
+  </section>
+
+  <hr class="my-4" />
+
+  <section class="px-0 px-md-4 py-4 mx-auto">
+    <h2 class="h3 text-center">Group One:</h2>
+
+    <wl-database
+      id="about-group-one"
+      query="SELECT * FROM member WHERE active AND group = 1;"
+      target="#about-group-one-content">
+      <div id="about-group-one-content" class="row mt-4" set:html={preRendGroupOne}></div>
+    </wl-database>
+  </section>
+
+  <hr class="w-75 mx-auto my-4 border border-primary" />
+
+  <section class="px-0 px-md-4 py-4 mx-auto">
+    <h2 class="h4 text-center">Group Two:</h2>
+
+    <is-land on:visible id="about-group-two">
+      <div id="about-group-two-content"
+        class="row gap-3 justify-content-center"
+        set:html={preRendGroupTwo}></div>
+
+      <template data-island="replace">
+        <wl-database
+          id="about-group-two"
+          query="SELECT * FROM member WHERE active AND group = 2;"
+          target="#about-group-two-content">
+          <div id="about-group-two-content"
+            class="row gap-3 justify-content-center"
+            set:html={preRendGroupTwo}></div>
+        </wl-database>
+      </template>
+    </is-land>
+  </section>
+
+  <hr class="w-75 mx-auto my-4 border border-primary" />
+
+  <section class="px-0 px-md-4 py-4 mx-auto">
+    <h2 class="h4 text-secondary text-center">
+      Some collaborators:
+    </h2>
+
+    <is-land on:visible id="about-group-three">
+      <div id="about-group-three-content"
+        class="row gap-3 justify-content-center"
+        set:html={preRendGroupThree}></div>
+
+      <template data-island="replace">
+        <wl-database
+          id="about-group-two"
+          query="SELECT * FROM member WHERE active AND group = 3;"
+          target="#about-group-three-content">
+          <div id="about-group-three-content"
+            class="row gap-3 justify-content-center"
+            set:html={preRendGroupThree}></div>
+        </wl-database>
+      </template>
+    </is-land>
+  </section>
+
+  <hr class="my-4" />
 </Layout>
+
+<script>
+  import {
+    templateGroupOne,
+    templateGroupTwo,
+    templateGroupThree
+  } from './_about.ts'
+  import { type WlDatabase } from "$lib/client/webslab/database.ts"
+
+  const wlDatabaseOne = document.getElementById("about-group-one") as WlDatabase
+  wlDatabaseOne.template = templateGroupOne
+
+  const isLandTwo = document.querySelector("#about-group-two template") as HTMLTemplateElement
+  const wlDatabaseTwo = isLandTwo.content.querySelector("wl-database") as WlDatabase
+  wlDatabaseTwo.template = templateGroupTwo;
+
+  const isLandThree = document.querySelector("#about-group-three template") as HTMLTemplateElement
+  const wlDatabaseThree = isLandThree.content.querySelector("wl-database") as WlDatabase
+  wlDatabaseThree.template = templateGroupThree;
+</script>
