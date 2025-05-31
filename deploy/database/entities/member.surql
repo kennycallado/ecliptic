@@ -11,10 +11,10 @@ DEFINE FIELD OVERWRITE name ON member TYPE string
   ASSERT string::len($value) INSIDE 4..=10
   PERMISSIONS FOR select FULL;
 DEFINE FIELD OVERWRITE position ON member TYPE string
-  ASSERT string::len($value) INSIDE 4..=10
+  ASSERT string::len($value) INSIDE 4..=30
   PERMISSIONS FOR select FULL;
 DEFINE FIELD OVERWRITE department ON member TYPE string
-  ASSERT string::len($value) INSIDE 4..=50
+  ASSERT string::len($value) INSIDE 4..=60
   PERMISSIONS FOR select FULL;
 DEFINE FIELD OVERWRITE photo ON member TYPE option<string>
   DEFAULT 'https://i0.wp.com/cdn.auth0.com/avatars/' + name.slice(0, 2).lowercase() + '.png?ssl=1'
