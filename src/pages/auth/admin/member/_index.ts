@@ -1,7 +1,7 @@
 import { html } from "lit";
 import { StringRecordId } from "surrealdb";
 
-import { template } from "$components/client/admin/member/template.ts";
+import { template } from "$components/client/admin/member/create.ts";
 import type { WlDialog } from "$lib/client/webslab/dialog";
 import { catchErrorTyped } from "$lib/utils";
 

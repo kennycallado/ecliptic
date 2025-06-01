@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content'
 
-import { templateIndex } from './_member.ts'
+import { templateIndex } from './_index.ts'
 import { render } from '$lib/server/ssrLit.ts'
 import { catchErrorTyped } from "$lib/utils/index.ts";
 
@@ -63,7 +63,7 @@ const needs = { auth: true, roles: ["admin", "thera"] }
   </div>
 
   <script>
-    import { templateIndex } from './_member.ts'
+    import { templateIndex } from './_index.ts'
     import { type WlDatabase } from "$lib/client/webslab/database.ts"
 
     const wlDatabase = document.querySelector("wl-database") as WlDatabase;
