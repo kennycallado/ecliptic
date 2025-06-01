@@ -41,8 +41,8 @@ export const members = defineCollection({
     name: z.string(),
     group: z.number().min(1).max(3),
     active: z.boolean(),
-    position: z.string().min(4).max(10),
-    department: z.string(),
+    position: z.string().min(4),
+    department: z.string().min(4),
     photo: z.string(),
   }),
 });
