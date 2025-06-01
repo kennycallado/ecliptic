@@ -57,7 +57,7 @@ const preRender = render(template(filtered.map(entry => ({ ...entry.data }))))
   wlDatabase.query = `
     SELECT
       id,hero,title,description,slug,publish
-    FROM post ORDER BY publish DESC LIMIT 3;`
+    FROM post WHERE !draft ORDER BY publish DESC LIMIT 3;`
 
   wlDatabase.addEventListener("wl-task:completed", () => {
     console.log("Database is ready");
