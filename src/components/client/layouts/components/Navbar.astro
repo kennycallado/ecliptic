@@ -3,8 +3,6 @@ import { Image } from 'astro:assets'
 import brand from '$assets/images/brand-base.png'
 
 import Link from './Link.astro'
-
-const { loginModalSelector } = Astro.props
 ---
 <style>
 .nav-item {
@@ -102,14 +100,11 @@ const { loginModalSelector } = Astro.props
             <li data-admin class="d-none"><hr class="dropdown-divider" /></li>
 
             <li>
-              <a
-                class="dropdown-item"
+              <button
                 id="nav-login"
-                data-bs-toggle="modal"
-                data-bs-target={"#" + loginModalSelector}
-                type="button">
-                Login
-              </a>
+                class="dropdown-item"
+                aria-label="login to access"
+                type="button">Login</button>
             </li>
 
             <li>
@@ -154,15 +149,17 @@ const { loginModalSelector } = Astro.props
           </ul>
 
         </li>
-
       </ul>
     </div>
   </div>
 </nav>
 
 <script>
-  import { catchErrorTyped } from "$lib/utils/index.ts";
   import { auth } from "$lib/client/services/auth.ts";
+  import { loginDialog } from "$lib/client/utils/index.ts";
+  import { catchErrorTyped } from "$lib/utils/index.ts";
+
+  loginDialog("#nav-login");
 
   const navAdmin = document
     .querySelectorAll("[data-admin]") as NodeListOf<HTMLElement>;
