@@ -59,7 +59,7 @@ export const template = (item?: any) => html`
             .value=${item?.group || ""} />
         </div>
 
-        <div class="mb-3 form-check form-switch">
+        <div class="mb-2 form-check form-switch">
           <input
             switch
             id="active"
@@ -70,6 +70,31 @@ export const template = (item?: any) => html`
             ?checked=${item?.active} />
 
           <label for="active" class="form-check-label">Active</label>
+        </div>
+
+        <div
+          class="mb-3"
+          ?hidden=${!item}>
+          <!-- <label for="hero" class="d-block form-label">Photo</label> -->
+
+          <button
+            class="btn btn-outline-secondary p-1"
+            type="button">
+
+            <input
+              id="hero"
+              name="hero"
+              type="hidden"
+              accept="image/*"
+              .value=${item?.photo}>
+
+            <img
+              width="100%"
+              id="hero-img"
+              type="image"
+              class="img-fluid rounded"
+              .src=${item?.photo || ""} />
+          </button>
         </div>
       </div>
     </div>

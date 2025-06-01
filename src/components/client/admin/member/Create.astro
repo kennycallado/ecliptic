@@ -22,7 +22,7 @@ createBtn.addEventListener("click", () => {
       <form
         id="create-member-form"
         class="w-100"
-        @submit=${(event) => { submit(event); dialog.close(); }}>
+        @submit=${(e: Event) => { submit(e); dialog.close(); }}>
         ${template()}
       </form>
     `,

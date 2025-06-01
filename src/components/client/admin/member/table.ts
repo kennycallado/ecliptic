@@ -1,12 +1,13 @@
 import { html } from "lit";
 import { StringRecordId } from "surrealdb";
 
-import { template } from "$components/client/admin/member/create.ts";
-import type { WlDialog } from "$lib/client/webslab/dialog";
+import { template } from "./create.ts";
 import { catchErrorTyped } from "$lib/utils";
 
+import type { WlDialog } from "$lib/client/webslab/dialog.ts";
+
 // deno-fmt-ignore-start
-export const templateIndex = (members: any[]) => html`
+export const templateTable = (members: any[]) => html`
   ${members.map(member => html`
     <tr data-id="${member.id}">
       <td class="d-none d-lg-table-cell">${member.group}</td>
@@ -58,36 +59,6 @@ export const templateIndex = (members: any[]) => html`
 `;
 // deno-fmt-ignore-end
 
-function getMemberId(event: Event): string {
-  const target = event.target as HTMLButtonElement;
-  return target.closest("tr")!.dataset.id!;
-}
-
-const submit = async (event: Event) => {
-  event.preventDefault();
-
-  const { auth } = await import("$lib/client/services/auth.ts");
-
-  const values = Object.fromEntries(
-    new FormData(event.target as HTMLFormElement).entries(),
-  );
-
-  const promise = auth.getDB().merge(new StringRecordId(values.id.toString()), {
-    ...values,
-    id: undefined,
-    group: values.group ? Number(values.group) : undefined,
-    active: values.active === "on",
-  });
-
-  await auth.isReady;
-
-  const { error } = await catchErrorTyped(promise);
-  if (error) {
-    console.error("Error creating member:", error);
-    alert("Failed to create member: " + error.message);
-  }
-};
-
 async function updateMember(event: Event) {
   const { auth } = await import("$lib/client/services/auth.ts");
 
@@ -106,7 +77,7 @@ async function updateMember(event: Event) {
       <form
         id="update-member-form"
         class="w-100"
-        @submit=${(e: Event) => {submit(e); dialog.close();}}>
+        @submit=${(e: Event) => { submit(e); dialog.close(); }}>
         <input type="hidden" name="id" value="${member.id}">
         ${template(member)}
       </form>
@@ -148,4 +119,34 @@ async function deleteMember(event: Event) {
       .getDB()
       .query("DELETE type::record($memberId)", { memberId: id });
   }
+}
+
+const submit = async (event: Event) => {
+  event.preventDefault();
+
+  const { auth } = await import("$lib/client/services/auth.ts");
+
+  const values = Object.fromEntries(
+    new FormData(event.target as HTMLFormElement).entries(),
+  );
+
+  const promise = auth.getDB().merge(new StringRecordId(values.id.toString()), {
+    ...values,
+    id: undefined,
+    group: values.group ? Number(values.group) : undefined,
+    active: values.active === "on",
+  });
+
+  await auth.isReady;
+
+  const { error } = await catchErrorTyped(promise);
+  if (error) {
+    console.error("Error creating member:", error);
+    alert("Failed to create member: " + error.message);
+  }
+};
+
+function getMemberId(event: Event): string {
+  const target = event.target as HTMLButtonElement;
+  return target.closest("tr")!.dataset.id!;
 }

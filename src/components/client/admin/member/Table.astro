@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content'
+
+import { render } from '$lib/server/ssrLit.ts'
+import { catchErrorTyped } from "$lib/utils/index.ts";
+
+import { templateTable } from './table.ts'
+
+const {error, data: collection} = await catchErrorTyped(getCollection("members"))
+if (error) throw new Error(`Failed to fetch members: ${error}`)
+
+const filtered = collection
+  .sort((a, b) => a.data.group - b.data.group || a.data.name.localeCompare(b.data.name))
+
+const rendered = render(templateTable(filtered.map(entry => ({ ...entry.data }))));
+---
+
+<style>
+  @media (max-width: 575.98px) {
+    table {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+<wl-database
+  live={true}
+  target="tbody"
+  query="SELECT * FROM member ORDER BY group,name;">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col" class="d-none d-md-table-cell border-end">Group</th>
+        <th scope="col" class="border-end">Name</th>
+        <th scope="col" class="border-end">Active</th>
+        <th scope="col" class="text-center">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody id="tbody" set:html={rendered}></tbody>
+  </table>
+</wl-database>
+
+<!-- NOTE: should be in the page to avoid props error -->
+<!--
+<script>
+  import { templateTable } from './table.ts'
+  import { type WlDatabase } from "$lib/client/webslab/database.ts"
+
+  const wlDatabase = document.querySelector("wl-database") as WlDatabase;
+  wlDatabase.template = templateTable;
+</script>
+-->
