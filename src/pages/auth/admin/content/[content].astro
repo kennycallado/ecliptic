@@ -3,10 +3,6 @@ import Layout from '$components/client/layouts/Layout.astro'
 import Create from '$components/client/admin/content/Create.astro'
 import Table from '$components/client/admin/content/Table.astro'
 
-// import ModalCreateContent from '$components/client/modals/CreateContent.astro'
-// <ModalCreateContent table={content} modalId={modalId} />
-// const modalId = `modal-create-${content}`:
-
 export async function getStaticPaths() {
   return [
     { params: { content: "post" }},
@@ -57,4 +53,3 @@ const needs = {
     `;
   </script>
 </Layout>
-
