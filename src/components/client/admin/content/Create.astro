@@ -1,0 +1,93 @@
+---
+const { content } = Astro.props;
+---
+
+<button
+  id="create-content"
+  data-table={content}
+  class="btn btn-primary d-none d-lg-block flex-shrink-1"
+  type="button">Create</button>
+
+<script>
+import { html } from "lit";
+
+import { auth } from "$lib/client/services/auth.ts";
+import { catchErrorTyped } from "$lib/utils/index.ts";
+
+import type { WlDialog } from "$lib/client/webslab/dialog";
+
+const createBtn = document.getElementById("create-content") as HTMLButtonElement;
+createBtn.addEventListener("click", (e) => {
+  const dialog = document.querySelector("wl-dialog") as WlDialog;
+  const table = e.target.dataset.table;
+
+  dialog.openDialog({
+    header: "Create " + table.charAt(0).toUpperCase() + table.slice(1),
+
+    content: html`
+      <form
+        id=${`create-${table}-form`}
+        class="w-100"
+        @submit=${(e: Event) => { submit(e, table); dialog.close(); }}>
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+
+          <input
+            required
+            id="title"
+            class="form-control mb-2"
+            minlength="5"
+            name="title"
+            placeholder="Title"
+            type="text" />
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+
+          <input
+            id="description"
+            name="description"
+            placeholder="Description"
+            class="form-control mb-2"
+            type="text" />
+        </div>
+      </form>
+    `,
+
+    footer: html`
+      <button
+        type="submit"
+        form=${`create-${table}-form`}
+        class="btn btn-primary float-end ms-2">Create</button>
+      <button
+        class="btn btn-outline-primary float-end"
+        @click=${dialog.close}>Close</button>
+    `
+  })
+})
+
+const submit = async (event: Event, table: string) => {
+  event.preventDefault()
+
+  const values = Object.fromEntries(
+    new FormData(event.target as HTMLFormElement).entries(),
+  );
+
+  const promise = auth.getDB().create(table, {...values})
+
+  await auth.isReady;
+  const { error } = await catchErrorTyped(promise);
+
+  if (error) {
+    if (error.message.includes("slug_index")) {
+      alert("Member with this name already exists.");
+      return;
+    }
+
+    console.error("Error creating member:", error);
+    alert("Failed to create member. Please try again.");
+    return;
+  }
+}
+</script>

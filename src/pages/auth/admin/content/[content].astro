@@ -1,11 +1,11 @@
 ---
-import { getCollection } from 'astro:content'
-import { catchErrorTyped } from "$lib/utils/index.ts";
-import { render } from '$lib/server/ssrLit.ts'
-import { template } from './_content.ts'
-
 import Layout from '$components/client/layouts/Layout.astro'
-import ModalCreateContent from '$components/client/modals/CreateContent.astro'
+import Create from '$components/client/admin/content/Create.astro'
+import Table from '$components/client/admin/content/Table.astro'
+
+// import ModalCreateContent from '$components/client/modals/CreateContent.astro'
+// <ModalCreateContent table={content} modalId={modalId} />
+// const modalId = `modal-create-${content}`:
 
 export async function getStaticPaths() {
   return [
@@ -16,20 +16,6 @@ export async function getStaticPaths() {
 
 const { content } = Astro.params
 
-const {error, data: collection} = await catchErrorTyped(getCollection(
-  content === "post" ? "posts" : "modules",
-))
-
-if (error)  throw new Error(`Failed to fetch ${content}: ${error}`)
-
-const filtered = collection
-  // @ts-ignorea: NOTE: `data` is not typed in Astro's content collections
-  .sort((a, b) => new Date(b.data.publish) < new Date(a.data.publish))
-  .slice(0, 3)
-
-const renderContent = render(template(filtered.map(entry => ({ ...entry.data }))))
-
-const modalId = `modal-create-${content}`
 const needs = {
   auth: true,
   roles: ["admin", "thera"],
@@ -37,14 +23,6 @@ const needs = {
 ---
 
 <script src="$lib/client/webslab/database.ts"></script>
-
-<style>
-  @media (max-width: 575.98px) {
-    table {
-      font-size: 1rem;
-    }
-  }
-</style>
 
 <Layout
   description={`List of ${content} to manage`}
@@ -54,44 +32,21 @@ const needs = {
   back={{ enabled: true, path: "auth/admin/" }}>
 
   <div slot="actions">
-    <button
-      type="button"
-      class="btn btn-primary d-none d-lg-block flex-shrink-1"
-      data-bs-toggle="modal"
-      data-bs-target={"#" + modalId}>Create</button>
+    <Create content={content} />
   </div>
 
   <div class="px-xl-2">
-    <wl-database
-      live={true}
-      target="tbody">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col" class="border-end">Title</th>
-            <th scope="col" class="d-none d-lg-table-cell border-end">Author</th>
-            <th scope="col" class="d-none d-md-table-cell border-end">Published</th>
-            <th scope="col" class="border-end">Draft</th>
-            <th scope="col" class="d-none d-md-table-cell border-end">Likes</th>
-            <th scope="col" class="text-center">Actions</th>
-          </tr>
-        </thead>
-
-        <tbody id="tbody" set:html={renderContent}></tbody>
-      </table>
-    </wl-database>
+    <Table content={content} />
   </div>
 
   <script>
-    import { template } from './_content.ts'
+    import { templateTable } from "$components/client/admin/content/table.ts"
     import { type WlDatabase } from "$lib/client/webslab/database.ts"
 
-    const url = new URL(location.href);
-    const table = url.pathname.split("/").slice(-2)[0];
-
     const wlDatabase = document.querySelector("wl-database") as WlDatabase;
+    const table = wlDatabase.dataset.table
 
-    wlDatabase.template = template;
+    wlDatabase.template = templateTable;
     wlDatabase.query = `
       SELECT
         id,title,likes,
@@ -100,19 +55,6 @@ const needs = {
         author.name as author
       FROM ${table} ORDER BY publish DESC;
     `;
-
-    wlDatabase.addEventListener("wl-task:completed", (e) => {
-      // const { result } = (e as CustomEvent).detail;
-
-      console.log("Database is ready");
-    });
-
-    wlDatabase.addEventListener("wl-action:create", (e) => {
-      const { item } = (e as CustomEvent).detail;
-
-      console.log(item)
-    })
   </script>
 </Layout>
 
-<ModalCreateContent table={content} modalId={modalId} />

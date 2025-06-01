@@ -1,7 +1,7 @@
 import { html } from "lit";
 
 // deno-fmt-ignore-start
-export const template = (content: any[]) =>
+export const templateTable = (content: any[]) =>
   html`${content.map(item => html`
     <tr data-id="${item.id}">
       <td style="white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:10rem;">${item.title}</td>
@@ -72,17 +72,14 @@ export const template = (content: any[]) =>
 // deno-fmt-ignore-end
 
 const statsItem = (e: Event) => {
-  const target = e.target as HTMLButtonElement;
-
-  const id = target.closest("tr")!.dataset.id
+  const id = getMemberId(e);
   console.log("stats", id);
 };
 
 const draftItem = async (e: Event) => {
   const { auth } = await import("$lib/client/services/auth.ts");
 
-  const target = e.target as HTMLButtonElement;
-  const id = target.closest("tr")!.dataset.id;
+  const id = getMemberId(e);
 
   auth
     .getDB()
@@ -92,8 +89,7 @@ const draftItem = async (e: Event) => {
 const deleteItem = async (e: Event) => {
   const { auth } = await import("$lib/client/services/auth.ts");
 
-  const target = e.target as HTMLButtonElement;
-  const id = target.closest("tr")!.dataset.id;
+  const id = getMemberId(e);
 
   if (window.confirm("Are you sure you want to delete this post?")) {
     auth
@@ -101,3 +97,8 @@ const deleteItem = async (e: Event) => {
       .query("DELETE type::record($postId)", { postId: id });
   }
 };
+
+function getMemberId(event: Event): string {
+  const target = event.target as HTMLButtonElement;
+  return target.closest("tr")!.dataset.id!;
+}
