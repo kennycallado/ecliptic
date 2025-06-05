@@ -1,10 +1,17 @@
-<button id="test-api" class="btn btn-primary">Test api</button>
+<div class="d-flex">
+  <button id="test-api" class="btn btn-primary">Test api</button>
+  <button id="test-api-db" class="btn btn-primary ms-2">Test api db</button>
+  <button id="clear" class="btn btn-secondary ms-2">Clear</button>
+</div>
+
 <pre id="result"></pre>
 
 <script>
 let count = 0;
 
 const btn = document.getElementById("test-api") as HTMLButtonElement;
+const btnDb = document.getElementById("test-api-db") as HTMLButtonElement;
+const clearBtn = document.getElementById("clear") as HTMLButtonElement;
 const result = document.getElementById("result") as HTMLPreElement;
 
 btn.addEventListener("click", async () => {
@@ -16,4 +23,18 @@ btn.addEventListener("click", async () => {
 
   result.innerText = result.innerText + "\n" + JSON.stringify(data, null, 2);
 });
+
+clearBtn.addEventListener("click", () => {
+  result.innerText = "";
+})
+
+btnDb.addEventListener("click", async () => {
+  const response = await fetch("api/test/?database=1");
+  const data = await response.json();
+
+  count = count + 1;
+  data.count = count;
+
+  result.innerText = result.innerText + "\n" + JSON.stringify(data, null, 2);
+})
 </script>
