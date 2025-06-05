@@ -1,0 +1,35 @@
+---
+---
+
+<div class="align-self-stretch">
+  <button
+    id="component-content-share"
+    class="btn btn-link p-0"
+    aria-label="Share">
+    <svg
+      class="bi bi-share"
+      xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+const url = new URL(location.href);
+const button = document.getElementById("component-content-share");
+
+button.addEventListener("click", () => {
+  if (navigator.share) {
+    navigator.share({
+      title: document.title,
+      url,
+    })
+    .then(() => console.log('Shared successfully'))
+    .catch(error => console.error('Error sharing:', error));
+  } else {
+    // Fallback for browsers that do not support the Web Share API
+    navigator.clipboard.writeText(url)
+    alert(`URL copied to clipboard:\n\n${url}`);
+  }
+})
+</script>

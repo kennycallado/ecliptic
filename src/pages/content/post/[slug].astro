@@ -12,6 +12,7 @@ import Layout from '$components/client/layouts/Layout.astro'
 
 import Visits from '$components/client/content/Visits.astro'
 import Likes from '$components/client/content/Likes.astro'
+import Share from '$components/client/content/Share.astro'
 
 export async function getStaticPaths() {
   const {error, data: posts} = await catchErrorTyped(getCollection('posts'))
@@ -46,8 +47,9 @@ const likesId = "content-likes"
   title={"Post: " + post.title}>
 
   <div
-    class="d-flex flex-column flex-md-row align-items-center justify-content-between mb-3 gap-2"
+    class="d-flex mb-3 gap-2"
     slot="actions">
+    <Share />
     <Visits visitsId={visitsId} count={post.visits} />
     <Likes likesId={likesId} count={post.likes} />
 
@@ -87,19 +89,19 @@ const likesId = "content-likes"
 </Layout>
 
 <script>
-  const wlDatabase = document.querySelector("wl-database") as WlDatabase;
+  const wlDatabase = document.querySelector("wl-database")!
   wlDatabase.addEventListener("wl-task:completed", (e) => {
-    const { result } = e.detail;
+    const { result } = (e as CustomEvent).detail
 
     // TODO: less tricky
-    const visitsEl = document.getElementById("content-visits");
+    const visitsEl = document.getElementById("content-visits") as HTMLSpanElement
     visitsEl.textContent = result.visits || 0
 
-    const likesEl = document.getElementById("content-likes");
+    const likesEl = document.getElementById("content-likes") as HTMLSpanElement
     likesEl.textContent = result.likes || 0
   });
 </script>
 
 <script>
-import { visit } from "$lib/client/utils/index.ts"; visit();
+import { visit } from "$lib/client/utils/index.ts"; visit()
 </script>
